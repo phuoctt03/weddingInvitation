@@ -10,6 +10,7 @@ const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400"
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
 interface StoryEvent {
+  target?: any
   id: string
   title: string
   date: string
