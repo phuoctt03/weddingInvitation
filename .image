@@ -1,0 +1,11 @@
+<Image
+        src={backgroundImage || "/placeholder.svg"}
+        alt="Wedding couple"
+        style={{ position : "absolute", zIndex  :   -1 }}
+        width={600}
+        height={800}
+        priority
+        className="object-cover cursor-pointer"
+        quality={100}
+        onClick={handleImageClick}
+      />
