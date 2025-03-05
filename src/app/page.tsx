@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import HeroSection from "../components/HeroSection"
 import MessageSection from "../components/MessageSection"
@@ -18,6 +18,9 @@ import FloatingElements from "@/components/FloatingElements"
 import GuestWishes from "@/components/GuestWishes"
 import QrCodeGenerator from "@/components/QrCodeGenerator"
 import WeatherForecast from "@/components/WeatherForecast"
+import OurStorySection from "@/components/OurStorySection"
+import VirtualGuestbook from "@/components/VirtualGuestbook"
+import AnimatedEnvelope from "@/components/AnimatedEnvelope"
 
 export default function Home() {
   const [invitationTitle, setInvitationTitle] = useState("Wedding Invitation")
@@ -41,6 +44,9 @@ export default function Home() {
   const [access, setAccess] = useState("Access")
   const [dressCode, setDressCode] = useState("Semi-formal attire. We kindly request that guests wear pastel colors.")
   const [weddingHashtag, setWeddingHashtag] = useState("#DaisukeAndRinka2025")
+  const [showEnvelope, setShowEnvelope] = useState(true)
+  const [contentVisible, setContentVisible] = useState(false)
+
   const googleMap =
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.828030880383!2d139.7454329151579!3d35.69116618019432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c5e412329bb%3A0x7db38e6732953dc!2sTokyo%20Station!5e0!3m2!1sen!2sjp!4v1645451968098!5m2!1sen!2sjp"
 
@@ -50,15 +56,36 @@ export default function Home() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
   }
 
+  // Handle envelope completion
+  const handleEnvelopeComplete = () => {
+    setShowEnvelope(false)
+    setContentVisible(true)
+  }
+
+  // Prevent scrolling when envelope is showing
+  useEffect(() => {
+    if (showEnvelope) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "auto"
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"
+    }
+  }, [showEnvelope])
+
   const sections = [
     { id: "home", label: "Home" },
     { id: "message", label: "Message" },
+    { id: "story", label: "Our Story" },
     { id: "countdown", label: "Countdown" },
     { id: "details", label: "Details" },
     { id: "gallery", label: "Gallery" },
     { id: "weather", label: "Weather" },
     { id: "rsvp", label: "RSVP" },
     { id: "wishes", label: "Wishes" },
+    { id: "guestbook", label: "Guestbook" },
     { id: "gifts", label: "Gifts" },
     { id: "accommodation", label: "Stay" },
     { id: "location", label: "Location" },
@@ -67,207 +94,246 @@ export default function Home() {
 
   return (
     <main style={{ position: "relative", width: "100%", overflow: "hidden", background: "#fffaf5" }}>
-      <FloatingNav sections={sections} />
-      <FloatingElements />
-      <MusicPlayer />
-
-      <motion.div variants={fadeInUp} initial="hidden" animate="visible" id="home">
-        <HeroSection
-          invitationTitle={invitationTitle}
-          setInvitationTitle={setInvitationTitle}
-          invitationText={invitationText}
-          setInvitationText={setInvitationText}
+      {/* Animated Envelope */}
+      {showEnvelope && (
+        <AnimatedEnvelope
           groomName={groomName}
-          setGroomName={setGroomName}
           brideName={brideName}
-          setBrideName={setBrideName}
           weddingDate={weddingDate}
-          setWeddingDate={setWeddingDate}
+          onComplete={handleEnvelopeComplete}
         />
-      </motion.div>
+      )}
 
-      {/* Additional Sections */}
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "4rem 1rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "8rem",
-        }}
-      >
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="message"
-        >
-          <MessageSection
-            message={message}
-            setMessage={setMessage}
-            weddingHashtag={weddingHashtag}
-            setWeddingHashtag={setWeddingHashtag}
-          />
-        </motion.div>
+      {/* Only show content after envelope animation or skip */}
+      {(!showEnvelope || contentVisible) && (
+        <>
+          <FloatingNav sections={sections} />
+          <FloatingElements />
+          <MusicPlayer />
 
-        <Divider />
+          <motion.div variants={fadeInUp} initial="hidden" animate="visible" id="home">
+            <HeroSection
+              invitationTitle={invitationTitle}
+              setInvitationTitle={setInvitationTitle}
+              invitationText={invitationText}
+              setInvitationText={setInvitationText}
+              groomName={groomName}
+              setGroomName={setGroomName}
+              brideName={brideName}
+              setBrideName={setBrideName}
+              weddingDate={weddingDate}
+              setWeddingDate={setWeddingDate}
+            />
+          </motion.div>
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="countdown"
-        >
-          <CountdownSection targetDate={weddingDate} />
-        </motion.div>
+          {/* Additional Sections */}
+          <div
+            style={{
+              maxWidth: "1200px",
+              margin: "0 auto",
+              padding: "4rem 1rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8rem",
+            }}
+          >
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="message"
+            >
+              <MessageSection
+                message={message}
+                setMessage={setMessage}
+                weddingHashtag={weddingHashtag}
+                setWeddingHashtag={setWeddingHashtag}
+              />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="details"
-        >
-          <DateSection
-            ceremony={ceremony}
-            setCeremony={setCeremony}
-            ceremonyDate={ceremonyDate}
-            setCeremonyDate={setCeremonyDate}
-            ceremonyLocation={ceremonyLocation}
-            setCeremonyLocation={setCeremonyLocation}
-            ceremonyAddress={ceremonyAddress}
-            setCeremonyAddress={setCeremonyAddress}
-            reception={reception}
-            setReception={setReception}
-            receptionDate={receptionDate}
-            setReceptionDate={setReceptionDate}
-            receptionLocation={receptionLocation}
-            setReceptionLocation={setReceptionLocation}
-            receptionAddress={receptionAddress}
-            setReceptionAddress={setReceptionAddress}
-            dressCode={dressCode}
-            setDressCode={setDressCode}
-          />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0 }}
+              id="story"
+            >
+              <OurStorySection />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="gallery"
-        >
-          <GallerySection />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="countdown"
+            >
+              <CountdownSection targetDate={weddingDate} />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="weather"
-        >
-          <WeatherForecast weddingDate={weddingDate} location="Tokyo, Japan" />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="details"
+            >
+              <DateSection
+                ceremony={ceremony}
+                setCeremony={setCeremony}
+                ceremonyDate={ceremonyDate}
+                setCeremonyDate={setCeremonyDate}
+                ceremonyLocation={ceremonyLocation}
+                setCeremonyLocation={setCeremonyLocation}
+                ceremonyAddress={ceremonyAddress}
+                setCeremonyAddress={setCeremonyAddress}
+                reception={reception}
+                setReception={setReception}
+                receptionDate={receptionDate}
+                setReceptionDate={setReceptionDate}
+                receptionLocation={receptionLocation}
+                setReceptionLocation={setReceptionLocation}
+                receptionAddress={receptionAddress}
+                setReceptionAddress={setReceptionAddress}
+                dressCode={dressCode}
+                setDressCode={setDressCode}
+              />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="rsvp"
-        >
-          <RsvpSection />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="gallery"
+            >
+              <GallerySection />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="wishes"
-        >
-          <GuestWishes />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="weather"
+            >
+              <WeatherForecast weddingDate={weddingDate} location="Tokyo, Japan" />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="gifts"
-        >
-          <GiftRegistrySection />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="rsvp"
+            >
+              <RsvpSection />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="accommodation"
-        >
-          <AccommodationSection />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="wishes"
+            >
+              <GuestWishes />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="location"
-        >
-          <AccessSection access={access} setAccess={setAccess} googleMap={googleMap} />
-        </motion.div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="guestbook"
+            >
+              <VirtualGuestbook />
+            </motion.div>
 
-        <Divider />
+            <Divider />
 
-        <motion.div
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.3 }}
-          id="share"
-        >
-          <QrCodeGenerator />
-        </motion.div>
-      </div>
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="gifts"
+            >
+              <GiftRegistrySection />
+            </motion.div>
 
-      <footer
-        style={{
-          background: "#f8e8d8",
-          padding: "2rem 0",
-          marginTop: "5rem",
-          textAlign: "center",
-          color: "#5d4037",
-        }}
-      >
-        <p style={{ fontSize: "0.875rem" }}>
-          With love, {groomName} & {brideName}
-        </p>
-        <p style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>{weddingHashtag}</p>
-      </footer>
+            <Divider />
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="accommodation"
+            >
+              <AccommodationSection />
+            </motion.div>
+
+            <Divider />
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="location"
+            >
+              <AccessSection access={access} setAccess={setAccess} googleMap={googleMap} />
+            </motion.div>
+
+            <Divider />
+
+            <motion.div
+              variants={fadeInUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: false, amount: 0.3 }}
+              id="share"
+            >
+              <QrCodeGenerator />
+            </motion.div>
+          </div>
+
+          <footer
+            style={{
+              background: "#f8e8d8",
+              padding: "2rem 0",
+              marginTop: "5rem",
+              textAlign: "center",
+              color: "#5d4037",
+            }}
+          >
+            <p style={{ fontSize: "0.875rem" }}>
+              With love, {groomName} & {brideName}
+            </p>
+            <p style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>{weddingHashtag}</p>
+          </footer>
+        </>
+      )}
     </main>
   )
 }
