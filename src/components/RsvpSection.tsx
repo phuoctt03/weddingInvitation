@@ -1,15 +1,22 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { motion } from "framer-motion"
-import Image from "next/image"
 import { Check } from "lucide-react"
 
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
-const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+})
+
+const dancingScript = Dancing_Script({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+})
 
 const RsvpSection = () => {
   const [name, setName] = useState("")
@@ -38,68 +45,128 @@ const RsvpSection = () => {
     }, 3000)
   }
 
-  const inputStyle = {
-    width: "100%",
-    padding: "0.5rem 1rem",
-    border: "1px solid #e0c9b1",
-    borderRadius: "0.375rem",
-    outline: "none",
-    transition: "all 0.2s",
+  const formStyles = {
+    container: {
+      width: "100%",
+      maxWidth: "32rem",
+      margin: "0 auto",
+      padding: "2rem 1rem",
+    },
+    header: {
+      textAlign: "center" as const,
+      marginBottom: "2.5rem",
+    },
+    title: {
+      fontFamily: dancingScript.style.fontFamily,
+      fontSize: "2.5rem",
+      color: "#8b6e5c",
+      marginBottom: "0.5rem",
+    },
+    subtitle: {
+      fontFamily: cormorant.style.fontFamily,
+      fontSize: "1.125rem",
+      color: "#4b5563",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column" as const,
+      gap: "1.5rem",
+      background: "white",
+      padding: "2rem",
+      borderRadius: "0.5rem",
+      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+      border: "1px solid #e0c9b1",
+    },
+    formGroup: {
+      display: "flex",
+      flexDirection: "column" as const,
+      gap: "0.5rem",
+    },
+    label: {
+      fontFamily: cormorant.style.fontFamily,
+      fontSize: "1rem",
+      color: "#4b5563",
+    },
+    input: {
+      padding: "0.75rem",
+      border: "1px solid #e0c9b1",
+      borderRadius: "0.25rem",
+      fontSize: "1rem",
+      fontFamily: cormorant.style.fontFamily,
+      color: "#1f2937",
+      outline: "none",
+      transition: "border-color 0.2s",
+    },
+    textarea: {
+      padding: "0.75rem",
+      border: "1px solid #e0c9b1",
+      borderRadius: "0.25rem",
+      fontSize: "1rem",
+      fontFamily: cormorant.style.fontFamily,
+      color: "#1f2937",
+      minHeight: "6rem",
+      resize: "vertical" as const,
+      outline: "none",
+    },
+    select: {
+      padding: "0.75rem",
+      border: "1px solid #e0c9b1",
+      borderRadius: "0.25rem",
+      fontSize: "1rem",
+      fontFamily: cormorant.style.fontFamily,
+      color: "#1f2937",
+      background: "white",
+      cursor: "pointer",
+    },
+    buttonGroup: {
+      display: "flex",
+      gap: "1rem",
+      marginTop: "0.5rem",
+    },
+    button: {
+      flex: 1,
+      padding: "0.75rem",
+      border: "1px solid #e0c9b1",
+      borderRadius: "0.25rem",
+      fontSize: "1rem",
+      fontFamily: cormorant.style.fontFamily,
+      cursor: "pointer",
+      transition: "all 0.2s",
+    },
+    activeButton: {
+      backgroundColor: "#d4b396",
+      color: "white",
+      border: "1px solid #d4b396",
+    },
+    inactiveButton: {
+      backgroundColor: "white",
+      color: "#4b5563",
+    },
+    submitButton: {
+      width: "100%",
+      padding: "0.75rem",
+      backgroundColor: "#d4b396",
+      color: "white",
+      border: "none",
+      borderRadius: "0.25rem",
+      fontSize: "1rem",
+      fontFamily: cormorant.style.fontFamily,
+      cursor: "pointer",
+      transition: "background-color 0.2s",
+      marginTop: "1rem",
+    },
+    successMessage: {
+      textAlign: "center" as const,
+      padding: "2rem",
+      background: "#f8e8d8",
+      borderRadius: "0.5rem",
+    },
   }
 
-  const buttonStyle = {
-    padding: "0.5rem 1rem",
-    borderRadius: "0.375rem",
-    border: "1px solid #e0c9b1",
-    backgroundColor: "white",
-    color: "#4b5563",
-    cursor: "pointer",
-    transition: "all 0.2s",
-    flex: 1,
-  }
-
-  const activeButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#d4b396",
-    color: "white",
-    borderColor: "#d4b396",
-  }
-
-  return (
-    <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
-      <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        <h2
-          style={{
-            fontFamily: dancingScript.style.fontFamily,
-            fontSize: "2.25rem",
-            color: "#8b6e5c",
-            marginBottom: "0.5rem",
-          }}
-        >
-          RSVP
-        </h2>
-        <p
-          style={{
-            fontFamily: cormorant.style.fontFamily,
-            fontSize: "1.125rem",
-            color: "#4b5563",
-          }}
-        >
-          Please respond by April 29, 2025
-        </p>
-      </div>
-
-      {isSubmitted ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{
-            background: "#f8e8d8",
-            borderRadius: "0.5rem",
-            padding: "2rem",
-            textAlign: "center",
-          }}
-        >
+  if (isSubmitted) {
+    return (
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={formStyles.container}>
+        <div style={formStyles.successMessage}>
           <div
             style={{
               display: "inline-flex",
@@ -125,190 +192,130 @@ const RsvpSection = () => {
           >
             Thank You!
           </h3>
-          <p
-            style={{
-              fontFamily: cormorant.style.fontFamily,
-              color: "#4b5563",
-            }}
-          >
+          <p style={{ fontFamily: cormorant.style.fontFamily, color: "#4b5563" }}>
             Your RSVP has been submitted successfully.
           </p>
-        </motion.div>
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            background: "white",
-            borderRadius: "0.5rem",
-            padding: "1.5rem",
-            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-            border: "1px solid #e0c9b1",
+        </div>
+      </motion.div>
+    )
+  }
+
+  return (
+    <section style={formStyles.container}>
+      <div style={formStyles.header}>
+        <h2 style={formStyles.title}>RSVP</h2>
+        <p style={formStyles.subtitle}>Please respond by April 29, 2025</p>
+      </div>
+
+      <form onSubmit={handleSubmit} style={formStyles.form}>
+        <div style={formStyles.formGroup}>
+          <label htmlFor="name" style={formStyles.label}>
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            style={formStyles.input}
+          />
+        </div>
+
+        <div style={formStyles.formGroup}>
+          <label htmlFor="email" style={formStyles.label}>
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={formStyles.input}
+          />
+        </div>
+
+        <div style={formStyles.formGroup}>
+          <label style={formStyles.label}>Will you be attending?</label>
+          <div style={formStyles.buttonGroup}>
+            <button
+              type="button"
+              onClick={() => setAttending(true)}
+              style={{
+                ...formStyles.button,
+                ...(attending === true ? formStyles.activeButton : formStyles.inactiveButton),
+              }}
+            >
+              Joyfully Accept
+            </button>
+            <button
+              type="button"
+              onClick={() => setAttending(false)}
+              style={{
+                ...formStyles.button,
+                ...(attending === false ? formStyles.activeButton : formStyles.inactiveButton),
+              }}
+            >
+              Regretfully Decline
+            </button>
+          </div>
+        </div>
+
+        {attending === true && (
+          <>
+            <div style={formStyles.formGroup}>
+              <label htmlFor="guests" style={formStyles.label}>
+                Number of Guests (including yourself)
+              </label>
+              <select id="guests" value={guests} onChange={(e) => setGuests(e.target.value)} style={formStyles.select}>
+                {[0, 1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div style={formStyles.formGroup}>
+              <label htmlFor="dietary" style={formStyles.label}>
+                Dietary Restrictions (if any)
+              </label>
+              <textarea
+                id="dietary"
+                value={dietaryRestrictions}
+                onChange={(e) => setDietaryRestrictions(e.target.value)}
+                style={formStyles.textarea}
+              />
+            </div>
+          </>
+        )}
+
+        <div style={formStyles.formGroup}>
+          <label htmlFor="message" style={formStyles.label}>
+            Message to the Couple (Optional)
+          </label>
+          <textarea
+            id="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            style={formStyles.textarea}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={formStyles.submitButton}
+          onMouseOver={(e) => {
+            e.currentTarget.style.backgroundColor = "#c4a386"
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.backgroundColor = "#d4b396"
           }}
         >
-          <div style={{ marginBottom: "1rem" }}>
-            <label
-              htmlFor="name"
-              style={{
-                display: "block",
-                fontFamily: cormorant.style.fontFamily,
-                color: "#4b5563",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              style={inputStyle}
-            />
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <label
-              htmlFor="email"
-              style={{
-                display: "block",
-                fontFamily: cormorant.style.fontFamily,
-                color: "#4b5563",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={inputStyle}
-            />
-          </div>
-
-          <div style={{ marginBottom: "1rem" }}>
-            <p
-              style={{
-                fontFamily: cormorant.style.fontFamily,
-                color: "#4b5563",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Will you be attending?
-            </p>
-            <div style={{ display: "flex", gap: "1rem" }}>
-              <button
-                type="button"
-                onClick={() => setAttending(true)}
-                style={attending === true ? activeButtonStyle : buttonStyle}
-              >
-                Joyfully Accept
-              </button>
-              <button
-                type="button"
-                onClick={() => setAttending(false)}
-                style={attending === false ? activeButtonStyle : buttonStyle}
-              >
-                Regretfully Decline
-              </button>
-            </div>
-          </div>
-
-          {attending === true && (
-            <>
-              <div style={{ marginBottom: "1rem" }}>
-                <label
-                  htmlFor="guests"
-                  style={{
-                    display: "block",
-                    fontFamily: cormorant.style.fontFamily,
-                    color: "#4b5563",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  Number of Guests (including yourself)
-                </label>
-                <select id="guests" value={guests} onChange={(e) => setGuests(e.target.value)} style={inputStyle}>
-                  {[0, 1, 2, 3, 4, 5].map((num) => (
-                    <option key={num} value={num}>
-                      {num}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div style={{ marginBottom: "1rem" }}>
-                <label
-                  htmlFor="dietary"
-                  style={{
-                    display: "block",
-                    fontFamily: cormorant.style.fontFamily,
-                    color: "#4b5563",
-                    marginBottom: "0.5rem",
-                  }}
-                >
-                  Dietary Restrictions (if any)
-                </label>
-                <textarea
-                  id="dietary"
-                  value={dietaryRestrictions}
-                  onChange={(e) => setDietaryRestrictions(e.target.value)}
-                  style={{
-                    ...inputStyle,
-                    height: "6rem",
-                    resize: "none",
-                  }}
-                ></textarea>
-              </div>
-            </>
-          )}
-
-          <div style={{ marginBottom: "1.5rem" }}>
-            <label
-              htmlFor="message"
-              style={{
-                display: "block",
-                fontFamily: cormorant.style.fontFamily,
-                color: "#4b5563",
-                marginBottom: "0.5rem",
-              }}
-            >
-              Message to the Couple (Optional)
-            </label>
-            <textarea
-              id="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              style={{
-                ...inputStyle,
-                height: "6rem",
-                resize: "none",
-              }}
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "0.75rem",
-              backgroundColor: "#d4b396",
-              color: "white",
-              borderRadius: "0.375rem",
-              border: "none",
-              cursor: "pointer",
-              transition: "background-color 0.3s",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#c4a386")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#d4b396")}
-          >
-            Submit RSVP
-          </button>
-        </form>
-      )}
+          Submit RSVP
+        </button>
+      </form>
     </section>
   )
 }

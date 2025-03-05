@@ -74,8 +74,13 @@ export default function GallerySection() {
   return (
     <section style={{ margin: "1rem 0" }}>
       <p
-        className={`${acme.className}`}
-        style={{ fontSize: "1.5rem", fontWeight: 600, marginBottom: "1rem", textAlign: "center" }}
+        style={{
+          fontSize: "1.5rem",
+          fontWeight: 600,
+          marginBottom: "1rem",
+          textAlign: "center",
+          fontFamily: acme.style.fontFamily,
+        }}
       >
         Album Wedding
       </p>

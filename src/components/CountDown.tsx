@@ -114,11 +114,11 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
       >
         <div style={{ maxWidth: "768px", margin: "0 auto" }}>
           <h2
-            className={acme.className}
             style={{
               fontSize: "2.5rem",
               marginBottom: "2rem",
               fontWeight: "normal",
+              fontFamily: acme.style.fontFamily,
             }}
           >
             COUNT DOWN
@@ -132,20 +132,20 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
             }}
           >
             <span
-              className={acme.className}
               style={{
                 fontSize: "9rem",
                 fontWeight: "bold",
                 lineHeight: "1",
+                fontFamily: acme.style.fontFamily,
               }}
             >
               {timeLeft.days}
             </span>
             <span
-              className={acme.className}
               style={{
                 fontSize: "2.5rem",
                 marginBottom: "2rem",
+                fontFamily: acme.style.fontFamily,
               }}
             >
               DAYS
@@ -174,19 +174,19 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
                 }}
               >
                 <span
-                  className={acme.className}
                   style={{
                     fontSize: "3.75rem",
                     fontWeight: "bold",
                     lineHeight: "1",
+                    fontFamily: acme.style.fontFamily,
                   }}
                 >
                   {formatNumber(item.value)}
                 </span>
                 <span
-                  className={acme.className}
                   style={{
                     fontSize: "1rem",
+                    fontFamily: acme.style.fontFamily,
                   }}
                 >
                   {item.label}

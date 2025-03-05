@@ -389,7 +389,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             strokeLinejoin="round"
           />
         </svg>
-        <style jsx>{`
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {
               transform: translateY(0);
@@ -401,7 +403,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               transform: translateY(-5px);
             }
           }
-        `}</style>
+        `,
+          }}
+        />
       </div>
     </div>
   )

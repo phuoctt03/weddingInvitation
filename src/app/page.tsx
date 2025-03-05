@@ -13,6 +13,11 @@ import GiftRegistrySection from "@/components/GiftRegistrySection"
 import AccommodationSection from "@/components/AccommodationSection"
 import FloatingNav from "@/components/FloatingNav"
 import Divider from "@/components/Divider"
+import MusicPlayer from "@/components/MusicPlayer"
+import FloatingElements from "@/components/FloatingElements"
+import GuestWishes from "@/components/GuestWishes"
+import QrCodeGenerator from "@/components/QrCodeGenerator"
+import WeatherForecast from "@/components/WeatherForecast"
 
 export default function Home() {
   const [invitationTitle, setInvitationTitle] = useState("Wedding Invitation")
@@ -51,15 +56,20 @@ export default function Home() {
     { id: "countdown", label: "Countdown" },
     { id: "details", label: "Details" },
     { id: "gallery", label: "Gallery" },
+    { id: "weather", label: "Weather" },
     { id: "rsvp", label: "RSVP" },
+    { id: "wishes", label: "Wishes" },
     { id: "gifts", label: "Gifts" },
     { id: "accommodation", label: "Stay" },
     { id: "location", label: "Location" },
+    { id: "share", label: "Share" },
   ]
 
   return (
     <main style={{ position: "relative", width: "100%", overflow: "hidden", background: "#fffaf5" }}>
       <FloatingNav sections={sections} />
+      <FloatingElements />
+      <MusicPlayer />
 
       <motion.div variants={fadeInUp} initial="hidden" animate="visible" id="home">
         <HeroSection
@@ -166,9 +176,33 @@ export default function Home() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.3 }}
+          id="weather"
+        >
+          <WeatherForecast weddingDate={weddingDate} location="Tokyo, Japan" />
+        </motion.div>
+
+        <Divider />
+
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
           id="rsvp"
         >
           <RsvpSection />
+        </motion.div>
+
+        <Divider />
+
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          id="wishes"
+        >
+          <GuestWishes />
         </motion.div>
 
         <Divider />
@@ -205,6 +239,18 @@ export default function Home() {
           id="location"
         >
           <AccessSection access={access} setAccess={setAccess} googleMap={googleMap} />
+        </motion.div>
+
+        <Divider />
+
+        <motion.div
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.3 }}
+          id="share"
+        >
+          <QrCodeGenerator />
         </motion.div>
       </div>
 
