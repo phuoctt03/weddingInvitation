@@ -1,7 +1,6 @@
 import type React from "react"
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import EditableText from "./EditableText"
-import Image from "next/image"
 import { MapPin } from "lucide-react"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -17,7 +16,6 @@ const AccessSection: React.FC<AccessSectionProps> = ({ access, setAccess, google
   return (
     <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        {/* <Image src="/location.png" alt="Location" width={320} height={200} style={{ margin: "0 auto 1rem auto" }} /> */}
         <h2
           style={{
             fontFamily: dancingScript.style.fontFamily,

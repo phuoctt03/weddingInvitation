@@ -18,9 +18,6 @@ const Divider = () => {
           width: "25%",
         }}
       ></div>
-      {/* <div style={{ margin: "0 1rem" }}>
-        <Image src="/divider.jpeg" alt="Divider" width={60} height={30} style={{ opacity: 0.8 }} />
-      </div> */}
       <div
         style={{
           height: "1px",

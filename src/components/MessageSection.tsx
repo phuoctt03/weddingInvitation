@@ -45,7 +45,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, setMessage, we
           }}
         >
           <p style={{ fontSize: "1.125rem", color: "#4b5563", fontStyle: "italic" }}>
-            <EditableText initialText={message} onSave={setMessage} min500={true} />
+            <EditableText initialText={message} onSave={setMessage}/>
           </p>
           <div style={{ paddingTop: "1rem", borderTop: "1px solid #e0c9b1" }}>
             <p style={{ color: "#8b6e5c", fontWeight: 500 }}>Share your moments with us using</p>

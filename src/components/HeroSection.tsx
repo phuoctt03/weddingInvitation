@@ -202,7 +202,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           alt="Wedding couple"
           style={{
             position: "absolute",
-            zIndex: -1,
+            zIndex: 0,
             left: "calc(50% - 300px)",
             ...animationStyles.fadeIn,
           }}
@@ -358,7 +358,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </motion.div>
         </div>
       </div>
-      <div
+      {/* <div
         style={{
           WebkitClipPath: "polygon(50% 100%, 100% 0, 100% 100%, 0 100%, 0 0)",
           position: "absolute",
@@ -369,7 +369,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           backgroundColor: "white",
           ...animationStyles.fadeIn,
         }}
-      ></div>
+      ></div> */}
 
       <div
         style={{

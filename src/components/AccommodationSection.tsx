@@ -41,13 +41,6 @@ const AccommodationSection = () => {
   return (
     <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-        {/* <Image
-          src="/accommodation.png"
-          alt="Accommodation"
-          width={320}
-          height={200}
-          style={{ margin: "0 auto 1rem auto" }}
-        /> */}
         <h2
           style={{
             fontFamily: dancingScript.style.fontFamily,

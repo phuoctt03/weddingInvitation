@@ -7,11 +7,10 @@ interface EditableTextProps {
   initialText: string
   className?: string
   onSave?: (text: string) => void
-  min500?: boolean
   maxHeight1rem?: boolean
 }
 
-const EditableText: React.FC<EditableTextProps> = ({ initialText, className, onSave, min500, maxHeight1rem }) => {
+const EditableText: React.FC<EditableTextProps> = ({ initialText, className, onSave, maxHeight1rem }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [text, setText] = useState(initialText)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -65,7 +64,7 @@ const EditableText: React.FC<EditableTextProps> = ({ initialText, className, onS
           overflow: "hidden",
           minHeight: "1em",
           maxHeight: maxHeight1rem ? "1rem" : "none",
-          minWidth: min500 ? "500px" : "400px",
+          minWidth: "400px",
           maxWidth: "400px",
           lineHeight: "inherit",
           fontFamily: "inherit",
