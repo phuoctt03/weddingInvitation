@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import { Edit2, Check, X } from "lucide-react"
+import { Edit2, Check, X } from 'lucide-react'
 
 interface EditableTextProps {
   initialText: string
@@ -95,6 +95,33 @@ const EditableText: React.FC<EditableTextProps> = ({
 
   const handleSave = () => {
     setIsEditing(false)
+    
+    // Special validation for date fields
+    if (placeholder === "YYYY.MM.DD" && text !== initialText) {
+      // Validate date format
+      const datePattern = /^\d{4}\.\d{2}\.\d{2}$/;
+      if (!datePattern.test(text)) {
+        setText(initialText);
+        return;
+      }
+      
+      // Parse date components
+      const [year, month, day] = text.split(".").map(Number);
+      
+      // Validate month (1-12)
+      if (month < 1 || month > 12) {
+        setText(initialText);
+        return;
+      }
+      
+      // Validate day based on month
+      const daysInMonth = new Date(year, month, 0).getDate();
+      if (day < 1 || day > daysInMonth) {
+        setText(initialText);
+        return;
+      }
+    }
+    
     if (onSave && text !== initialText) {
       onSave(text)
     }
@@ -109,6 +136,27 @@ const EditableText: React.FC<EditableTextProps> = ({
     const newText = e.target.value
     if (maxLength && newText.length > maxLength) return
 
+    // Special handling for date fields
+    if (placeholder === "YYYY.MM.DD") {
+      // Only allow numbers and dots in the correct format
+      const datePattern = /^\d{0,4}(\.\d{0,2}){0,2}$/;
+      if (!datePattern.test(newText)) {
+        return;
+      }
+      
+      // If we're adding a digit after 4 digits and there's no dot, add a dot
+      if (text.length === 4 && newText.length === 5 && !newText.includes('.')) {
+        setText(text + '.');
+        return;
+      }
+      
+      // If we're adding a digit after 7 characters (YYYY.MM) and there's only one dot, add another dot
+      if (text.length === 7 && newText.length === 8 && text.split('.').length === 2 && newText.split('.').length === 2) {
+        setText(text + '.');
+        return;
+      }
+    }
+
     setText(newText)
     setCharCount(newText.length)
 
@@ -122,6 +170,49 @@ const EditableText: React.FC<EditableTextProps> = ({
     if (e.key === "Enter" && !e.shiftKey && !multiline) {
       e.preventDefault()
       handleSave()
+    }
+
+    // Special handling for date fields
+    if (placeholder === "YYYY.MM.DD") {
+      // Only allow numbers, dots, and control keys
+      const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', 'Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+      if (!allowedKeys.includes(e.key)) {
+        e.preventDefault();
+        return;
+      }
+
+      // Prevent more than 10 characters (YYYY.MM.DD)
+      if (text.length >= 10 && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+        e.preventDefault();
+        return;
+      }
+
+      // Auto-add dots after year and month
+      if (text.length === 4 && e.key !== '.' && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+        setText(text + '.');
+      } else if (text.length === 7 && e.key !== '.' && !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'].includes(e.key)) {
+        setText(text + '.');
+      }
+
+      // Validate month input (prevent values > 12)
+      if (text.length === 5 && e.key > '1') {
+        e.preventDefault();
+        return;
+      }
+      if (text.length === 6 && text[5] === '1' && e.key > '2') {
+        e.preventDefault();
+        return;
+      }
+
+      // Validate day input (prevent values > 31)
+      if (text.length === 8 && e.key > '3') {
+        e.preventDefault();
+        return;
+      }
+      if (text.length === 9 && text[8] === '3' && e.key > '1') {
+        e.preventDefault();
+        return;
+      }
     }
   }
 
@@ -284,4 +375,3 @@ const EditableText: React.FC<EditableTextProps> = ({
 }
 
 export default EditableText
-

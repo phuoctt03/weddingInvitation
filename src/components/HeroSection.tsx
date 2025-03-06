@@ -6,7 +6,7 @@ import { Cormorant_Garamond, Dancing_Script, Allura } from "next/font/google"
 import EditableText from "./EditableText"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Camera } from "lucide-react"
+import { Camera, AlertCircle } from "lucide-react"
 import ImageUploader from "./ImageUploader"
 
 const cormorant = Cormorant_Garamond({
@@ -56,6 +56,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [dayOfWeek, setDayOfWeek] = useState("THU")
   const [isLoaded, setIsLoaded] = useState(false)
   const [showImageUploader, setShowImageUploader] = useState(false)
+  const [dateError, setDateError] = useState<string | null>(null)
 
   useEffect(() => {
     // Set isLoaded to true after component mounts to trigger animations
@@ -72,51 +73,57 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     return days[date.getDay()]
   }
 
-  const handleDayChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value.trim()
+  const validateAndSetWeddingDate = (inputValue: string): boolean => {
+    setDateError(null)
 
-    // Kiểm tra định dạng YYYY.MM.DD (năm 4 số, tháng/ngày tối đa 2 số)
-    const datePattern = /^\d{4}\.\d{1,2}\.\d{1,2}$/
+    // Check format YYYY.MM.DD (exactly 4 digits for year, exactly 2 digits for month/day)
+    const datePattern = /^\d{4}\.\d{2}\.\d{2}$/
     if (!datePattern.test(inputValue)) {
-      setWeddingDate("2025.11.11")
-      return
+      setDateError("Date must be in YYYY.MM.DD format")
+      return false
     }
 
-    // Tách các phần tử năm, tháng, ngày
+    // Split into year, month, day components
     const [year, month, day] = inputValue.split(".").map(Number)
 
-    // Kiểm tra năm (chỉ được nhập 4 số)
-    if (year < 1000 || year > 9999) {
-      setWeddingDate("2025.11.11")
-      return
+    // Validate year (between current year and next 10 years)
+    const currentYear = new Date().getFullYear()
+    if (year < currentYear || year > currentYear + 10) {
+      setDateError(`Year must be between ${currentYear} and ${currentYear + 10}`)
+      return false
     }
 
-    // Kiểm tra tháng hợp lệ (1-12)
+    // Validate month (01-12)
     if (month < 1 || month > 12) {
-      setWeddingDate("2025.11.11")
-      return
+      setDateError("Month must be between 01 and 12")
+      return false
     }
 
-    // Kiểm tra ngày hợp lệ theo tháng
-    const daysInMonth = new Date(year, month, 0).getDate() // Lấy số ngày trong tháng
+    // Validate day based on month
+    const daysInMonth = new Date(year, month, 0).getDate()
     if (day < 1 || day > daysInMonth) {
-      setWeddingDate("2025.11.11")
-      return
+      setDateError(
+        `Day must be between 01 and ${daysInMonth.toString().padStart(2, "0")} for month ${month.toString().padStart(2, "0")}`,
+      )
+      return false
     }
 
-    // Kiểm tra ngày không được nhỏ hơn ngày hiện tại
+    // Create date objects for comparison
     const inputDate = new Date(year, month - 1, day)
     const today = new Date()
-    today.setHours(0, 0, 0, 0) // Đặt về 0 giờ để chỉ so sánh ngày
+    today.setHours(0, 0, 0, 0) // Set to beginning of day for comparison
 
-    if (inputDate < today) {
-      setWeddingDate("2025.11.11")
-      return
-    } // Nếu nhập ngày trong quá khứ thì không hợp lệ
+    // Prevent dates today or in the past
+    if (inputDate <= today) {
+      setDateError("Wedding date must be in the future")
+      return false
+    }
 
-    // Lấy thứ trong tuần và cập nhật state
+    // If all validations pass, update the date and day of week
+    setWeddingDate(inputValue)
     const dayOfWeek = getDayOfWeek(inputDate)
     setDayOfWeek(dayOfWeek)
+    return true
   }
 
   // Animation styles
@@ -438,24 +445,56 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 2 }}
           >
-            <p
-              style={{
-                fontFamily: dancingScript.style.fontFamily,
-                fontSize: "4em",
-                textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
-                ...animationStyles.slideUpDelay5,
-              }}
-              onChange={handleDayChange}
-            >
-              <EditableText
-                initialText={weddingDate}
-                onSave={setWeddingDate}
-                maxHeight1rem={true}
-                placeholder="YYYY.MM.DD"
-                multiline={false}
-              />{" "}
-              {dayOfWeek}
-            </p>
+            <div style={{ position: "relative" }}>
+              <p
+                style={{
+                  fontFamily: dancingScript.style.fontFamily,
+                  fontSize: "4em",
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
+                  ...animationStyles.slideUpDelay5,
+                }}
+              >
+                <EditableText
+                  initialText={weddingDate}
+                  onSave={(newDate) => {
+                    if (!validateAndSetWeddingDate(newDate)) {
+                      // If validation fails, return to the original date
+                      return weddingDate
+                    }
+                    return newDate
+                  }}
+                  maxHeight1rem={true}
+                  placeholder="YYYY.MM.DD"
+                  multiline={false}
+                />{" "}
+                {dayOfWeek}
+              </p>
+
+              {dateError && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "-2.5rem",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    backgroundColor: "rgba(220, 38, 38, 0.9)",
+                    color: "white",
+                    padding: "0.5rem 1rem",
+                    borderRadius: "0.25rem",
+                    fontSize: "1rem",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    maxWidth: "90%",
+                    zIndex: 20,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <AlertCircle size={16} />
+                  <span>{dateError}</span>
+                </div>
+              )}
+            </div>
           </motion.div>
         </div>
       </div>

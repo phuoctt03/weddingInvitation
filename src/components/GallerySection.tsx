@@ -6,7 +6,7 @@ import Image from "next/image"
 import { motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { Acme, Dancing_Script } from "next/font/google"
-import { Edit2, Trash2, Upload, X, ZoomIn, RotateCw, Filter, Sun, Check } from "lucide-react"
+import { Edit2, Trash2, Upload, X, Check, Plus, ImagePlus } from "lucide-react"
 
 const acme = Acme({ subsets: ["latin"], weight: ["400", "400"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
@@ -32,6 +32,50 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
   // Refs for file inputs
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
   const editorFileInputRef = useRef<HTMLInputElement | null>(null)
+
+  // Update the GallerySection component to add functionality for adding new images and simplify the editor
+
+  // First, add a new state for managing the "add image" functionality
+  const [showAddImageModal, setShowAddImageModal] = useState(false)
+  const [newImages, setNewImages] = useState<string[]>([])
+  const addImageInputRef = useRef<HTMLInputElement | null>(null)
+
+  // Add a function to handle adding multiple new images to the gallery
+  const handleAddImages = () => {
+    if (newImages.length > 0) {
+      setImages([...images, ...newImages])
+      setNewImages([])
+      setShowAddImageModal(false)
+    }
+  }
+
+  // Add a function to handle new image upload (multiple files)
+  const handleNewImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files)
+      const promises = fileArray.map((file) => {
+        return new Promise<string>((resolve) => {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            resolve(e.target?.result as string)
+          }
+          reader.readAsDataURL(file)
+        })
+      })
+
+      Promise.all(promises).then((results) => {
+        setNewImages([...newImages, ...results])
+      })
+    }
+  }
+
+  // Remove a new image from the selection
+  const removeNewImage = (index: number) => {
+    const updatedImages = [...newImages]
+    updatedImages.splice(index, 1)
+    setNewImages(updatedImages)
+  }
 
   // Handle responsive behavior
   useEffect(() => {
@@ -122,10 +166,10 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
     setRotation(0)
   }
 
-  // Delete image
+  // Delete image - completely remove it from the array
   const handleDeleteImage = (index: number) => {
     const newImages = [...images]
-    newImages[index] = "/icon/sakura.png"
+    newImages.splice(index, 1)
     setImages(newImages)
   }
 
@@ -287,6 +331,39 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
         ))}
       </div>
 
+      {/* Add this after the grid of images: */}
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "1.5rem" }}>
+        <button
+          onClick={() => setShowAddImageModal(true)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            padding: "0.75rem 1.5rem",
+            backgroundColor: "hsl(var(--wedding-primary))",
+            color: "white",
+            borderRadius: "0.5rem",
+            border: "none",
+            fontFamily: dancingScript.style.fontFamily,
+            fontSize: "1.25rem",
+            cursor: "pointer",
+            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+            transition: "transform 0.2s, box-shadow 0.2s",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = "translateY(-2px)"
+            e.currentTarget.style.boxShadow = "0 6px 8px rgba(0,0,0,0.15)"
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = "translateY(0)"
+            e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)"
+          }}
+        >
+          Add Photos
+        </button>
+      </div>
+
       {/* Image Editor Modal */}
       {editingIndex !== null && editingImage && (
         <div
@@ -309,7 +386,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
               backgroundColor: "white",
               borderRadius: "0.75rem",
               width: "90%",
-              maxWidth: "900px",
+              maxWidth: "600px",
               maxHeight: "90vh",
               overflow: "auto",
               boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
@@ -370,14 +447,13 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
               style={{
                 padding: "1.5rem",
                 display: "flex",
-                flexDirection: isMobile ? "column" : "row",
+                flexDirection: "column",
                 gap: "1.5rem",
               }}
             >
               {/* Image preview */}
               <div
                 style={{
-                  flex: "1 1 60%",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
@@ -406,7 +482,6 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     fill
                     style={{
                       objectFit: "contain",
-                      ...getFilterStyle(),
                     }}
                   />
                 </div>
@@ -448,35 +523,6 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     <Upload size={16} />
                     Upload New Photo
                   </button>
-
-                  <button
-                    onClick={resetFilters}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      padding: "0.75rem 1.25rem",
-                      backgroundColor: "hsl(var(--wedding-background-alt))",
-                      color: "hsl(var(--wedding-text))",
-                      border: "none",
-                      borderRadius: "0.5rem",
-                      fontSize: "0.875rem",
-                      fontWeight: "500",
-                      cursor: "pointer",
-                      boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
-                      transition: "all 0.2s",
-                    }}
-                    onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
-                    }}
-                    onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
-                    }}
-                  >
-                    <RotateCw size={16} />
-                    Reset All Filters
-                  </button>
                 </div>
 
                 <input
@@ -486,319 +532,6 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   accept="image/*"
                   style={{ display: "none" }}
                 />
-              </div>
-
-              {/* Controls */}
-              <div
-                style={{
-                  flex: "1 1 40%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "1.75rem",
-                  padding: "1.5rem",
-                  backgroundColor: "hsl(var(--wedding-background-alt))",
-                  borderRadius: "0.75rem",
-                  boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.05)",
-                }}
-              >
-                <h4
-                  style={{
-                    margin: "0 0 0.5rem 0",
-                    fontFamily: acme.style.fontFamily,
-                    fontSize: "1.125rem",
-                    color: "hsl(var(--wedding-primary-dark))",
-                  }}
-                >
-                  Adjust Photo Settings
-                </h4>
-
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "0.75rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <label
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-text))",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <Sun size={18} color="hsl(var(--wedding-primary-dark))" />
-                      Brightness
-                    </label>
-                    <span
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-primary-dark))",
-                        fontWeight: "600",
-                        backgroundColor: "hsl(var(--wedding-primary-light))",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "0.25rem",
-                      }}
-                    >
-                      {brightness}%
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      position: "relative",
-                      height: "0.5rem",
-                      backgroundColor: "hsl(var(--wedding-secondary-light))",
-                      borderRadius: "9999px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "100%",
-                        width: `${brightness}%`,
-                        backgroundColor: "hsl(var(--wedding-primary))",
-                        borderRadius: "9999px",
-                        transition: "width 0.2s",
-                      }}
-                    ></div>
-                  </div>
-                  <input
-                    type="range"
-                    min="50"
-                    max="150"
-                    value={brightness}
-                    onChange={(e) => setBrightness(Number.parseInt(e.target.value))}
-                    style={{
-                      width: "100%",
-                      margin: "0.5rem 0 0 0",
-                      accentColor: "#d4b396",
-                      cursor: "pointer",
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "0.75rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <label
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-text))",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <ZoomIn size={18} color="hsl(var(--wedding-primary-dark))" />
-                      Contrast
-                    </label>
-                    <span
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-primary-dark))",
-                        fontWeight: "600",
-                        backgroundColor: "hsl(var(--wedding-primary-light))",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "0.25rem",
-                      }}
-                    >
-                      {contrast}%
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      position: "relative",
-                      height: "0.5rem",
-                      backgroundColor: "hsl(var(--wedding-secondary-light))",
-                      borderRadius: "9999px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "100%",
-                        width: `${contrast}%`,
-                        backgroundColor: "hsl(var(--wedding-primary))",
-                        borderRadius: "9999px",
-                        transition: "width 0.2s",
-                      }}
-                    ></div>
-                  </div>
-                  <input
-                    type="range"
-                    min="50"
-                    max="150"
-                    value={contrast}
-                    onChange={(e) => setContrast(Number.parseInt(e.target.value))}
-                    style={{
-                      width: "100%",
-                      margin: "0.5rem 0 0 0",
-                      accentColor: "#d4b396",
-                      cursor: "pointer",
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "0.75rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <label
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-text))",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <Filter size={18} color="hsl(var(--wedding-primary-dark))" />
-                      Saturation
-                    </label>
-                    <span
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-primary-dark))",
-                        fontWeight: "600",
-                        backgroundColor: "hsl(var(--wedding-primary-light))",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "0.25rem",
-                      }}
-                    >
-                      {saturation}%
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      position: "relative",
-                      height: "0.5rem",
-                      backgroundColor: "hsl(var(--wedding-secondary-light))",
-                      borderRadius: "9999px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "100%",
-                        width: `${saturation / 2}%`,
-                        backgroundColor: "hsl(var(--wedding-primary))",
-                        borderRadius: "9999px",
-                        transition: "width 0.2s",
-                      }}
-                    ></div>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={saturation}
-                    onChange={(e) => setSaturation(Number.parseInt(e.target.value))}
-                    style={{
-                      width: "100%",
-                      margin: "0.5rem 0 0 0",
-                      accentColor: "#d4b396",
-                      cursor: "pointer",
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "0.75rem",
-                      alignItems: "center",
-                    }}
-                  >
-                    <label
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-text))",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        fontWeight: "500",
-                      }}
-                    >
-                      <RotateCw size={18} color="hsl(var(--wedding-primary-dark))" />
-                      Rotation
-                    </label>
-                    <span
-                      style={{
-                        fontSize: "0.875rem",
-                        color: "hsl(var(--wedding-primary-dark))",
-                        fontWeight: "600",
-                        backgroundColor: "hsl(var(--wedding-primary-light))",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "0.25rem",
-                      }}
-                    >
-                      {rotation}°
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      position: "relative",
-                      height: "0.5rem",
-                      backgroundColor: "hsl(var(--wedding-secondary-light))",
-                      borderRadius: "9999px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: "absolute",
-                        left: 0,
-                        top: 0,
-                        height: "100%",
-                        width: `${rotation / 3.6}%`,
-                        backgroundColor: "hsl(var(--wedding-primary))",
-                        borderRadius: "9999px",
-                        transition: "width 0.2s",
-                      }}
-                    ></div>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max="360"
-                    value={rotation}
-                    onChange={(e) => setRotation(Number.parseInt(e.target.value))}
-                    style={{
-                      width: "100%",
-                      margin: "0.5rem 0 0 0",
-                      accentColor: "#d4b396",
-                      cursor: "pointer",
-                    }}
-                  />
-                </div>
               </div>
             </div>
 
@@ -865,6 +598,262 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                 <Check size={16} />
                 Save Changes
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Multiple Images Modal */}
+      {showAddImageModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "1rem",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "0.75rem",
+              width: "90%",
+              maxWidth: "800px",
+              maxHeight: "90vh",
+              overflow: "auto",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "1.25rem",
+                borderBottom: "1px solid hsl(var(--wedding-secondary))",
+                backgroundColor: "hsl(var(--wedding-background-alt))",
+                borderRadius: "0.75rem 0.75rem 0 0",
+              }}
+            >
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: acme.style.fontFamily,
+                  fontSize: "1.5rem",
+                  color: "hsl(var(--wedding-primary-dark))",
+                }}
+              >
+                Add Multiple Photos
+              </h3>
+              <button
+                onClick={() => {
+                  setShowAddImageModal(false)
+                  setNewImages([])
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "hsl(var(--wedding-text-light))",
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div
+              style={{
+                padding: "1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "1.5rem",
+                }}
+              >
+                {/* Upload area */}
+                <div
+                  onClick={() => addImageInputRef.current?.click()}
+                  style={{
+                    width: "100%",
+                    height: "150px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "hsl(var(--wedding-background-alt))",
+                    borderRadius: "0.5rem",
+                    border: "2px dashed hsl(var(--wedding-secondary))",
+                    cursor: "pointer",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <ImagePlus size={40} color="hsl(var(--wedding-primary))" />
+                  <p
+                    style={{
+                      fontFamily: dancingScript.style.fontFamily,
+                      fontSize: "1.25rem",
+                      color: "hsl(var(--wedding-text))",
+                      marginTop: "0.5rem",
+                    }}
+                  >
+                    Click to upload multiple images
+                  </p>
+                  <p
+                    style={{
+                      fontSize: "0.875rem",
+                      color: "hsl(var(--wedding-text-light))",
+                    }}
+                  >
+                    You can select multiple files at once
+                  </p>
+                </div>
+
+                <input
+                  type="file"
+                  ref={addImageInputRef}
+                  onChange={handleNewImageUpload}
+                  accept="image/*"
+                  multiple
+                  style={{ display: "none" }}
+                />
+
+                {/* Preview of selected images */}
+                {newImages.length > 0 && (
+                  <div
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <h4
+                      style={{
+                        fontFamily: acme.style.fontFamily,
+                        fontSize: "1.125rem",
+                        color: "hsl(var(--wedding-primary-dark))",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      Selected Images ({newImages.length})
+                    </h4>
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+                        gap: "1rem",
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                        padding: "0.5rem",
+                        backgroundColor: "hsl(var(--wedding-background-alt))",
+                        borderRadius: "0.5rem",
+                      }}
+                    >
+                      {newImages.map((img, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            position: "relative",
+                            height: "120px",
+                            borderRadius: "0.375rem",
+                            overflow: "hidden",
+                            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          <Image
+                            src={img || "/placeholder.svg"}
+                            alt={`New image ${idx + 1}`}
+                            fill
+                            style={{ objectFit: "cover" }}
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              removeNewImage(idx)
+                            }}
+                            style={{
+                              position: "absolute",
+                              top: "0.25rem",
+                              right: "0.25rem",
+                              width: "1.5rem",
+                              height: "1.5rem",
+                              borderRadius: "50%",
+                              backgroundColor: "rgba(255, 255, 255, 0.8)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              border: "none",
+                              cursor: "pointer",
+                              padding: 0,
+                            }}
+                          >
+                            <X size={14} color="hsl(var(--wedding-error))" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "1rem",
+                    width: "100%",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <button
+                    onClick={() => {
+                      setShowAddImageModal(false)
+                      setNewImages([])
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: "0.75rem",
+                      backgroundColor: "hsl(var(--wedding-background-alt))",
+                      color: "hsl(var(--wedding-text))",
+                      borderRadius: "0.5rem",
+                      border: "none",
+                      fontFamily: dancingScript.style.fontFamily,
+                      fontSize: "1rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddImages}
+                    disabled={newImages.length === 0}
+                    style={{
+                      flex: 1,
+                      padding: "0.75rem",
+                      backgroundColor: newImages.length > 0 ? "hsl(var(--wedding-primary))" : "#e5e7eb",
+                      color: newImages.length > 0 ? "white" : "#9ca3af",
+                      borderRadius: "0.5rem",
+                      border: "none",
+                      fontFamily: dancingScript.style.fontFamily,
+                      fontSize: "1rem",
+                      cursor: newImages.length > 0 ? "pointer" : "not-allowed",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                    }}
+                  >
+                    <Plus size={16} />
+                    Add {newImages.length} Photos to Gallery
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

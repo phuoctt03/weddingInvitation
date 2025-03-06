@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { motion } from "framer-motion"
 import { Check } from "lucide-react"
+import EditableText from "./EditableText"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -208,7 +209,7 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
     <section style={formStyles.container}>
       <div style={formStyles.header}>
         <h2 style={formStyles.title}>RSVP</h2>
-        <p style={formStyles.subtitle}>Please respond by {deadline}</p>
+        <p style={formStyles.subtitle}><EditableText initialText={`Please respond by ${deadline}`} /></p>
       </div>
 
       <form onSubmit={handleSubmit} style={formStyles.form}>
@@ -273,7 +274,7 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
                 Number of Guests (including yourself)
               </label>
               <select id="guests" value={guests} onChange={(e) => setGuests(e.target.value)} style={formStyles.select}>
-                {[0, 1, 2, 3, 4, 5].map((num) => (
+                {[1, 2, 3, 4, 5].map((num) => (
                   <option key={num} value={num}>
                     {num}
                   </option>

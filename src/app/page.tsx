@@ -2,9 +2,9 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
-import { ChevronUp, ChevronDown, Plus, Settings, X } from "lucide-react"
+import { ChevronUp, ChevronDown, Plus, Settings, X, Upload } from "lucide-react"
 import HeroSection from "../components/HeroSection"
 import MessageSection from "../components/MessageSection"
 import DateSection from "@/components/DateSection"
@@ -25,6 +25,7 @@ import OurStorySection from "@/components/OurStorySection"
 import VirtualGuestbook from "@/components/VirtualGuestbook"
 import AnimatedEnvelope from "@/components/AnimatedEnvelope"
 import ThemeSelector from "@/components/ThemeSelector"
+import Image from "next/image"
 
 // Define section types
 type SectionType = {
@@ -66,8 +67,7 @@ export default function Home() {
   const [googleMap, setGoogleMap] = useState(
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.828030880383!2d139.7454329151579!3d35.69116618019432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188c5e412329bb%3A0x7db38e6732953dc!2sTokyo%20Station!5e0!3m2!1sen!2sjp!4v1645451968098!5m2!1sen!2sjp",
   )
-  const [locationAddress, setLocationAddress] = useState("123 Wedding Lane, Celebration City")
-
+  
   // Gallery Section
   const [galleryImages, setGalleryImages] = useState([
     "/flower1.png",
@@ -131,27 +131,22 @@ export default function Home() {
   // Weather Forecast
   const [weatherLocation, setWeatherLocation] = useState("Tokyo, Japan")
 
-  // Gift Registry Section
-  const [registries, setRegistries] = useState([
-    {
-      name: "Amazon Wedding Registry",
-      icon: "Gift",
-      url: "https://www.amazon.com/wedding",
-      description: "Find a variety of items we've selected for our new home.",
-    },
-    {
-      name: "Honeymoon Fund",
-      icon: "Heart",
-      url: "https://www.honeyfund.com",
-      description: "Help us create memories on our dream honeymoon.",
-    },
-    {
-      name: "Charity Donation",
-      icon: "CreditCard",
-      url: "https://www.charity.org",
-      description: "Make a donation to a cause that's close to our hearts.",
-    },
-  ])
+  // Add state variables for gift registry in the Home component
+  // Add these after the other state declarations
+  const [groomTitle, setGroomTitle] = useState("Wedding Gift for the Groom")
+  const [groomBank, setGroomBank] = useState("BIDV")
+  const [groomAccountNumber, setGroomAccountNumber] = useState("12345678")
+  const [groomAccountName, setGroomAccountName] = useState("DAISUKE")
+  const [groomBranch, setGroomBranch] = useState("HANOI")
+
+  const [brideTitle, setBrideTitle] = useState("Wedding Gift for the Bride")
+  const [brideBank, setBrideBank] = useState("BIDV")
+  const [brideAccountNumber, setBrideAccountNumber] = useState("12345678")
+  const [brideAccountName, setBrideAccountName] = useState("RENKA")
+  const [brideBranch, setBrideBranch] = useState("HANOI")
+
+  const qrBankGroom = "/icon/sakura.png" // Using an icon from your project
+  const qrBankBride = "/icon/sakura.png" // Using an icon from your project
 
   // Accommodation Section
   const [accommodations, setAccommodations] = useState([
@@ -343,7 +338,32 @@ export default function Home() {
         newComponent = <VirtualGuestbook adminPassword={adminPassword} isAdmin={isGlobalAdmin} />
         break
       case "gifts":
-        newComponent = <GiftRegistrySection registries={registries} />
+        newComponent = (
+          <GiftRegistrySection
+            groomTitle={groomTitle}
+            setGroomTitle={setGroomTitle}
+            groomBank={groomBank}
+            setGroomBank={setGroomBank}
+            groomAccountNumber={groomAccountNumber}
+            setGroomAccountNumber={setGroomAccountNumber}
+            groomAccountName={groomAccountName}
+            setGroomAccountName={setGroomAccountName}
+            groomBranch={groomBranch}
+            setGroomBranch={setGroomBranch}
+            brideTitle={brideTitle}
+            setBrideTitle={setBrideTitle}
+            brideBank={brideBank}
+            setBrideBank={setBrideBank}
+            brideAccountNumber={brideAccountNumber}
+            setBrideAccountNumber={setBrideAccountNumber}
+            brideAccountName={brideAccountName}
+            setBrideAccountName={setBrideAccountName}
+            brideBranch={brideBranch}
+            setBrideBranch={setBrideBranch}
+            qrBankGroom={qrBankGroom}
+            qrBankBride={qrBankBride}
+          />
+        )
         break
       case "accommodation":
         newComponent = <AccommodationSection accommodations={accommodations} transportation={transportation} />
@@ -354,7 +374,7 @@ export default function Home() {
             access={access}
             setAccess={setAccess}
             googleMap={googleMap}
-            locationAddress={locationAddress}
+            locationAddress={ceremonyAddress}
           />
         )
         break
@@ -418,6 +438,44 @@ export default function Home() {
     )
   }, [isGlobalAdmin, adminPassword])
 
+  // Add this state for floating elements images after other state declarations
+  const [floatingImages, setFloatingImages] = useState([
+    "/icon/petals.png",
+    "/icon/sakura.png",
+    "/icon/maple-leaf.png",
+    "/icon/heart.png",
+  ])
+  const [showFloatingImagesModal, setShowFloatingImagesModal] = useState(false)
+  const [newFloatingImage, setNewFloatingImage] = useState("")
+  const floatingImageInputRef = useRef<HTMLInputElement>(null)
+
+  // Add this function to handle adding a new floating image
+  const handleAddFloatingImage = () => {
+    if (newFloatingImage) {
+      setFloatingImages((prev) => [...prev, newFloatingImage])
+      setNewFloatingImage("")
+    }
+  }
+
+  // Add this function to handle removing a floating image
+  const handleRemoveFloatingImage = (index: number) => {
+    setFloatingImages((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  // Add this function to handle file upload for floating images
+  const handleFloatingImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setNewFloatingImage(event.target.result as string)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   const weddingMusic = "/music/bacbling.mp3"
 
   return (
@@ -458,9 +516,47 @@ export default function Home() {
               }
             }}
           />
-          <FloatingElements />
+          <FloatingElements
+            images={floatingImages}
+            count={Math.floor(typeof window !== "undefined" ? window.innerWidth / 100 : 12)}
+            minSize={20}
+            maxSize={50}
+            minSpeed={1}
+            maxSpeed={3}
+          />
           <MusicPlayer defaultMusic={weddingMusic} />
           <ThemeSelector />
+
+          <button
+            onClick={() => setShowFloatingImagesModal(true)}
+            style={{
+              position: "fixed",
+              bottom: "10rem", // Position it above the other buttons
+              right: "2rem",
+              zIndex: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "50%",
+              backgroundColor: "hsla(var(--wedding-primary), 0.8)",
+              color: "white",
+              border: "none",
+              boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = "hsla(var(--wedding-primary-dark), 0.9)"
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "hsla(var(--wedding-primary), 0.8)"
+            }}
+            title="Change floating elements"
+          >
+            <Image src="/icon/petals.png" width={20} height={20} alt="Floating elements" />
+          </button>
 
           {/* Section Manager Button */}
           <button
@@ -827,6 +923,291 @@ export default function Home() {
                     }}
                   >
                     Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {showFloatingImagesModal && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1000,
+                padding: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "0.75rem",
+                  width: "90%",
+                  maxWidth: "500px",
+                  maxHeight: "90vh",
+                  overflow: "auto",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "1.25rem",
+                    borderBottom: "1px solid hsl(var(--wedding-secondary))",
+                    backgroundColor: "hsl(var(--wedding-background))",
+                    borderRadius: "0.75rem 0.75rem 0 0",
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: "1.5rem",
+                      color: "hsl(var(--wedding-primary-dark))",
+                    }}
+                  >
+                    Floating Elements
+                  </h3>
+                  <button
+                    onClick={() => setShowFloatingImagesModal(false)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "hsl(var(--wedding-text-light))",
+                    }}
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div style={{ padding: "1.5rem" }}>
+                  <h4 style={{ margin: "0 0 1rem 0", color: "hsl(var(--wedding-text-dark))" }}>Current Elements</h4>
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))",
+                      gap: "1rem",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    {floatingImages.map((image, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          position: "relative",
+                          width: "80px",
+                          height: "80px",
+                          border: "1px solid hsl(var(--wedding-secondary))",
+                          borderRadius: "0.5rem",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Image
+                          src={image || "/placeholder.svg"}
+                          alt={`Floating element ${index + 1}`}
+                          fill
+                          style={{ objectFit: "contain", padding: "0.5rem" }}
+                        />
+                        <button
+                          onClick={() => handleRemoveFloatingImage(index)}
+                          style={{
+                            position: "absolute",
+                            top: "0.25rem",
+                            right: "0.25rem",
+                            width: "1.5rem",
+                            height: "1.5rem",
+                            borderRadius: "50%",
+                            backgroundColor: "rgba(255, 255, 255, 0.8)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "hsl(var(--wedding-error))",
+                          }}
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <h4 style={{ margin: "1.5rem 0 1rem 0", color: "hsl(var(--wedding-text-dark))" }}>Add New Element</h4>
+
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <button
+                        onClick={() => floatingImageInputRef.current?.click()}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: "0.5rem",
+                          padding: "0.75rem",
+                          backgroundColor: "hsl(var(--wedding-primary-light))",
+                          color: "hsl(var(--wedding-primary-dark))",
+                          borderRadius: "0.5rem",
+                          border: "none",
+                          cursor: "pointer",
+                          flex: 1,
+                        }}
+                      >
+                        <Upload size={16} />
+                        Upload Image
+                      </button>
+                      <input
+                        type="file"
+                        ref={floatingImageInputRef}
+                        onChange={handleFloatingImageUpload}
+                        accept="image/*"
+                        style={{ display: "none" }}
+                      />
+                    </div>
+
+                    {newFloatingImage && (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "1rem",
+                          marginBottom: "1rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            border: "1px solid hsl(var(--wedding-secondary))",
+                            borderRadius: "0.5rem",
+                            overflow: "hidden",
+                            position: "relative",
+                          }}
+                        >
+                          <Image
+                            src={newFloatingImage || "/placeholder.svg"}
+                            alt="New floating element"
+                            fill
+                            style={{ objectFit: "contain", padding: "0.5rem" }}
+                          />
+                        </div>
+                        <button
+                          onClick={handleAddFloatingImage}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "0.5rem",
+                            padding: "0.5rem 1rem",
+                            backgroundColor: "hsl(var(--wedding-primary))",
+                            color: "white",
+                            borderRadius: "0.5rem",
+                            border: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Plus size={16} />
+                          Add to Elements
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <h4 style={{ margin: "1.5rem 0 1rem 0", color: "hsl(var(--wedding-text-dark))" }}>Preset Elements</h4>
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
+                      gap: "1rem",
+                      marginBottom: "1.5rem",
+                    }}
+                  >
+                    {[
+                      { name: "Petals", image: "/icon/petals.png" },
+                      { name: "Sakura", image: "/icon/sakura.png" },
+                      { name: "Maple Leaf", image: "/icon/maple-leaf.png" },
+                      { name: "Heart", image: "/icon/heart.png" },
+                    ].map((preset, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setFloatingImages((prev) => [...prev, preset.image])}
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          gap: "0.5rem",
+                          padding: "0.75rem",
+                          backgroundColor: "hsl(var(--wedding-background-alt))",
+                          borderRadius: "0.5rem",
+                          border: "1px solid hsl(var(--wedding-secondary))",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <div
+                          style={{
+                            width: "40px",
+                            height: "40px",
+                            position: "relative",
+                          }}
+                        >
+                          <Image
+                            src={preset.image || "/placeholder.svg"}
+                            alt={preset.name}
+                            fill
+                            style={{ objectFit: "contain" }}
+                          />
+                        </div>
+                        <span
+                          style={{
+                            fontSize: "0.75rem",
+                            color: "hsl(var(--wedding-text))",
+                          }}
+                        >
+                          {preset.name}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    padding: "1.25rem",
+                    borderTop: "1px solid hsl(var(--wedding-secondary))",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    backgroundColor: "hsl(var(--wedding-background-alt))",
+                    borderRadius: "0 0 0.75rem 0.75rem",
+                  }}
+                >
+                  <button
+                    onClick={() => setShowFloatingImagesModal(false)}
+                    style={{
+                      padding: "0.75rem 1.5rem",
+                      backgroundColor: "hsl(var(--wedding-primary))",
+                      color: "white",
+                      borderRadius: "0.5rem",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Done
                   </button>
                 </div>
               </div>
