@@ -44,13 +44,27 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, setMessage, we
             gap: "1.5rem",
           }}
         >
-          <p style={{ fontSize: "1.125rem", color: "#4b5563", fontStyle: "italic" }}>
-            <EditableText initialText={message} onSave={setMessage}/>
-          </p>
+          <div style={{ fontSize: "1.125rem", color: "#4b5563", fontStyle: "italic" }}>
+            <EditableText
+              initialText={message}
+              onSave={setMessage}
+              width="100%"
+              textAlign="center"
+              placeholder="Enter your message to guests"
+              multiline={true}
+            />
+          </div>
           <div style={{ paddingTop: "1rem", borderTop: "1px solid #e0c9b1" }}>
             <p style={{ color: "#8b6e5c", fontWeight: 500 }}>Share your moments with us using</p>
             <p style={{ fontSize: "1.25rem", color: "#8b6e5c", fontWeight: 700 }}>
-              <EditableText initialText={weddingHashtag} onSave={setWeddingHashtag} />
+              <EditableText
+                initialText={weddingHashtag}
+                onSave={setWeddingHashtag}
+                width="100%"
+                textAlign="center"
+                placeholder="#YourWeddingHashtag"
+                multiline={false}
+              />
             </p>
           </div>
         </div>

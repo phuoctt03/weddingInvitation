@@ -1,9 +1,11 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useRef, useEffect } from "react"
-import { Cormorant_Garamond, Dancing_Script } from 'next/font/google'
+import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { motion, AnimatePresence } from "framer-motion"
-import { Save, Download, Trash2, Edit2, X } from 'lucide-react'
+import { Save, Download, Trash2, Edit2, X } from "lucide-react"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
@@ -17,14 +19,18 @@ interface GuestbookEntry {
   color: string
 }
 
-const VirtualGuestbook = () => {
+interface VirtualGuestbookProps {
+  adminPassword: string
+}
+
+const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([])
   const [name, setName] = useState("")
   const [message, setMessage] = useState("")
   const [isDrawing, setIsDrawing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adminMode, setAdminMode] = useState(false)
-  const [adminPassword, setAdminPassword] = useState("")
+  const [inputAdminPassword, setInputAdminPassword] = useState("")
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [showSignatureModal, setShowSignatureModal] = useState(false)
   const [signatureColor, setSignatureColor] = useState("#000000")
@@ -67,7 +73,7 @@ const VirtualGuestbook = () => {
       const canvas = canvasRef.current
       canvas.width = canvas.offsetWidth * 2
       canvas.height = canvas.offsetHeight * 2
-      
+
       const context = canvas.getContext("2d")
       if (context) {
         context.scale(2, 2) // Scale for high DPI displays
@@ -76,7 +82,7 @@ const VirtualGuestbook = () => {
         context.strokeStyle = signatureColor
         context.lineWidth = signatureLineWidth
         contextRef.current = context
-        
+
         // Clear canvas
         context.fillStyle = "white"
         context.fillRect(0, 0, canvas.width, canvas.height)
@@ -86,10 +92,10 @@ const VirtualGuestbook = () => {
 
   const startDrawing = ({ nativeEvent }: React.MouseEvent | React.TouchEvent) => {
     if (!contextRef.current) return
-    
+
     setIsDrawing(true)
     setShowClearButton(true)
-    
+
     const { offsetX, offsetY } = getCoordinates(nativeEvent)
     contextRef.current.beginPath()
     contextRef.current.moveTo(offsetX, offsetY)
@@ -97,7 +103,7 @@ const VirtualGuestbook = () => {
 
   const draw = ({ nativeEvent }: React.MouseEvent | React.TouchEvent) => {
     if (!contextRef.current || !isDrawing) return
-    
+
     const { offsetX, offsetY } = getCoordinates(nativeEvent)
     contextRef.current.lineTo(offsetX, offsetY)
     contextRef.current.stroke()
@@ -105,16 +111,16 @@ const VirtualGuestbook = () => {
 
   const stopDrawing = () => {
     if (!contextRef.current) return
-    
+
     contextRef.current.closePath()
     setIsDrawing(false)
   }
 
   const getCoordinates = (event: any) => {
     if (!canvasRef.current) return { offsetX: 0, offsetY: 0 }
-    
+
     let offsetX, offsetY
-    
+
     if (event.touches) {
       // Touch event
       const rect = canvasRef.current.getBoundingClientRect()
@@ -125,13 +131,13 @@ const VirtualGuestbook = () => {
       offsetX = event.offsetX
       offsetY = event.offsetY
     }
-    
+
     return { offsetX, offsetY }
   }
 
   const clearCanvas = () => {
     if (!contextRef.current || !canvasRef.current) return
-    
+
     contextRef.current.fillStyle = "white"
     contextRef.current.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height)
     setShowClearButton(false)
@@ -139,7 +145,7 @@ const VirtualGuestbook = () => {
 
   const saveSignature = () => {
     if (!canvasRef.current) return
-    
+
     const signatureDataUrl = canvasRef.current.toDataURL("image/png")
     handleSubmit(signatureDataUrl)
     setShowSignatureModal(false)
@@ -177,11 +183,11 @@ const VirtualGuestbook = () => {
   }
 
   const handleAdminLogin = () => {
-    // Simple password check - in a real app, use proper authentication
-    if (adminPassword === "wedding2025") {
+    // Use the adminPassword prop instead of hardcoded value
+    if (inputAdminPassword === adminPassword) {
       setAdminMode(true)
       setShowAdminLogin(false)
-      setAdminPassword("")
+      setInputAdminPassword("")
     } else {
       alert("Incorrect password")
     }
@@ -190,12 +196,12 @@ const VirtualGuestbook = () => {
   const downloadGuestbook = () => {
     // Create a text version of the guestbook
     let guestbookText = "VIRTUAL GUESTBOOK\n\n"
-    
+
     entries.forEach((entry, index) => {
       guestbookText += `${index + 1}. ${entry.name} (${entry.date})\n`
       guestbookText += `Message: ${entry.message}\n\n`
     })
-    
+
     // Create and download the file
     const element = document.createElement("a")
     const file = new Blob([guestbookText], { type: "text/plain" })
@@ -438,7 +444,7 @@ const VirtualGuestbook = () => {
                     <Trash2 size={16} />
                   </button>
                 )}
-                
+
                 <div
                   style={{
                     borderLeft: `3px solid ${entry.color}`,
@@ -468,7 +474,7 @@ const VirtualGuestbook = () => {
                     {entry.date}
                   </p>
                 </div>
-                
+
                 <p
                   style={{
                     fontFamily: cormorant.style.fontFamily,
@@ -480,7 +486,7 @@ const VirtualGuestbook = () => {
                 >
                   "{entry.message}"
                 </p>
-                
+
                 <div
                   style={{
                     borderTop: "1px solid #e5e7eb",
@@ -506,14 +512,14 @@ const VirtualGuestbook = () => {
                       justifyContent: "center",
                     }}
                   >
-                    <img 
-                      src={entry.signature || "/placeholder.svg"} 
-                      alt={`${entry.name}'s signature`} 
-                      style={{ 
+                    <img
+                      src={entry.signature || "/placeholder.svg"}
+                      alt={`${entry.name}'s signature`}
+                      style={{
                         maxHeight: "80px",
                         maxWidth: "100%",
-                        objectFit: "contain"
-                      }} 
+                        objectFit: "contain",
+                      }}
                     />
                   </div>
                 </div>
@@ -560,8 +566,8 @@ const VirtualGuestbook = () => {
             </h3>
             <input
               type="password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              value={inputAdminPassword}
+              onChange={(e) => setInputAdminPassword(e.target.value)}
               placeholder="Enter password"
               style={{
                 width: "100%",
@@ -630,7 +636,9 @@ const VirtualGuestbook = () => {
               maxWidth: "500px",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
+            <div
+              style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}
+            >
               <h3
                 style={{
                   fontFamily: cormorant.style.fontFamily,
@@ -653,7 +661,7 @@ const VirtualGuestbook = () => {
                 <X size={20} />
               </button>
             </div>
-            
+
             <p
               style={{
                 fontFamily: cormorant.style.fontFamily,
@@ -664,7 +672,7 @@ const VirtualGuestbook = () => {
             >
               Sign below using your mouse or finger
             </p>
-            
+
             <div style={{ marginBottom: "1rem" }}>
               <label
                 style={{
@@ -694,7 +702,7 @@ const VirtualGuestbook = () => {
                 ))}
               </div>
             </div>
-            
+
             <div style={{ marginBottom: "1rem" }}>
               <label
                 style={{
@@ -712,11 +720,11 @@ const VirtualGuestbook = () => {
                 min="1"
                 max="10"
                 value={signatureLineWidth}
-                onChange={(e) => setSignatureLineWidth(parseInt(e.target.value))}
+                onChange={(e) => setSignatureLineWidth(Number.parseInt(e.target.value))}
                 style={{ width: "100%" }}
               />
             </div>
-            
+
             <div
               style={{
                 border: "1px solid #e0c9b1",
@@ -742,7 +750,7 @@ const VirtualGuestbook = () => {
                   touchAction: "none", // Prevents scrolling while drawing on touch devices
                 }}
               />
-              
+
               {showClearButton && (
                 <button
                   onClick={clearCanvas}
@@ -763,7 +771,7 @@ const VirtualGuestbook = () => {
                 </button>
               )}
             </div>
-            
+
             <div style={{ display: "flex", gap: "1rem" }}>
               <button
                 onClick={saveSignature}
@@ -810,3 +818,4 @@ const VirtualGuestbook = () => {
 }
 
 export default VirtualGuestbook
+

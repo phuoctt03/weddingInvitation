@@ -18,13 +18,17 @@ interface Wish {
   color: string
 }
 
-const GuestWishes = () => {
+interface GuestWishesProps {
+  adminPassword: string
+}
+
+const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword }) => {
   const [wishes, setWishes] = useState<Wish[]>([])
   const [name, setName] = useState("")
   const [message, setMessage] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adminMode, setAdminMode] = useState(false)
-  const [adminPassword, setAdminPassword] = useState("")
+  const [inputAdminPassword, setInputAdminPassword] = useState("")
   const [showAdminLogin, setShowAdminLogin] = useState(false)
 
   const colors = [
@@ -91,11 +95,11 @@ const GuestWishes = () => {
   }
 
   const handleAdminLogin = () => {
-    // Simple password check - in a real app, use proper authentication
-    if (adminPassword === "wedding2025") {
+    // Use the adminPassword prop instead of hardcoded value
+    if (inputAdminPassword === adminPassword) {
       setAdminMode(true)
       setShowAdminLogin(false)
-      setAdminPassword("")
+      setInputAdminPassword("")
     } else {
       alert("Incorrect password")
     }
@@ -314,8 +318,8 @@ const GuestWishes = () => {
             </h3>
             <input
               type="password"
-              value={adminPassword}
-              onChange={(e) => setAdminPassword(e.target.value)}
+              value={inputAdminPassword}
+              onChange={(e) => setInputAdminPassword(e.target.value)}
               placeholder="Enter password"
               style={{
                 width: "100%",

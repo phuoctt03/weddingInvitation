@@ -1,31 +1,38 @@
+"use client"
+
+import type React from "react"
+
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
-import Image from "next/image"
 import { Gift, CreditCard, Heart } from "lucide-react"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
-const GiftRegistrySection = () => {
-  const registries = [
-    {
-      name: "Amazon Wedding Registry",
-      icon: <Gift style={{ width: "1.5rem", height: "1.5rem" }} />,
-      url: "https://www.amazon.com/wedding",
-      description: "Find a variety of items we've selected for our new home.",
-    },
-    {
-      name: "Honeymoon Fund",
-      icon: <Heart style={{ width: "1.5rem", height: "1.5rem" }} />,
-      url: "https://www.honeyfund.com",
-      description: "Help us create memories on our dream honeymoon.",
-    },
-    {
-      name: "Charity Donation",
-      icon: <CreditCard style={{ width: "1.5rem", height: "1.5rem" }} />,
-      url: "https://www.charity.org",
-      description: "Make a donation to a cause that's close to our hearts.",
-    },
-  ]
+interface Registry {
+  name: string
+  icon: string
+  url: string
+  description: string
+}
+
+interface GiftRegistrySectionProps {
+  registries: Registry[]
+}
+
+const GiftRegistrySection: React.FC<GiftRegistrySectionProps> = ({ registries }) => {
+  // Function to render the appropriate icon based on the icon name
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case "Gift":
+        return <Gift style={{ width: "1.5rem", height: "1.5rem" }} />
+      case "Heart":
+        return <Heart style={{ width: "1.5rem", height: "1.5rem" }} />
+      case "CreditCard":
+        return <CreditCard style={{ width: "1.5rem", height: "1.5rem" }} />
+      default:
+        return <Gift style={{ width: "1.5rem", height: "1.5rem" }} />
+    }
+  }
 
   return (
     <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
@@ -94,7 +101,7 @@ const GiftRegistrySection = () => {
                 marginBottom: "1rem",
               }}
             >
-              {registry.icon}
+              {renderIcon(registry.icon)}
             </div>
             <h3
               style={{

@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useRef } from "react"
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { Download, Share2, Copy } from "lucide-react"
@@ -8,7 +10,12 @@ import { QRCodeCanvas } from "qrcode.react"
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
-const QrCodeGenerator = () => {
+interface QrCodeGeneratorProps {
+  title: string
+  subtitle: string
+}
+
+const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) => {
   const [copied, setCopied] = useState(false)
   const qrRef = useRef<HTMLDivElement>(null)
 
@@ -63,7 +70,7 @@ const QrCodeGenerator = () => {
             marginBottom: "0.5rem",
           }}
         >
-          Share Our Invitation
+          {title}
         </h2>
         <p
           style={{
@@ -74,7 +81,7 @@ const QrCodeGenerator = () => {
             margin: "0 auto",
           }}
         >
-          Scan the QR code or share the link with your loved ones
+          {subtitle}
         </p>
       </div>
 

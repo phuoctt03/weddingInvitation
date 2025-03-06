@@ -10,9 +10,10 @@ interface AccessSectionProps {
   access: string
   setAccess: (text: string) => void
   googleMap: string
+  locationAddress: string
 }
 
-const AccessSection: React.FC<AccessSectionProps> = ({ access, setAccess, googleMap }) => {
+const AccessSection: React.FC<AccessSectionProps> = ({ access, setAccess, googleMap, locationAddress }) => {
   return (
     <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
       <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
@@ -76,7 +77,7 @@ const AccessSection: React.FC<AccessSectionProps> = ({ access, setAccess, google
               color: "#4b5563",
             }}
           >
-            123 Wedding Lane, Celebration City
+            {locationAddress}
           </p>
         </div>
       </div>

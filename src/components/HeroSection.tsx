@@ -1,11 +1,13 @@
 "use client"
 
 import type React from "react"
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Cormorant_Garamond, Dancing_Script, Allura } from "next/font/google"
 import EditableText from "./EditableText"
 import Image from "next/image"
 import { motion } from "framer-motion"
+import { Camera } from "lucide-react"
+import ImageUploader from "./ImageUploader"
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -53,27 +55,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const [backgroundImage, setBackgroundImage] = useState("/flower.png")
   const [dayOfWeek, setDayOfWeek] = useState("THU")
   const [isLoaded, setIsLoaded] = useState(false)
-
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [showImageUploader, setShowImageUploader] = useState(false)
 
   useEffect(() => {
     // Set isLoaded to true after component mounts to trigger animations
     setIsLoaded(true)
   }, [])
 
-  const handleImageClick = () => {
-    fileInputRef.current?.click()
-  }
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setBackgroundImage(e.target?.result as string)
-      }
-      reader.readAsDataURL(file)
-    }
+  const handleImageChange = (imageData: string) => {
+    setBackgroundImage(imageData)
+    setShowImageUploader(false)
   }
 
   const getDayOfWeek = (date: Date): string => {
@@ -209,22 +200,109 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           width={600}
           height={1000}
           priority
-          className="object-cover cursor-pointer"
+          className="object-cover"
           quality={100}
-          onClick={handleImageClick}
         />
+
+        {/* Edit background button */}
+        <button
+          onClick={() => setShowImageUploader(true)}
+          style={{
+            position: "absolute",
+            bottom: "2rem",
+            right: "2rem",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "0.5rem",
+            padding: "0.5rem 1rem",
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            color: "#333",
+            border: "none",
+            borderRadius: "4px",
+            fontSize: "14px",
+            cursor: "pointer",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          }}
+        >
+          <Camera size={16} />
+          Change Background
+        </button>
       </motion.div>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleImageChange}
-        style={{
-          display: "none",
-          position: "relative",
-          left: "calc(-10% + 11px)",
-        }}
-        accept="image/*"
-      />
+
+      {/* Image uploader modal */}
+      {showImageUploader && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.8)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            padding: "1rem",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              borderRadius: "0.5rem",
+              padding: "2rem",
+              width: "90%",
+              maxWidth: "500px",
+              maxHeight: "90vh",
+              overflow: "auto",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            <h3
+              style={{
+                margin: "0 0 1.5rem 0",
+                color: "#1f2937",
+                fontFamily: cormorant.style.fontFamily,
+                fontSize: "1.5rem",
+                textAlign: "center",
+              }}
+            >
+              Change Background Image
+            </h3>
+
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: "1.5rem" }}>
+              <ImageUploader
+                initialImage={backgroundImage}
+                onImageChange={handleImageChange}
+                aspectRatio={0.6}
+                height={300}
+                width={200}
+                placeholder="Upload background image"
+              />
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+              <button
+                onClick={() => setShowImageUploader(false)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  backgroundColor: "#f3f4f6",
+                  color: "#4b5563",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontSize: "14px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div
         style={{
           position: "absolute",
@@ -253,7 +331,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               ...animationStyles.slideUp,
             }}
           >
-            <EditableText initialText={invitationTitle} onSave={setInvitationTitle} />
+            <EditableText initialText={invitationTitle} onSave={setInvitationTitle} placeholder="Wedding Invitation" />
           </h1>
         </motion.div>
         <div
@@ -282,7 +360,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 ...animationStyles.slideUpDelay1,
               }}
             >
-              <EditableText initialText={invitationText} onSave={setInvitationText} />
+              <EditableText
+                initialText={invitationText}
+                onSave={setInvitationText}
+                placeholder="Enter your invitation message"
+              />
             </p>
           </motion.div>
           <motion.div
@@ -300,7 +382,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 ...animationStyles.slideUpDelay2,
               }}
             >
-              <EditableText initialText={groomName} onSave={setGroomName} maxHeight1rem={true} />
+              <EditableText
+                initialText={groomName}
+                onSave={setGroomName}
+                maxHeight1rem={true}
+                placeholder="Groom Name"
+                multiline={false}
+              />
             </h1>
           </motion.div>
           <motion.div
@@ -336,7 +424,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                 ...animationStyles.slideUpDelay4,
               }}
             >
-              <EditableText initialText={brideName} onSave={setBrideName} maxHeight1rem={true} />
+              <EditableText
+                initialText={brideName}
+                onSave={setBrideName}
+                maxHeight1rem={true}
+                placeholder="Bride Name"
+                multiline={false}
+              />
             </h1>
           </motion.div>
           <motion.div
@@ -353,23 +447,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               }}
               onChange={handleDayChange}
             >
-              <EditableText initialText={weddingDate} onSave={setWeddingDate} maxHeight1rem={true} /> {dayOfWeek}
+              <EditableText
+                initialText={weddingDate}
+                onSave={setWeddingDate}
+                maxHeight1rem={true}
+                placeholder="YYYY.MM.DD"
+                multiline={false}
+              />{" "}
+              {dayOfWeek}
             </p>
           </motion.div>
         </div>
       </div>
-      {/* <div
-        style={{
-          WebkitClipPath: "polygon(50% 100%, 100% 0, 100% 100%, 0 100%, 0 0)",
-          position: "absolute",
-          bottom: "calc(-8% + 1px)",
-          width: "601px",
-          left: "calc(50% - 300px)",
-          height: "100px",
-          backgroundColor: "white",
-          ...animationStyles.fadeIn,
-        }}
-      ></div> */}
 
       <div
         style={{

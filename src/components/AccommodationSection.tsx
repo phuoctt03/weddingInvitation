@@ -1,42 +1,47 @@
+"use client"
+
+import type React from "react"
+
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
-import Image from "next/image"
 import { Building, Car, Plane } from "lucide-react"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
-const AccommodationSection = () => {
-  const accommodations = [
-    {
-      name: "Luxury Hotel",
-      icon: <Building style={{ width: "1.5rem", height: "1.5rem" }} />,
-      description: "Special rates available for wedding guests. Mention 'Daisuke & Rinka Wedding' when booking.",
-      address: "456 Celebration Avenue, Festivity Town",
-      phone: "+1 (555) 123-4567",
-      website: "https://www.luxuryhotel.com",
-    },
-    {
-      name: "Cozy Inn",
-      icon: <Building style={{ width: "1.5rem", height: "1.5rem" }} />,
-      description: "Charming boutique hotel within walking distance to the venue.",
-      address: "789 Comfort Street, Festivity Town",
-      phone: "+1 (555) 987-6543",
-      website: "https://www.cozyinn.com",
-    },
-  ]
+interface Accommodation {
+  name: string
+  icon: string
+  description: string
+  address: string
+  phone: string
+  website: string
+}
 
-  const transportation = [
-    {
-      type: "Airport",
-      icon: <Plane style={{ width: "1.5rem", height: "1.5rem" }} />,
-      description: "The nearest airport is International Airport (INT), approximately 30 minutes from the venue.",
-    },
-    {
-      type: "Transportation",
-      icon: <Car style={{ width: "1.5rem", height: "1.5rem" }} />,
-      description: "We've arranged for a shuttle service between the recommended hotels and the venue.",
-    },
-  ]
+interface Transportation {
+  type: string
+  icon: string
+  description: string
+}
+
+interface AccommodationSectionProps {
+  accommodations: Accommodation[]
+  transportation: Transportation[]
+}
+
+const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodations, transportation }) => {
+  // Function to render the appropriate icon based on the icon name
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case "Building":
+        return <Building style={{ width: "1.5rem", height: "1.5rem" }} />
+      case "Car":
+        return <Car style={{ width: "1.5rem", height: "1.5rem" }} />
+      case "Plane":
+        return <Plane style={{ width: "1.5rem", height: "1.5rem" }} />
+      default:
+        return <Building style={{ width: "1.5rem", height: "1.5rem" }} />
+    }
+  }
 
   return (
     <section style={{ width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
@@ -109,7 +114,7 @@ const AccommodationSection = () => {
                     marginRight: "0.75rem",
                   }}
                 >
-                  {accommodation.icon}
+                  {renderIcon(accommodation.icon)}
                 </div>
                 <h4
                   style={{
@@ -204,7 +209,7 @@ const AccommodationSection = () => {
                     marginRight: "0.75rem",
                   }}
                 >
-                  {item.icon}
+                  {renderIcon(item.icon)}
                 </div>
                 <h4
                   style={{

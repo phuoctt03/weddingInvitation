@@ -1,9 +1,11 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
-import { Cormorant_Garamond, Dancing_Script } from 'next/font/google'
+import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { motion } from "framer-motion"
-import { Calendar, Heart, MapPin, Gift, Camera, Home, BellRingIcon as Ring } from 'lucide-react'
+import { Calendar, Heart, MapPin, Gift, Camera, Home, BellRingIcon as Ring } from "lucide-react"
 import Image from "next/image"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
@@ -15,60 +17,46 @@ interface StoryEvent {
   title: string
   date: string
   description: string
-  icon: React.ReactNode
+  icon: string
   image?: string
 }
 
-const OurStorySection = () => {
-  const [storyEvents, setStoryEvents] = useState<StoryEvent[]>([
-    {
-      id: "1",
-      title: "First Met",
-      date: "June 15, 2020",
-      description: "We met at a mutual friend's birthday party. I noticed her smile from across the room.",
-      icon: <Heart className="w-5 h-5" />,
-      image: "/icon/sakura.png",
-    },
-    {
-      id: "2",
-      title: "First Date",
-      date: "July 3, 2020",
-      description: "We went to a small café downtown. The conversation flowed so naturally we lost track of time.",
-      icon: <Coffee className="w-5 h-5" />,
-      image: "/icon/sakura.png",
-    },
-    {
-      id: "3",
-      title: "First Trip Together",
-      date: "December 24, 2020",
-      description: "We spent Christmas in the mountains. The snow made everything magical.",
-      icon: <MapPin className="w-5 h-5" />,
-      image: "/icon/sakura.png",
-    },
-    {
-      id: "4",
-      title: "Moving In Together",
-      date: "August 10, 2022",
-      description: "We found our first apartment together. It felt like home from day one.",
-      icon: <Home className="w-5 h-5" />,
-      image: "/icon/sakura.png",
-    },
-    {
-      id: "5",
-      title: "The Proposal",
-      date: "December 31, 2023",
-      description: "Under the New Year's Eve fireworks, I asked her to marry me. She said yes!",
-      icon: <Ring className="w-5 h-5" />,
-      image: "/icon/sakura.png",
-    },
-  ])
+interface OurStorySectionProps {
+  initialStoryEvents: StoryEvent[]
+}
 
+const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
+  const [storyEvents, setStoryEvents] = useState<StoryEvent[]>(initialStoryEvents)
   const [editingEvent, setEditingEvent] = useState<string | null>(null)
   const [newEvent, setNewEvent] = useState<Partial<StoryEvent>>({})
 
+  // Function to render the appropriate icon based on the icon name
+  const renderIcon = (iconName: string) => {
+    switch (iconName) {
+      case "Heart":
+        return <Heart className="w-5 h-5" />
+      case "Calendar":
+        return <Calendar className="w-5 h-5" />
+      case "MapPin":
+        return <MapPin className="w-5 h-5" />
+      case "Gift":
+        return <Gift className="w-5 h-5" />
+      case "Camera":
+        return <Camera className="w-5 h-5" />
+      case "Home":
+        return <Home className="w-5 h-5" />
+      case "Ring":
+        return <Ring className="w-5 h-5" />
+      case "Coffee":
+        return <Coffee className="w-5 h-5" />
+      default:
+        return <Calendar className="w-5 h-5" />
+    }
+  }
+
   const handleEditEvent = (id: string) => {
     setEditingEvent(id)
-    const event = storyEvents.find(e => e.id === id)
+    const event = storyEvents.find((e) => e.id === id)
     if (event) {
       setNewEvent(event)
     }
@@ -76,22 +64,20 @@ const OurStorySection = () => {
 
   const handleSaveEvent = () => {
     if (editingEvent) {
-      setStoryEvents(prev => 
-        prev.map(event => 
-          event.id === editingEvent 
-            ? { ...event, ...newEvent, id: event.id } as StoryEvent
-            : event
-        )
+      setStoryEvents((prev) =>
+        prev.map((event) =>
+          event.id === editingEvent ? ({ ...event, ...newEvent, id: event.id } as StoryEvent) : event,
+        ),
       )
     } else if (newEvent.title && newEvent.date && newEvent.description) {
       // Add new event
-      setStoryEvents(prev => [
-        ...prev, 
-        { 
-          ...newEvent, 
+      setStoryEvents((prev) => [
+        ...prev,
+        {
+          ...newEvent,
           id: Date.now().toString(),
-          icon: newEvent.icon || <Calendar className="w-5 h-5" />
-        } as StoryEvent
+          icon: newEvent.icon || "Calendar",
+        } as StoryEvent,
       ])
     }
     setEditingEvent(null)
@@ -99,11 +85,11 @@ const OurStorySection = () => {
   }
 
   const handleDeleteEvent = (id: string) => {
-    setStoryEvents(prev => prev.filter(event => event.id !== id))
+    setStoryEvents((prev) => prev.filter((event) => event.id !== id))
   }
 
   const handleAddEvent = () => {
-    setEditingEvent('new')
+    setEditingEvent("new")
     setNewEvent({})
   }
 
@@ -112,15 +98,11 @@ const OurStorySection = () => {
     if (file) {
       const reader = new FileReader()
       reader.onload = (event) => {
-        if (id === 'new') {
-          setNewEvent(prev => ({ ...prev, image: event.target?.result as string }))
+        if (id === "new") {
+          setNewEvent((prev) => ({ ...prev, image: event.target?.result as string }))
         } else {
-          setStoryEvents(prev => 
-            prev.map(event => 
-              event.id === id 
-                ? { ...event, image: event.target?.result as string }
-                : event
-            )
+          setStoryEvents((prev) =>
+            prev.map((event) => (event.id === id ? { ...event, image: event.target?.result as string } : event)),
           )
         }
       }
@@ -129,13 +111,14 @@ const OurStorySection = () => {
   }
 
   const iconOptions = [
-    { label: "Heart", icon: <Heart className="w-5 h-5" /> },
-    { label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
-    { label: "Location", icon: <MapPin className="w-5 h-5" /> },
-    { label: "Gift", icon: <Gift className="w-5 h-5" /> },
-    { label: "Camera", icon: <Camera className="w-5 h-5" /> },
-    { label: "Home", icon: <Home className="w-5 h-5" /> },
-    { label: "Ring", icon: <Ring className="w-5 h-5" /> },
+    { label: "Heart", icon: <Heart className="w-5 h-5" />, value: "Heart" },
+    { label: "Calendar", icon: <Calendar className="w-5 h-5" />, value: "Calendar" },
+    { label: "Location", icon: <MapPin className="w-5 h-5" />, value: "MapPin" },
+    { label: "Gift", icon: <Gift className="w-5 h-5" />, value: "Gift" },
+    { label: "Camera", icon: <Camera className="w-5 h-5" />, value: "Camera" },
+    { label: "Home", icon: <Home className="w-5 h-5" />, value: "Home" },
+    { label: "Ring", icon: <Ring className="w-5 h-5" />, value: "Ring" },
+    { label: "Coffee", icon: <Coffee className="w-5 h-5" />, value: "Coffee" },
   ]
 
   return (
@@ -221,7 +204,7 @@ const OurStorySection = () => {
                   border: "2px solid #e0c9b1",
                 }}
               >
-                {event.icon}
+                {renderIcon(event.icon)}
               </div>
 
               {/* Edit button */}
@@ -369,7 +352,7 @@ const OurStorySection = () => {
                 color: "#1f2937",
               }}
             >
-              {editingEvent === 'new' ? 'Add New Milestone' : 'Edit Milestone'}
+              {editingEvent === "new" ? "Add New Milestone" : "Edit Milestone"}
             </h3>
 
             <div style={{ marginBottom: "1rem" }}>
@@ -386,7 +369,7 @@ const OurStorySection = () => {
               </label>
               <input
                 type="text"
-                value={newEvent.title || ''}
+                value={newEvent.title || ""}
                 onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
                 style={{
                   width: "94%",
@@ -413,7 +396,7 @@ const OurStorySection = () => {
               </label>
               <input
                 type="text"
-                value={newEvent.date || ''}
+                value={newEvent.date || ""}
                 onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
                 style={{
                   width: "94%",
@@ -440,7 +423,7 @@ const OurStorySection = () => {
                 Description
               </label>
               <textarea
-                value={newEvent.description || ''}
+                value={newEvent.description || ""}
                 onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
                 style={{
                   width: "94%",
@@ -477,7 +460,7 @@ const OurStorySection = () => {
                 {iconOptions.map((option, idx) => (
                   <button
                     key={idx}
-                    onClick={() => setNewEvent({ ...newEvent, icon: option.icon })}
+                    onClick={() => setNewEvent({ ...newEvent, icon: option.value })}
                     style={{
                       width: "2.5rem",
                       height: "2.5rem",
@@ -492,7 +475,7 @@ const OurStorySection = () => {
                     }}
                     title={option.label}
                   >
-                    {option.icon}
+                    {renderIcon(option.value)}
                   </button>
                 ))}
               </div>
@@ -603,3 +586,4 @@ function Coffee(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+

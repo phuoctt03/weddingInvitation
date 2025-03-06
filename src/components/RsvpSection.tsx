@@ -18,7 +18,11 @@ const dancingScript = Dancing_Script({
   display: "swap",
 })
 
-const RsvpSection = () => {
+interface RsvpSectionProps {
+  deadline: string
+}
+
+const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [attending, setAttending] = useState<boolean | null>(null)
@@ -204,7 +208,7 @@ const RsvpSection = () => {
     <section style={formStyles.container}>
       <div style={formStyles.header}>
         <h2 style={formStyles.title}>RSVP</h2>
-        <p style={formStyles.subtitle}>Please respond by April 29, 2025</p>
+        <p style={formStyles.subtitle}>Please respond by {deadline}</p>
       </div>
 
       <form onSubmit={handleSubmit} style={formStyles.form}>
