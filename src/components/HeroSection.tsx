@@ -161,7 +161,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     <div
       style={{
         position: "relative",
-        height: "120vh",
+        height: "1200px",
         width: "100%",
         overflow: "hidden",
         textAlign: "center",
