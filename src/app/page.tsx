@@ -418,7 +418,7 @@ export default function Home() {
     )
   }, [isGlobalAdmin, adminPassword])
 
-  const weddingMusic = "/music/wedding-music.mp3"
+  const weddingMusic = "/music/bacbling.mp3"
 
   return (
     <main
