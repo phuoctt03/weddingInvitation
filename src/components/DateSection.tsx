@@ -50,12 +50,11 @@ const DateSection: React.FC<DateSectionProps> = ({
 }) => {
   return (
     <section style={{ textAlign: "center", width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
-      <Image src="/information.png" alt="information" width={320} height={200} style={{ margin: "0 auto 1rem auto" }} />
       <h2
         style={{
           fontFamily: dancingScript.style.fontFamily,
           fontSize: "2.25rem",
-          color: "#8b6e5c",
+          color: "hsl(var(--wedding-primary-dark))",
           marginBottom: "1.5rem",
         }}
       >
@@ -68,7 +67,7 @@ const DateSection: React.FC<DateSectionProps> = ({
           borderRadius: "0.5rem",
           padding: "2rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           marginBottom: "2rem",
         }}
       >
@@ -81,8 +80,8 @@ const DateSection: React.FC<DateSectionProps> = ({
               width: "2.5rem",
               height: "2.5rem",
               borderRadius: "9999px",
-              backgroundColor: "#f8e8d8",
-              color: "#8b6e5c",
+              backgroundColor: "hsl(var(--wedding-primary-light))",
+              color: "hsl(var(--wedding-primary-dark))",
               marginRight: "0.75rem",
             }}
           >
@@ -127,7 +126,7 @@ const DateSection: React.FC<DateSectionProps> = ({
           borderRadius: "0.5rem",
           padding: "2rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           marginBottom: "2rem",
         }}
       >
@@ -140,8 +139,8 @@ const DateSection: React.FC<DateSectionProps> = ({
               width: "2.5rem",
               height: "2.5rem",
               borderRadius: "9999px",
-              backgroundColor: "#f8e8d8",
-              color: "#8b6e5c",
+              backgroundColor: "hsl(var(--wedding-primary-light))",
+              color: "hsl(var(--wedding-primary-dark))",
               marginRight: "0.75rem",
             }}
           >
@@ -186,7 +185,7 @@ const DateSection: React.FC<DateSectionProps> = ({
           borderRadius: "0.5rem",
           padding: "1.5rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
         }}
       >
         <h3

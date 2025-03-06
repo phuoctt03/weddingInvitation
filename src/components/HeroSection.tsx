@@ -172,7 +172,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         style={{
           position: "absolute",
           inset: 0,
-          backgroundColor: "#f8e8d8",
+          backgroundColor: "hsl(var(--wedding-primary-light))",
           opacity: 0.2,
         }}
       ></div>
@@ -218,12 +218,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             gap: "0.5rem",
             padding: "0.5rem 1rem",
             backgroundColor: "rgba(255, 255, 255, 0.8)",
-            color: "#333",
+            color: "hsl(var(--wedding-primary-dark))",
             border: "none",
             borderRadius: "4px",
             fontSize: "14px",
             cursor: "pointer",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+            boxShadow: "0 2px 4px hsla(var(--wedding-text), 0.2)",
           }}
         >
           <Camera size={16} />

@@ -135,7 +135,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -145,7 +145,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.125rem",
-            color: "#4b5563",
+            color: "hsl(var(--wedding-text))",
             maxWidth: "32rem",
             margin: "0 auto",
           }}
@@ -163,7 +163,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
             transform: "translateX(-50%)",
             width: "2px",
             height: "100%",
-            backgroundColor: "#e0c9b1",
+            backgroundColor: "hsl(var(--wedding-secondary))",
             zIndex: 0,
           }}
         ></div>
@@ -190,7 +190,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 borderRadius: "0.5rem",
                 padding: "1.5rem",
                 boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
                 position: "relative",
               }}
             >
@@ -203,12 +203,12 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   width: "3rem",
                   height: "3rem",
                   borderRadius: "50%",
-                  backgroundColor: "#f8e8d8",
+                  backgroundColor: "hsl(var(--wedding-primary-light))",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#8b6e5c",
-                  border: "2px solid #e0c9b1",
+                  color: "hsl(var(--wedding-primary-dark))",
+                  border: "2px solid hsl(var(--wedding-secondary))",
                 }}
               >
                 {renderIcon(event.icon)}
@@ -224,7 +224,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   background: "none",
                   border: "none",
                   fontSize: "0.75rem",
-                  color: "#8b6e5c",
+                  color: "hsl(var(--wedding-primary))",
                   cursor: "pointer",
                 }}
               >
@@ -253,7 +253,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1.5rem",
                   fontWeight: 600,
-                  color: "#1f2937",
+                  color: "hsl(var(--wedding-text-dark))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -263,7 +263,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.875rem",
-                  color: "#8b6e5c",
+                  color: "hsl(var(--wedding-primary))",
                   fontWeight: 500,
                   marginBottom: "1rem",
                 }}
@@ -277,7 +277,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                     marginBottom: "1rem",
                     borderRadius: "0.375rem",
                     overflow: "hidden",
-                    border: "1px solid #e0c9b1",
+                    border: "1px solid hsl(var(--wedding-secondary))",
                     width: "150px",
                     height: "100px",
                   }}
@@ -300,7 +300,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                 }}
               >
                 {event.description}
@@ -316,7 +316,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
           onClick={handleAddEvent}
           style={{
             padding: "0.75rem 1.5rem",
-            backgroundColor: "#d4b396",
+            backgroundColor: "hsl(var(--wedding-primary))",
             color: "white",
             borderRadius: "0.375rem",
             border: "none",
@@ -327,10 +327,10 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
             transition: "background-color 0.3s",
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#c4a386"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "#d4b396"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
           }}
         >
           Add New Milestone
@@ -369,7 +369,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1.5rem",
                 marginBottom: "1.5rem",
-                color: "#1f2937",
+                color: "hsl(var(--wedding-text-dark))",
               }}
             >
               {editingEvent === "new" ? "Add New Milestone" : "Edit Milestone"}
@@ -381,7 +381,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -395,7 +395,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   width: "94%",
                   padding: "0.75rem",
                   borderRadius: "0.375rem",
-                  border: "1px solid #e0c9b1",
+                  border: "1px solid hsl(var(--wedding-secondary))",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
                 }}
@@ -408,7 +408,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -422,7 +422,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   width: "94%",
                   padding: "0.75rem",
                   borderRadius: "0.375rem",
-                  border: "1px solid #e0c9b1",
+                  border: "1px solid hsl(var(--wedding-secondary))",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
                 }}
@@ -436,7 +436,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -449,7 +449,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   width: "94%",
                   padding: "0.75rem",
                   borderRadius: "0.375rem",
-                  border: "1px solid #e0c9b1",
+                  border: "1px solid hsl(var(--wedding-secondary))",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
                   minHeight: "6rem",
@@ -464,7 +464,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -485,12 +485,15 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                       width: "2.5rem",
                       height: "2.5rem",
                       borderRadius: "50%",
-                      backgroundColor: newEvent.icon === option.value ? "#d4b396" : "#f8e8d8",
+                      backgroundColor:
+                        newEvent.icon === option.value
+                          ? "hsl(var(--wedding-primary))"
+                          : "hsl(var(--wedding-primary-light))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: newEvent.icon === option.value ? "white" : "#8b6e5c",
-                      border: `2px solid ${newEvent.icon === option.value ? "#c4a386" : "#e0c9b1"}`,
+                      color: newEvent.icon === option.value ? "white" : "hsl(var(--wedding-primary-dark))",
+                      border: `2px solid ${newEvent.icon === option.value ? "hsl(var(--wedding-primary-dark))" : "hsl(var(--wedding-secondary))"}`,
                       cursor: "pointer",
                       transition: "all 0.2s ease",
                     }}
@@ -508,7 +511,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -523,8 +526,8 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                     justifyContent: "center",
                     gap: "0.5rem",
                     padding: "0.75rem",
-                    backgroundColor: "#f3f4f6",
-                    color: "#4b5563",
+                    backgroundColor: "hsl(var(--wedding-background-alt))",
+                    color: "hsl(var(--wedding-text))",
                     borderRadius: "0.375rem",
                     border: "none",
                     fontFamily: cormorant.style.fontFamily,
@@ -549,7 +552,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                       marginTop: "0.5rem",
                       borderRadius: "0.375rem",
                       overflow: "hidden",
-                      border: "1px solid #e0c9b1",
+                      border: "1px solid hsl(var(--wedding-secondary))",
                       padding: "0.5rem",
                       width: "200px",
                     }}
@@ -562,8 +565,8 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                           alignItems: "center",
                           justifyContent: "center",
                           padding: "0.25rem",
-                          backgroundColor: "#fee2e2",
-                          color: "#ef4444",
+                          backgroundColor: "hsl(var(--wedding-error-light))",
+                          color: "hsl(var(--wedding-error))",
                           borderRadius: "0.25rem",
                           border: "none",
                           cursor: "pointer",
@@ -600,7 +603,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 style={{
                   flex: 1,
                   padding: "0.75rem",
-                  backgroundColor: "#d4b396",
+                  backgroundColor: "hsl(var(--wedding-primary))",
                   color: "white",
                   borderRadius: "0.375rem",
                   border: "none",
@@ -619,8 +622,8 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                 style={{
                   flex: 1,
                   padding: "0.75rem",
-                  backgroundColor: "#f3f4f6",
-                  color: "#4b5563",
+                  backgroundColor: "hsl(var(--wedding-background-alt))",
+                  color: "hsl(var(--wedding-text))",
                   borderRadius: "0.375rem",
                   border: "none",
                   fontFamily: cormorant.style.fontFamily,

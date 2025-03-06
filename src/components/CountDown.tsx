@@ -1,10 +1,10 @@
 "use client"
 
 import type React from "react"
-import { Acme } from 'next/font/google'
+import { Acme } from "next/font/google"
 import { useEffect, useState, useRef } from "react"
-import { Camera, Check, Upload, X } from 'lucide-react'
-import { Cormorant_Garamond } from 'next/font/google'
+import { Camera, Check, Upload, X } from "lucide-react"
+import { Cormorant_Garamond } from "next/font/google"
 
 const acme = Acme({ subsets: ["latin"], weight: "400" })
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: "500" })
@@ -81,7 +81,7 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
           alignItems: "center",
           gap: "0.5rem",
           padding: "0.75rem 1.25rem",
-          backgroundColor: "#d4b396",
+          backgroundColor: "hsl(var(--wedding-primary))",
           color: "white",
           borderRadius: "0.375rem",
           border: "none",
@@ -93,11 +93,12 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
           boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         }}
         onMouseOver={(e) => {
-          e.currentTarget.style.backgroundColor = "#c4a386"
+          e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
         }}
         onMouseOut={(e) => {
-          e.currentTarget.style.backgroundColor = "#d4b396"
+          e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
         }}
+        title="Change background image"
       >
         <Camera size={16} />
         Change Background Image
@@ -140,12 +141,14 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
                 borderBottom: "1px solid #e0c9b1",
               }}
             >
-              <h3 style={{
-                margin: 0,
-                fontFamily: cormorant.style.fontFamily,
-                fontSize: "1.5rem",
-                color: "#8b6e5c",
-              }}>
+              <h3
+                style={{
+                  margin: 0,
+                  fontFamily: cormorant.style.fontFamily,
+                  fontSize: "1.5rem",
+                  color: "#8b6e5c",
+                }}
+              >
                 Change Countdown Background
               </h3>
               <button
@@ -194,26 +197,32 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
                     color: "white",
                   }}
                 >
-                  <p style={{
-                    fontFamily: acme.style.fontFamily,
-                    fontSize: "1.5rem",
-                    margin: 0,
-                  }}>
+                  <p
+                    style={{
+                      fontFamily: acme.style.fontFamily,
+                      fontSize: "1.5rem",
+                      margin: 0,
+                    }}
+                  >
                     PREVIEW
                   </p>
-                  <p style={{
-                    fontFamily: acme.style.fontFamily,
-                    fontSize: "4rem",
-                    margin: "0.5rem 0",
-                    lineHeight: 1,
-                  }}>
+                  <p
+                    style={{
+                      fontFamily: acme.style.fontFamily,
+                      fontSize: "4rem",
+                      margin: "0.5rem 0",
+                      lineHeight: 1,
+                    }}
+                  >
                     {timeLeft.days}
                   </p>
-                  <p style={{
-                    fontFamily: acme.style.fontFamily,
-                    fontSize: "1.25rem",
-                    margin: 0,
-                  }}>
+                  <p
+                    style={{
+                      fontFamily: acme.style.fontFamily,
+                      fontSize: "1.25rem",
+                      margin: 0,
+                    }}
+                  >
                     DAYS
                   </p>
                 </div>
@@ -277,7 +286,7 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
                     justifyContent: "center",
                     gap: "0.5rem",
                     padding: "0.75rem",
-                    backgroundColor: "#d4b396",
+                    backgroundColor: "hsl(var(--wedding-primary))",
                     color: "white",
                     borderRadius: "0.375rem",
                     border: "none",
@@ -401,3 +410,4 @@ const CountdownSection: React.FC<CountdownSectionProps> = ({ targetDate, initial
 }
 
 export default CountdownSection
+

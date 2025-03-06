@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { ChevronUp, ChevronDown, Plus, Settings, X } from 'lucide-react'
+import { ChevronUp, ChevronDown, Plus, Settings, X } from "lucide-react"
 import HeroSection from "../components/HeroSection"
 import MessageSection from "../components/MessageSection"
 import DateSection from "@/components/DateSection"
@@ -24,6 +24,7 @@ import WeatherForecast from "@/components/WeatherForecast"
 import OurStorySection from "@/components/OurStorySection"
 import VirtualGuestbook from "@/components/VirtualGuestbook"
 import AnimatedEnvelope from "@/components/AnimatedEnvelope"
+import ThemeSelector from "@/components/ThemeSelector"
 
 // Define section types
 type SectionType = {
@@ -41,7 +42,7 @@ export default function Home() {
   )
   const [groomName, setGroomName] = useState("DAISUKE")
   const [brideName, setBrideName] = useState("RINKA")
-  const [weddingDate, setWeddingDate] = useState("2025.5.29")
+  const [weddingDate, setWeddingDate] = useState("2025.3.10")
 
   // Message Section
   const [message, setMessage] = useState(
@@ -185,9 +186,6 @@ export default function Home() {
     },
   ])
 
-  // Music Player
-  const [music, setMusic] = useState("/music/wedding-music.mp3")
-
   // Admin passwords
   const [adminPassword, setAdminPassword] = useState("wedding2025")
 
@@ -224,7 +222,7 @@ export default function Home() {
   // Animation config
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: { opacity: 1, y: 0, transition: { duration: 1.3, ease: "easeOut" } },
   }
 
   // Handle envelope completion
@@ -397,15 +395,15 @@ export default function Home() {
   // Add this after the other useEffect hooks:
   useEffect(() => {
     // Update any components that depend on admin status when isGlobalAdmin changes
-    setActiveSections(prev =>
-      prev.map(section => {
+    setActiveSections((prev) =>
+      prev.map((section) => {
         if (section.id === "wishes") {
           return {
             ...section,
             component: <GuestWishes adminPassword={adminPassword} isAdmin={isGlobalAdmin} />,
             label: section.label,
             isRemovable: section.isRemovable,
-          };
+          }
         }
         if (section.id === "guestbook") {
           return {
@@ -413,15 +411,19 @@ export default function Home() {
             component: <VirtualGuestbook adminPassword={adminPassword} isAdmin={isGlobalAdmin} />,
             label: section.label,
             isRemovable: section.isRemovable,
-          };
+          }
         }
-        return section;
-      })
-    );
-  }, [isGlobalAdmin, adminPassword]);
+        return section
+      }),
+    )
+  }, [isGlobalAdmin, adminPassword])
+
+  const weddingMusic = "/music/wedding-music.mp3"
 
   return (
-    <main style={{ position: "relative", width: "100%", overflow: "hidden", background: "#fffaf5" }}>
+    <main
+      style={{ position: "relative", width: "100%", overflow: "hidden", background: "hsl(var(--wedding-background))" }}
+    >
       {/* Animated Envelope */}
       {showEnvelope && (
         <AnimatedEnvelope
@@ -457,7 +459,8 @@ export default function Home() {
             }}
           />
           <FloatingElements />
-          <MusicPlayer defaultMusic={music} />
+          <MusicPlayer defaultMusic={weddingMusic} />
+          <ThemeSelector />
 
           {/* Section Manager Button */}
           <button
@@ -473,7 +476,7 @@ export default function Home() {
               width: "3rem",
               height: "3rem",
               borderRadius: "50%",
-              backgroundColor: "#d4b396",
+              backgroundColor: "hsl(var(--wedding-primary))",
               color: "white",
               border: "none",
               boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
@@ -517,8 +520,8 @@ export default function Home() {
                     justifyContent: "space-between",
                     alignItems: "center",
                     padding: "1.25rem",
-                    borderBottom: "1px solid #e0c9b1",
-                    backgroundColor: "#f8f9fa",
+                    borderBottom: "1px solid hsl(var(--wedding-secondary))",
+                    backgroundColor: "hsl(var(--wedding-background))",
                     borderRadius: "0.75rem 0.75rem 0 0",
                   }}
                 >
@@ -526,7 +529,7 @@ export default function Home() {
                     style={{
                       margin: 0,
                       fontSize: "1.5rem",
-                      color: "#8b6e5c",
+                      color: "hsl(var(--wedding-primary-dark))",
                     }}
                   >
                     Manage Sections
@@ -537,7 +540,7 @@ export default function Home() {
                       background: "none",
                       border: "none",
                       cursor: "pointer",
-                      color: "#6b7280",
+                      color: "hsl(var(--wedding-text-light))",
                     }}
                   >
                     <X size={24} />
@@ -545,7 +548,7 @@ export default function Home() {
                 </div>
 
                 <div style={{ padding: "1.5rem" }}>
-                  <h4 style={{ margin: "0 0 1rem 0", color: "#1f2937" }}>Active Sections</h4>
+                  <h4 style={{ margin: "0 0 1rem 0", color: "hsl(var(--wedding-text-dark))" }}>Active Sections</h4>
                   <div
                     style={{
                       display: "flex",
@@ -559,12 +562,12 @@ export default function Home() {
                         display: "flex",
                         alignItems: "center",
                         padding: "0.75rem",
-                        backgroundColor: "#f3f4f6",
+                        backgroundColor: "hsl(var(--wedding-background-alt))",
                         borderRadius: "0.5rem",
-                        border: "1px solid #e5e7eb",
+                        border: "1px solid hsl(var(--wedding-secondary))",
                       }}
                     >
-                      <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>Header (Fixed)</div>
+                      <div style={{ flex: 1, fontWeight: 500, color: "hsl(var(--wedding-text))" }}>Header (Fixed)</div>
                     </div>
 
                     {activeSections.map((section, index) => (
@@ -574,12 +577,14 @@ export default function Home() {
                           display: "flex",
                           alignItems: "center",
                           padding: "0.75rem",
-                          backgroundColor: "#f3f4f6",
+                          backgroundColor: "hsl(var(--wedding-background-alt))",
                           borderRadius: "0.5rem",
-                          border: "1px solid #e5e7eb",
+                          border: "1px solid hsl(var(--wedding-secondary))",
                         }}
                       >
-                        <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>{section.label}</div>
+                        <div style={{ flex: 1, fontWeight: 500, color: "hsl(var(--wedding-text))" }}>
+                          {section.label}
+                        </div>
                         <div style={{ display: "flex", gap: "0.5rem" }}>
                           <button
                             onClick={() => moveSectionUp(index)}
@@ -591,8 +596,12 @@ export default function Home() {
                               width: "2rem",
                               height: "2rem",
                               borderRadius: "0.25rem",
-                              backgroundColor: index === 0 ? "#e5e7eb" : "#f8e8d8",
-                              color: index === 0 ? "#9ca3af" : "#8b6e5c",
+                              backgroundColor:
+                                index === 0
+                                  ? "hsl(var(--wedding-background-alt))"
+                                  : "hsl(var(--wedding-primary-light))",
+                              color:
+                                index === 0 ? "hsl(var(--wedding-text-light))" : "hsl(var(--wedding-primary-dark))",
                               border: "none",
                               cursor: index === 0 ? "not-allowed" : "pointer",
                             }}
@@ -609,8 +618,14 @@ export default function Home() {
                               width: "2rem",
                               height: "2rem",
                               borderRadius: "0.25rem",
-                              backgroundColor: index === activeSections.length - 1 ? "#e5e7eb" : "#f8e8d8",
-                              color: index === activeSections.length - 1 ? "#9ca3af" : "#8b6e5c",
+                              backgroundColor:
+                                index === activeSections.length - 1
+                                  ? "hsl(var(--wedding-background-alt))"
+                                  : "hsl(var(--wedding-primary-light))",
+                              color:
+                                index === activeSections.length - 1
+                                  ? "hsl(var(--wedding-text-light))"
+                                  : "hsl(var(--wedding-primary-dark))",
                               border: "none",
                               cursor: index === activeSections.length - 1 ? "not-allowed" : "pointer",
                             }}
@@ -627,8 +642,8 @@ export default function Home() {
                                 width: "2rem",
                                 height: "2rem",
                                 borderRadius: "0.25rem",
-                                backgroundColor: "#fee2e2",
-                                color: "#ef4444",
+                                backgroundColor: "hsl(var(--wedding-error-light))",
+                                color: "hsl(var(--wedding-error))",
                                 border: "none",
                                 cursor: "pointer",
                               }}
@@ -645,18 +660,18 @@ export default function Home() {
                         display: "flex",
                         alignItems: "center",
                         padding: "0.75rem",
-                        backgroundColor: "#f3f4f6",
+                        backgroundColor: "hsl(var(--wedding-background-alt))",
                         borderRadius: "0.5rem",
-                        border: "1px solid #e5e7eb",
+                        border: "1px solid hsl(var(--wedding-secondary))",
                       }}
                     >
-                      <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>Footer (Fixed)</div>
+                      <div style={{ flex: 1, fontWeight: 500, color: "hsl(var(--wedding-text))" }}>Footer (Fixed)</div>
                     </div>
                   </div>
 
                   {availableSections.length > 0 && (
                     <>
-                      <h4 style={{ margin: "0 0 1rem 0", color: "#1f2937" }}>Add Sections</h4>
+                      <h4 style={{ margin: "0 0 1rem 0", color: "hsl(var(--wedding-text-dark))" }}>Add Sections</h4>
                       <div
                         style={{
                           display: "flex",
@@ -673,18 +688,20 @@ export default function Home() {
                               alignItems: "center",
                               gap: "0.5rem",
                               padding: "0.5rem 1rem",
-                              backgroundColor: "#f8e8d8",
-                              color: "#8b6e5c",
+                              backgroundColor: "hsl(var(--wedding-primary-light))",
+                              color: "hsl(var(--wedding-primary-dark))",
                               borderRadius: "0.5rem",
                               border: "none",
                               cursor: "pointer",
                               transition: "background-color 0.2s",
                             }}
                             onMouseOver={(e) => {
-                              e.currentTarget.style.backgroundColor = "#e0c9b1"
+                              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
+                              e.currentTarget.style.color = "white"
                             }}
                             onMouseOut={(e) => {
-                              e.currentTarget.style.backgroundColor = "#f8e8d8"
+                              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))"
+                              e.currentTarget.style.color = "hsl(var(--wedding-primary-dark))"
                             }}
                           >
                             <Plus size={16} />
@@ -699,10 +716,10 @@ export default function Home() {
                 <div
                   style={{
                     padding: "1.25rem",
-                    borderTop: "1px solid #e0c9b1",
+                    borderTop: "1px solid hsl(var(--wedding-secondary))",
                     display: "flex",
                     justifyContent: "flex-end",
-                    backgroundColor: "#f8f9fa",
+                    backgroundColor: "hsl(var(--wedding-background-alt))",
                     borderRadius: "0 0 0.75rem 0.75rem",
                   }}
                 >
@@ -710,7 +727,7 @@ export default function Home() {
                     onClick={() => setShowSectionManager(false)}
                     style={{
                       padding: "0.75rem 1.5rem",
-                      backgroundColor: "#d4b396",
+                      backgroundColor: "hsl(var(--wedding-primary))",
                       color: "white",
                       borderRadius: "0.5rem",
                       border: "none",
@@ -718,10 +735,10 @@ export default function Home() {
                       transition: "background-color 0.2s",
                     }}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "#c4a386"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
                     }}
                     onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "#d4b396"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
                     }}
                   >
                     Done
@@ -761,7 +778,7 @@ export default function Home() {
                     fontFamily: "sans-serif",
                     fontSize: "1.5rem",
                     marginBottom: "1rem",
-                    color: "#1f2937",
+                    color: "hsl(var(--wedding-text))",
                   }}
                 >
                   Admin Login
@@ -775,7 +792,7 @@ export default function Home() {
                     width: "100%",
                     padding: "0.75rem",
                     borderRadius: "0.375rem",
-                    border: "1px solid #e0c9b1",
+                    border: "1px solid hsl(var(--wedding-secondary))",
                     marginBottom: "1rem",
                   }}
                 />
@@ -785,7 +802,7 @@ export default function Home() {
                     style={{
                       flex: 1,
                       padding: "0.75rem",
-                      backgroundColor: "#d4b396",
+                      backgroundColor: "hsl(var(--wedding-primary))",
                       color: "white",
                       borderRadius: "0.375rem",
                       border: "none",
@@ -851,7 +868,7 @@ export default function Home() {
                 variants={fadeInUp}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.2 }}
                 id={section.id}
               >
                 {index > 0 && <Divider />}
@@ -864,11 +881,11 @@ export default function Home() {
           <footer
             id="footer"
             style={{
-              background: "#f8e8d8",
+              background: "hsl(var(--wedding-primary-light))",
               padding: "2rem 0",
               marginTop: "5rem",
               textAlign: "center",
-              color: "#5d4037",
+              color: "hsl(var(--wedding-primary-dark))",
             }}
           >
             <p style={{ fontSize: "0.875rem" }}>
@@ -881,3 +898,4 @@ export default function Home() {
     </main>
   )
 }
+

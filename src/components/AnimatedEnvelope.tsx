@@ -78,7 +78,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#fffaf5",
+        backgroundColor: "hsl(var(--wedding-background))",
         zIndex: 1000,
       }}
     >
@@ -102,7 +102,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
             position: "absolute",
             width: "100%",
             height: "100%",
-            backgroundColor: "#f8e8d8",
+            backgroundColor: "hsl(var(--wedding-primary-light))",
             borderRadius: "8px",
             boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
             overflow: "hidden",
@@ -110,7 +110,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
             alignItems: "center",
             justifyContent: "center",
             cursor: hasInteracted ? "default" : "pointer",
-            border: "1px solid #e0c9b1",
+            border: "1px solid hsl(var(--wedding-secondary))",
           }}
           onClick={handleOpenEnvelope}
         >
@@ -149,7 +149,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
               width: "60px",
               height: "60px",
               borderRadius: "50%",
-              backgroundColor: "#d4b396",
+              backgroundColor: "hsl(var(--wedding-primary))",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -176,7 +176,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                 style={{
                   fontFamily: dancingScript.style.fontFamily,
                   fontSize: "1.5rem",
-                  color: "#8b6e5c",
+                  color: "hsl(var(--wedding-primary-dark))",
                   margin: 0,
                 }}
               >
@@ -186,7 +186,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.9rem",
-                  color: "#8b6e5c",
+                  color: "hsl(var(--wedding-primary-dark))",
                   marginTop: "0.5rem",
                 }}
               >
@@ -197,7 +197,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                 transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
                 style={{ marginTop: "0.5rem" }}
               >
-                <ChevronDown size={20} color="#8b6e5c" />
+                <ChevronDown size={20} color="hsl(var(--wedding-primary-dark))" />
               </motion.div>
             </motion.div>
           )}
@@ -215,12 +215,12 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                 position: "absolute",
                 width: "100%",
                 height: "50%",
-                backgroundColor: "#f0dfd0",
+                backgroundColor: "hsl(var(--wedding-primary-light))",
                 borderRadius: "8px 8px 0 0",
                 transformOrigin: "top",
                 zIndex: 10,
                 boxShadow: "0 -2px 5px rgba(0, 0, 0, 0.05)",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
                 borderBottom: "none",
               }}
             >
@@ -242,7 +242,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                     left: 0,
                     width: "100%",
                     height: "100%",
-                    background: "linear-gradient(to bottom, transparent 60%, #e0c9b1)",
+                    background: "linear-gradient(to bottom, transparent 60%, hsl(var(--wedding-secondary)))",
                     opacity: 0.3,
                   }}
                 />
@@ -286,7 +286,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                   style={{
                     fontFamily: dancingScript.style.fontFamily,
                     fontSize: "2rem",
-                    color: "#8b6e5c",
+                    color: "hsl(var(--wedding-primary-dark))",
                     margin: "0 0 1rem 0",
                   }}
                 >
@@ -332,7 +332,7 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
                     onClick={handleSkip}
                     style={{
                       padding: "0.75rem 2rem",
-                      backgroundColor: "#d4b396",
+                      backgroundColor: "hsl(var(--wedding-primary))",
                       color: "white",
                       border: "none",
                       borderRadius: "4px",
@@ -359,8 +359,8 @@ export default function AnimatedEnvelope({ groomName, brideName, weddingDate, on
             bottom: "2rem",
             padding: "0.5rem 1.5rem",
             backgroundColor: "transparent",
-            color: "#8b6e5c",
-            border: "1px solid #d4b396",
+            color: "hsl(var(--wedding-primary-dark))",
+            border: "1px solid hsl(var(--wedding-primary))",
             borderRadius: "4px",
             fontFamily: cormorant.style.fontFamily,
             fontSize: "0.9rem",

@@ -12,14 +12,14 @@ const Divider = () => {
       <div
         style={{
           height: "1px",
-          background: "#e0c9b1",
+          background: "hsl(var(--wedding-secondary))",
           width: "25%",
         }}
       ></div>
       <div
         style={{
           height: "1px",
-          background: "#e0c9b1",
+          background: "hsl(var(--wedding-secondary))",
           width: "25%",
         }}
       ></div>

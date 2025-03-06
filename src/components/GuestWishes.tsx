@@ -109,7 +109,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -119,7 +119,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.125rem",
-            color: "#4b5563",
+            color: "hsl(var(--wedding-text))",
             maxWidth: "32rem",
             margin: "0 auto",
           }}
@@ -134,7 +134,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
           borderRadius: "0.5rem",
           padding: "1.5rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           marginBottom: "2rem",
         }}
       >
@@ -146,7 +146,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                 display: "block",
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1rem",
-                color: "#4b5563",
+                color: "hsl(var(--wedding-text))",
                 marginBottom: "0.5rem",
               }}
             >
@@ -162,7 +162,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                 width: "91%",
                 padding: "0.75rem",
                 borderRadius: "0.375rem",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1rem",
               }}
@@ -177,7 +177,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                 display: "block",
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1rem",
-                color: "#4b5563",
+                color: "hsl(var(--wedding-text))",
                 marginBottom: "0.5rem",
               }}
             >
@@ -192,7 +192,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                 width: "91%",
                 padding: "0.75rem",
                 borderRadius: "0.375rem",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1rem",
                 minHeight: "6rem",
@@ -211,7 +211,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
               justifyContent: "center",
               width: "100%",
               padding: "0.75rem",
-              backgroundColor: "#d4b396",
+              backgroundColor: "hsl(var(--wedding-primary))",
               color: "white",
               borderRadius: "0.375rem",
               border: "none",
@@ -223,10 +223,10 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
               transition: "background-color 0.3s",
             }}
             onMouseOver={(e) => {
-              if (!isSubmitting) e.currentTarget.style.backgroundColor = "#c4a386"
+              if (!isSubmitting) e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
             }}
             onMouseOut={(e) => {
-              if (!isSubmitting) e.currentTarget.style.backgroundColor = "#d4b396"
+              if (!isSubmitting) e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
             }}
           >
             <Send size={16} style={{ marginRight: "0.5rem" }} />
@@ -240,7 +240,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.25rem",
-            color: "#1f2937",
+            color: "hsl(var(--wedding-text-dark))",
             marginBottom: "1rem",
             textAlign: "center",
           }}
@@ -270,12 +270,12 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                       position: "absolute",
                       top: "0.5rem",
                       right: "0.5rem",
-                      background: "#fee2e2",
+                      background: "hsl(var(--wedding-error-light))",
                       border: "none",
                       borderRadius: "50%",
                       padding: "0.5rem",
                       cursor: "pointer",
-                      color: "#ef4444",
+                      color: "hsl(var(--wedding-error))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -294,13 +294,13 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                     marginBottom: "0.5rem",
                   }}
                 >
-                  <Heart size={16} style={{ color: "#d4b396", marginRight: "0.5rem" }} />
+                  <Heart size={16} style={{ color: "hsl(var(--wedding-primary))", marginRight: "0.5rem" }} />
                   <h4
                     style={{
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "1.125rem",
                       fontWeight: 600,
-                      color: "#1f2937",
+                      color: "hsl(var(--wedding-text-dark))",
                       margin: 0,
                     }}
                   >
@@ -311,7 +311,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "1rem",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                     margin: "0 0 0.5rem 0",
                   }}
                 >
@@ -321,7 +321,7 @@ const GuestWishes: React.FC<GuestWishesProps> = ({ adminPassword, isAdmin }) => 
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "0.75rem",
-                    color: "#6b7280",
+                    color: "hsl(var(--wedding-text-light))",
                     margin: 0,
                     textAlign: "right",
                   }}

@@ -66,7 +66,7 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -76,7 +76,7 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.125rem",
-            color: "#4b5563",
+            color: "hsl(var(--wedding-text))",
             maxWidth: "32rem",
             margin: "0 auto",
           }}
@@ -87,11 +87,11 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
 
       <div
         style={{
-          background: "white",
+          background: "hsl(var(--wedding-background))",
           borderRadius: "0.5rem",
           padding: "2rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -102,9 +102,10 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
           ref={qrRef}
           style={{
             padding: "1rem",
-            backgroundColor: "white",
+            backgroundColor: "hsl(var(--wedding-background))",
             borderRadius: "0.5rem",
             boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+            border: "1px solid hsl(var(--wedding-secondary))",
           }}
         >
           <QRCodeCanvas
@@ -136,8 +137,8 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               justifyContent: "center",
               gap: "0.5rem",
               padding: "0.75rem 1.25rem",
-              backgroundColor: "#d4b396",
-              color: "white",
+              backgroundColor: "hsl(var(--wedding-primary))",
+              color: "hsl(var(--wedding-background))",
               borderRadius: "0.375rem",
               border: "none",
               fontFamily: cormorant.style.fontFamily,
@@ -147,10 +148,10 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               transition: "background-color 0.3s",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "#c4a386"
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#d4b396"
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
             }}
           >
             <Download size={16} />
@@ -165,10 +166,10 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               justifyContent: "center",
               gap: "0.5rem",
               padding: "0.75rem 1.25rem",
-              backgroundColor: "#f8e8d8",
-              color: "#8b6e5c",
+              backgroundColor: "hsl(var(--wedding-primary-light))",
+              color: "hsl(var(--wedding-primary-dark))",
               borderRadius: "0.375rem",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
               fontWeight: 500,
@@ -176,10 +177,12 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               transition: "background-color 0.3s",
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = "#f0dfd0"
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
+              e.currentTarget.style.color = "hsl(var(--wedding-background))"
             }}
             onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = "#f8e8d8"
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))"
+              e.currentTarget.style.color = "hsl(var(--wedding-primary-dark))"
             }}
           >
             <Share2 size={16} />
@@ -204,10 +207,10 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               flex: 1,
               padding: "0.75rem",
               borderRadius: "0.375rem",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "0.875rem",
-              color: "#4b5563",
+              color: "hsl(var(--wedding-text))",
             }}
           />
           <button
@@ -217,8 +220,8 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
               alignItems: "center",
               justifyContent: "center",
               padding: "0.75rem",
-              backgroundColor: copied ? "#d1fae5" : "#f3f4f6",
-              color: copied ? "#059669" : "#4b5563",
+              backgroundColor: copied ? "hsl(var(--wedding-success-light))" : "hsl(var(--wedding-background-alt))",
+              color: copied ? "hsl(var(--wedding-success))" : "hsl(var(--wedding-text))",
               borderRadius: "0.375rem",
               border: "none",
               cursor: "pointer",
@@ -233,7 +236,7 @@ const QrCodeGenerator: React.FC<QrCodeGeneratorProps> = ({ title, subtitle }) =>
             style={{
               fontFamily: cormorant.style.fontFamily,
               fontSize: "0.875rem",
-              color: "#059669",
+              color: "hsl(var(--wedding-success))",
               margin: "-1rem 0 0 0",
             }}
           >

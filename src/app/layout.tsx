@@ -34,7 +34,7 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          backgroundColor: "#fffaf5",
+          backgroundColor: "hsl(var(--wedding-background))",
           fontFamily: inter.style.fontFamily,
         }}
       >

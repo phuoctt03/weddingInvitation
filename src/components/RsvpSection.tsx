@@ -63,13 +63,13 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
     title: {
       fontFamily: dancingScript.style.fontFamily,
       fontSize: "2.5rem",
-      color: "#8b6e5c",
+      color: "hsl(var(--wedding-primary-dark))",
       marginBottom: "0.5rem",
     },
     subtitle: {
       fontFamily: cormorant.style.fontFamily,
       fontSize: "1.125rem",
-      color: "#4b5563",
+      color: "hsl(var(--wedding-text))",
     },
     form: {
       display: "flex",
@@ -79,7 +79,7 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
       padding: "2rem",
       borderRadius: "0.5rem",
       boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-      border: "1px solid #e0c9b1",
+      border: "1px solid hsl(var(--wedding-secondary))",
     },
     formGroup: {
       display: "flex",
@@ -89,36 +89,36 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
     label: {
       fontFamily: cormorant.style.fontFamily,
       fontSize: "1rem",
-      color: "#4b5563",
+      color: "hsl(var(--wedding-text))",
     },
     input: {
       padding: "0.75rem",
-      border: "1px solid #e0c9b1",
+      border: "1px solid hsl(var(--wedding-secondary))",
       borderRadius: "0.25rem",
       fontSize: "1rem",
       fontFamily: cormorant.style.fontFamily,
-      color: "#1f2937",
+      color: "hsl(var(--wedding-text-dark))",
       outline: "none",
       transition: "border-color 0.2s",
     },
     textarea: {
       padding: "0.75rem",
-      border: "1px solid #e0c9b1",
+      border: "1px solid hsl(var(--wedding-secondary))",
       borderRadius: "0.25rem",
       fontSize: "1rem",
       fontFamily: cormorant.style.fontFamily,
-      color: "#1f2937",
+      color: "hsl(var(--wedding-text-dark))",
       minHeight: "6rem",
       resize: "vertical" as const,
       outline: "none",
     },
     select: {
       padding: "0.75rem",
-      border: "1px solid #e0c9b1",
+      border: "1px solid hsl(var(--wedding-secondary))",
       borderRadius: "0.25rem",
       fontSize: "1rem",
       fontFamily: cormorant.style.fontFamily,
-      color: "#1f2937",
+      color: "hsl(var(--wedding-text-dark))",
       background: "white",
       cursor: "pointer",
     },
@@ -130,7 +130,7 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
     button: {
       flex: 1,
       padding: "0.75rem",
-      border: "1px solid #e0c9b1",
+      border: "1px solid hsl(var(--wedding-secondary))",
       borderRadius: "0.25rem",
       fontSize: "1rem",
       fontFamily: cormorant.style.fontFamily,
@@ -138,18 +138,18 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
       transition: "all 0.2s",
     },
     activeButton: {
-      backgroundColor: "#d4b396",
+      backgroundColor: "hsl(var(--wedding-primary))",
       color: "white",
-      border: "1px solid #d4b396",
+      border: "1px solid hsl(var(--wedding-primary))",
     },
     inactiveButton: {
       backgroundColor: "white",
-      color: "#4b5563",
+      color: "hsl(var(--wedding-text))",
     },
     submitButton: {
       width: "100%",
       padding: "0.75rem",
-      backgroundColor: "#d4b396",
+      backgroundColor: "hsl(var(--wedding-primary))",
       color: "white",
       border: "none",
       borderRadius: "0.25rem",
@@ -162,7 +162,7 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
     successMessage: {
       textAlign: "center" as const,
       padding: "2rem",
-      background: "#f8e8d8",
+      background: "hsl(var(--wedding-primary-light))",
       borderRadius: "0.5rem",
     },
   }
@@ -179,24 +179,24 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
               width: "4rem",
               height: "4rem",
               borderRadius: "9999px",
-              backgroundColor: "#d1fae5",
+              backgroundColor: "hsl(var(--wedding-success-light))",
               marginBottom: "1rem",
             }}
           >
-            <Check style={{ width: "2rem", height: "2rem", color: "#059669" }} />
+            <Check style={{ width: "2rem", height: "2rem", color: "hsl(var(--wedding-success))" }} />
           </div>
           <h3
             style={{
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1.5rem",
               fontWeight: 500,
-              color: "#1f2937",
+              color: "hsl(var(--wedding-text-dark))",
               marginBottom: "0.5rem",
             }}
           >
             Thank You!
           </h3>
-          <p style={{ fontFamily: cormorant.style.fontFamily, color: "#4b5563" }}>
+          <p style={{ fontFamily: cormorant.style.fontFamily, color: "hsl(var(--wedding-text))" }}>
             Your RSVP has been submitted successfully.
           </p>
         </div>
@@ -311,10 +311,10 @@ const RsvpSection: React.FC<RsvpSectionProps> = ({ deadline }) => {
           type="submit"
           style={formStyles.submitButton}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#c4a386"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "#d4b396"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
           }}
         >
           Submit RSVP

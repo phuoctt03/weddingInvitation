@@ -46,27 +46,41 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
   // Replace the existing useEffect that creates the audio element with these two separate effects:
 
   useEffect(() => {
-    // Create audio element only when the music source changes
-    if (audioRef.current) {
+    // Create audio element when the component mounts or when music source changes
+    if (!audioRef.current) {
+      audioRef.current = new Audio(currentMusic)
+    } else if (audioRef.current.src !== currentMusic) {
+      // If we're changing the music source
       const wasPlaying = !audioRef.current.paused
       const currentTime = audioRef.current.currentTime
       audioRef.current.pause()
-
-      audioRef.current = new Audio(currentMusic)
-      audioRef.current.loop = true
-      audioRef.current.volume = volume
+      audioRef.current.src = currentMusic
 
       // If we're replacing the audio element, try to restore the playback position
       if (currentTime > 0) {
         audioRef.current.currentTime = currentTime
       }
 
+      // If it was playing before changing the music, resume playing
+      if (wasPlaying) {
+        audioRef.current.play().catch((error) => {
+          console.error("Playback failed:", error)
+          setIsPlaying(false)
+        })
+      }
+    }
+
+    // Set up properties
+    if (audioRef.current) {
+      audioRef.current.loop = true
+      audioRef.current.volume = volume
+
       // Set up event listeners
       const handleCanPlayThrough = () => {
         setIsLoaded(true)
 
-        // If it was playing before changing the music or we're restoring playback, resume playing
-        if (isPlaying || wasPlaying) {
+        // If it should be playing, play it
+        if (isPlaying) {
           audioRef.current?.play().catch((error) => {
             console.error("Playback failed:", error)
             setIsPlaying(false)
@@ -79,7 +93,6 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
       // Clean up
       return () => {
         if (audioRef.current) {
-          audioRef.current.pause()
           audioRef.current.removeEventListener("canplaythrough", handleCanPlayThrough)
         }
       }
@@ -180,12 +193,12 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
           display: "flex",
           alignItems: "center",
           gap: "0.5rem",
-          background: "rgba(255, 250, 245, 0.8)",
+          background: "hsla(var(--wedding-background), 0.8)",
           backdropFilter: "blur(4px)",
           padding: "0.5rem 1rem",
           borderRadius: "2rem",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           transition: "all 0.3s ease",
         }}
         onMouseEnter={() => setShowVolumeControl(true)}
@@ -200,17 +213,17 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
             width: "2.5rem",
             height: "2.5rem",
             borderRadius: "50%",
-            backgroundColor: "#f8e8d8",
-            color: "#8b6e5c",
+            backgroundColor: "hsl(var(--wedding-primary-light))",
+            color: "hsl(var(--wedding-primary-dark))",
             border: "none",
             cursor: "pointer",
             transition: "all 0.2s ease",
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#e0c9b1"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "#f8e8d8"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))"
           }}
           title={isPlaying ? "Pause music" : "Play music"}
         >
@@ -226,7 +239,7 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
           <span
             style={{
               fontSize: "0.75rem",
-              color: "#8b6e5c",
+              color: "hsl(var(--wedding-primary-dark))",
               fontWeight: 600,
             }}
           >
@@ -235,7 +248,7 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
           <span
             style={{
               fontSize: "0.625rem",
-              color: "#a8a29e",
+              color: "hsl(var(--wedding-text-light))",
             }}
           >
             {isPlaying ? "Now Playing" : "Click to Play"}
@@ -257,7 +270,7 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                color: "#8b6e5c",
+                color: "hsl(var(--wedding-primary-dark))",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -277,7 +290,7 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
               onChange={handleVolumeChange}
               style={{
                 width: "60px",
-                accentColor: "#d4b396",
+                accentColor: "hsl(var(--wedding-primary))",
               }}
             />
           </div>
@@ -292,18 +305,18 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
             width: "2rem",
             height: "2rem",
             borderRadius: "50%",
-            backgroundColor: "#f8e8d8",
-            color: "#8b6e5c",
+            backgroundColor: "hsl(var(--wedding-primary-light))",
+            color: "hsl(var(--wedding-primary-dark))",
             border: "none",
             cursor: "pointer",
             marginLeft: "0.5rem",
             transition: "all 0.2s ease",
           }}
           onMouseOver={(e) => {
-            e.currentTarget.style.backgroundColor = "#e0c9b1"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
           }}
           onMouseOut={(e) => {
-            e.currentTarget.style.backgroundColor = "#f8e8d8"
+            e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))"
           }}
           title="Change music"
         >
@@ -340,7 +353,9 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
             <div
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}
             >
-              <h3 style={{ margin: 0, fontSize: "1.25rem", color: "#1f2937" }}>Change Wedding Music</h3>
+              <h3 style={{ margin: 0, fontSize: "1.25rem", color: "hsl(var(--wedding-text-dark))" }}>
+                Change Wedding Music
+              </h3>
               <button
                 onClick={() => setShowMusicModal(false)}
                 style={{
@@ -354,13 +369,20 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
               </button>
             </div>
 
-            <p style={{ fontSize: "0.875rem", color: "#6b7280", marginBottom: "1.5rem" }}>
+            <p style={{ fontSize: "0.875rem", color: "hsl(var(--wedding-text-light))", marginBottom: "1.5rem" }}>
               Upload your own music to personalize your wedding invitation.
             </p>
 
             <div style={{ marginBottom: "1.5rem" }}>
-              <p style={{ fontSize: "0.875rem", color: "#4b5563", fontWeight: 500, marginBottom: "0.5rem" }}>
-                Current music: <span style={{ color: "#8b6e5c" }}>{musicName}</span>
+              <p
+                style={{
+                  fontSize: "0.875rem",
+                  color: "hsl(var(--wedding-text))",
+                  fontWeight: 500,
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Current music: <span style={{ color: "hsl(var(--wedding-primary-dark))" }}>{musicName}</span>
               </p>
 
               <button
@@ -371,8 +393,8 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
                   justifyContent: "center",
                   width: "100%",
                   padding: "0.75rem",
-                  backgroundColor: "#f8e8d8",
-                  color: "#8b6e5c",
+                  backgroundColor: "hsl(var(--wedding-primary-light))",
+                  color: "hsl(var(--wedding-primary-dark))",
                   borderRadius: "0.375rem",
                   border: "none",
                   cursor: "pointer",
@@ -380,10 +402,10 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
                   transition: "background-color 0.2s",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#e0c9b1"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "#f8e8d8"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))"
                 }}
               >
                 <Upload size={16} style={{ marginRight: "0.5rem" }} />
@@ -398,7 +420,14 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
                 style={{ display: "none" }}
               />
 
-              <p style={{ fontSize: "0.75rem", color: "#6b7280", marginBottom: "1rem", textAlign: "center" }}>
+              <p
+                style={{
+                  fontSize: "0.75rem",
+                  color: "hsl(var(--wedding-text-light))",
+                  marginBottom: "1rem",
+                  textAlign: "center",
+                }}
+              >
                 Supported formats: MP3, WAV, OGG (Max 10MB)
               </p>
 
@@ -426,7 +455,7 @@ const MusicPlayer = ({ defaultMusic }: MusicPlayerProps) => {
               style={{
                 width: "100%",
                 padding: "0.75rem",
-                backgroundColor: "#d4b396",
+                backgroundColor: "hsl(var(--wedding-primary))",
                 color: "white",
                 borderRadius: "0.375rem",
                 border: "none",

@@ -208,7 +208,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -218,7 +218,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.125rem",
-            color: "#4b5563",
+            color: "hsl(var(--wedding-text))",
             maxWidth: "32rem",
             margin: "0 auto",
           }}
@@ -233,7 +233,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
           borderRadius: "0.5rem",
           padding: "1.5rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
           marginBottom: "2rem",
         }}
       >
@@ -244,7 +244,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
               display: "block",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
-              color: "#4b5563",
+              color: "hsl(var(--wedding-text))",
               marginBottom: "0.5rem",
             }}
           >
@@ -260,7 +260,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
               width: "91%",
               padding: "0.75rem",
               borderRadius: "0.375rem",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
             }}
@@ -275,7 +275,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
               display: "block",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
-              color: "#4b5563",
+              color: "hsl(var(--wedding-text))",
               marginBottom: "0.5rem",
             }}
           >
@@ -290,7 +290,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
               width: "91%",
               padding: "0.75rem",
               borderRadius: "0.375rem",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
               minHeight: "6rem",
@@ -309,7 +309,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
             justifyContent: "center",
             width: "100%",
             padding: "0.75rem",
-            backgroundColor: !name.trim() || !message.trim() ? "#e5e7eb" : "#d4b396",
+            backgroundColor: !name.trim() || !message.trim() ? "#e5e7eb" : "hsl(var(--wedding-primary))",
             color: !name.trim() || !message.trim() ? "#9ca3af" : "white",
             borderRadius: "0.375rem",
             border: "none",
@@ -321,10 +321,12 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
             transition: "background-color 0.3s",
           }}
           onMouseOver={(e) => {
-            if (!isSubmitting && name.trim() && message.trim()) e.currentTarget.style.backgroundColor = "#c4a386"
+            if (!isSubmitting && name.trim() && message.trim())
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
           }}
           onMouseOut={(e) => {
-            if (!isSubmitting && name.trim() && message.trim()) e.currentTarget.style.backgroundColor = "#d4b396"
+            if (!isSubmitting && name.trim() && message.trim())
+              e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
           }}
         >
           <Edit2 size={16} style={{ marginRight: "0.5rem" }} />
@@ -339,8 +341,8 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
             display: "flex",
             alignItems: "center",
             padding: "0.5rem 1rem",
-            backgroundColor: "#f3f4f6",
-            color: "#4b5563",
+            backgroundColor: "hsl(var(--wedding-background-alt))",
+            color: "hsl(var(--wedding-text))",
             borderRadius: "0.375rem",
             border: "none",
             fontFamily: cormorant.style.fontFamily,
@@ -358,7 +360,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.25rem",
-            color: "#1f2937",
+            color: "hsl(var(--wedding-text-dark))",
             marginBottom: "1rem",
             textAlign: "center",
           }}
@@ -379,7 +381,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   padding: "1.5rem",
                   borderRadius: "0.5rem",
                   boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                  border: "1px solid #e0c9b1",
+                  border: "1px solid hsl(var(--wedding-secondary))",
                   position: "relative",
                 }}
               >
@@ -390,12 +392,12 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                       position: "absolute",
                       top: "0.75rem",
                       right: "0.75rem",
-                      background: "#fee2e2",
+                      backgroundColor: "hsl(var(--wedding-error-light))",
                       border: "none",
                       borderRadius: "50%",
                       padding: "0.5rem",
                       cursor: "pointer",
-                      color: "#ef4444",
+                      color: "hsl(var(--wedding-error))",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -420,7 +422,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "1.25rem",
                       fontWeight: 600,
-                      color: "#1f2937",
+                      color: "hsl(var(--wedding-text-dark))",
                       margin: "0 0 0.25rem 0",
                     }}
                   >
@@ -430,7 +432,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                     style={{
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "0.875rem",
-                      color: "#6b7280",
+                      color: "hsl(var(--wedding-text-light))",
                       margin: 0,
                     }}
                   >
@@ -442,7 +444,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "1rem",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                     margin: "0 0 1rem 0",
                     fontStyle: "italic",
                   }}
@@ -452,7 +454,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
 
                 <div
                   style={{
-                    borderTop: "1px solid #e5e7eb",
+                    borderTop: "1px solid hsl(var(--wedding-secondary-light))",
                     paddingTop: "1rem",
                   }}
                 >
@@ -460,7 +462,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                     style={{
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "0.875rem",
-                      color: "#6b7280",
+                      color: "hsl(var(--wedding-text-light))",
                       margin: "0 0 0.5rem 0",
                     }}
                   >
@@ -468,7 +470,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   </p>
                   <div
                     style={{
-                      backgroundColor: "#f9fafb",
+                      backgroundColor: "hsl(var(--wedding-background-alt))",
                       borderRadius: "0.25rem",
                       padding: "0.5rem",
                       display: "flex",
@@ -524,7 +526,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "1.25rem",
-                  color: "#1f2937",
+                  color: "hsl(var(--wedding-text-dark))",
                   margin: 0,
                 }}
               >
@@ -536,7 +538,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: "#6b7280",
+                  color: "hsl(var(--wedding-text-light))",
                 }}
               >
                 <X size={20} />
@@ -547,7 +549,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
               style={{
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "0.875rem",
-                color: "#6b7280",
+                color: "hsl(var(--wedding-text-light))",
                 marginBottom: "1rem",
               }}
             >
@@ -560,7 +562,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.875rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -576,7 +578,8 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                       height: "1.5rem",
                       borderRadius: "50%",
                       backgroundColor: color,
-                      border: signatureColor === color ? "2px solid #d4b396" : "1px solid #e0c9b1",
+                      border:
+                        signatureColor === color ? "2px solid #d4b396" : "1px solid hsl(var(--wedding-secondary))",
                       cursor: "pointer",
                     }}
                   />
@@ -590,7 +593,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   display: "block",
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.875rem",
-                  color: "#4b5563",
+                  color: "hsl(var(--wedding-text))",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -608,7 +611,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
 
             <div
               style={{
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
                 borderRadius: "0.375rem",
                 marginBottom: "1rem",
                 position: "relative",
@@ -641,9 +644,9 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                     right: "0.5rem",
                     padding: "0.25rem 0.5rem",
                     backgroundColor: "rgba(255, 255, 255, 0.8)",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                     borderRadius: "0.25rem",
-                    border: "1px solid #e0c9b1",
+                    border: "1px solid hsl(var(--wedding-secondary))",
                     fontSize: "0.75rem",
                     cursor: "pointer",
                   }}
@@ -662,7 +665,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "0.75rem",
-                  backgroundColor: "#d4b396",
+                  backgroundColor: "hsl(var(--wedding-primary))",
                   color: "white",
                   borderRadius: "0.375rem",
                   border: "none",
@@ -679,8 +682,8 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAd
                 style={{
                   flex: 1,
                   padding: "0.75rem",
-                  backgroundColor: "#f3f4f6",
-                  color: "#4b5563",
+                  backgroundColor: "hsl(var(--wedding-background-alt))",
+                  color: "hsl(var(--wedding-text))",
                   borderRadius: "0.375rem",
                   border: "none",
                   fontFamily: cormorant.style.fontFamily,

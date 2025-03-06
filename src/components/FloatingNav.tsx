@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Lock } from 'lucide-react'
+import { Menu, X, Lock } from "lucide-react"
 
 interface NavSection {
   id: string
@@ -60,8 +60,8 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
           <button
             onClick={() => setIsOpen(!isOpen)}
             style={{
-              background: "#f8e8d8",
-              color: "#8b6e5c",
+              background: "hsl(var(--wedding-primary-light))",
+              color: "hsl(var(--wedding-primary-dark))",
               padding: "0.75rem",
               borderRadius: "9999px",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
@@ -69,8 +69,8 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
               cursor: "pointer",
               transition: "background-color 0.3s",
             }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e0c9b1")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#f8e8d8")}
+            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))")}
+            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))")}
           >
             {isOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -108,7 +108,7 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
                         cursor: "pointer",
                         transition: "background-color 0.2s",
                       }}
-                      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f8e8d8")}
+                      onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))")}
                       onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                     >
                       {section.label}
@@ -124,12 +124,12 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
                           // If already in admin mode, clicking will log out
                           if (window.confirm("Are you sure you want to log out of admin mode?")) {
                             // We need to call a logout function passed from the parent
-                            setShowGlobalAdminLogin(); // This will trigger logout in parent
+                            setShowGlobalAdminLogin() // This will trigger logout in parent
                           }
                         } else {
                           // If not in admin mode, show login modal
-                          setShowGlobalAdminLogin();
-                          setIsOpen(false);
+                          setShowGlobalAdminLogin()
+                          setIsOpen(false)
                         }
                       }
                     }}
@@ -139,14 +139,14 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
                       width: "100%",
                       textAlign: "left",
                       padding: "0.5rem 1rem",
-                      color: isAdmin ? "#d4b396" : "#4b5563",
+                      color: isAdmin ? "hsl(var(--wedding-primary))" : "#4b5563",
                       backgroundColor: "transparent",
                       border: "none",
                       cursor: "pointer",
                       transition: "background-color 0.2s",
                       fontWeight: isAdmin ? 600 : 400,
                     }}
-                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#f8e8d8")}
+                    onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-light))")}
                     onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                   >
                     <Lock size={14} style={{ marginRight: "0.5rem" }} />
@@ -163,3 +163,4 @@ const FloatingNav: React.FC<FloatingNavProps> = ({ sections, isAdmin, setShowGlo
 }
 
 export default FloatingNav
+

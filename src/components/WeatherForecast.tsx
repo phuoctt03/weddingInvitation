@@ -68,13 +68,13 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
         // In a real app, you would fetch from a weather API
         // For this demo, we'll generate random weather data
         const conditions = [
-          { name: "Sunny", icon: <Sun size={32} color="#FFB900" /> },
-          { name: "Cloudy", icon: <Cloud size={32} color="#B8B8B8" /> },
-          { name: "Rainy", icon: <CloudRain size={32} color="#0078D7" /> },
-          { name: "Windy", icon: <Wind size={32} color="#B8B8B8" /> },
-          { name: "Snowy", icon: <CloudSnow size={32} color="#B8B8B8" /> },
-          { name: "Stormy", icon: <CloudLightning size={32} color="#5C2D91" /> },
-          { name: "Foggy", icon: <CloudFog size={32} color="#B8B8B8" /> },
+          { name: "Sunny", icon: <Sun size={32} color="hsl(var(--wedding-accent))" /> },
+          { name: "Cloudy", icon: <Cloud size={32} color="hsl(var(--wedding-text))" /> },
+          { name: "Rainy", icon: <CloudRain size={32} color="hsl(var(--wedding-primary))" /> },
+          { name: "Windy", icon: <Wind size={32} color="hsl(var(--wedding-text))" /> },
+          { name: "Snowy", icon: <CloudSnow size={32} color="hsl(var(--wedding-text))" /> },
+          { name: "Stormy", icon: <CloudLightning size={32} color="hsl(var(--wedding-primary-dark))" /> },
+          { name: "Foggy", icon: <CloudFog size={32} color="hsl(var(--wedding-text))" /> },
         ]
 
         const randomCondition = conditions[Math.floor(Math.random() * conditions.length)]
@@ -111,7 +111,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -121,7 +121,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
           style={{
             fontFamily: cormorant.style.fontFamily,
             fontSize: "1.125rem",
-            color: "#4b5563",
+            color: "hsl(var(--wedding-text))",
           }}
         >
           Expected weather for our special day
@@ -134,7 +134,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
           borderRadius: "0.5rem",
           padding: "1.5rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
         }}
       >
         {loading ? (
@@ -147,12 +147,12 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
               padding: "2rem",
             }}
           >
-            <Loader2 size={32} style={{ color: "#8b6e5c", animation: "spin 2s linear infinite" }} />
+            <Loader2 size={32} style={{ color: "hsl(var(--wedding-primary))", animation: "spin 2s linear infinite" }} />
             <p
               style={{
                 fontFamily: cormorant.style.fontFamily,
                 fontSize: "1rem",
-                color: "#4b5563",
+                color: "hsl(var(--wedding-text))",
                 marginTop: "1rem",
               }}
             >
@@ -174,7 +174,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
             style={{
               fontFamily: cormorant.style.fontFamily,
               fontSize: "1rem",
-              color: "#ef4444",
+              color: "hsl(var(--wedding-error))",
               textAlign: "center",
               padding: "1rem",
             }}
@@ -197,7 +197,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "1.25rem",
                     fontWeight: 600,
-                    color: "#1f2937",
+                    color: "hsl(var(--wedding-text-dark))",
                     marginBottom: "0.25rem",
                   }}
                 >
@@ -207,7 +207,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "1rem",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                   }}
                 >
                   {weatherData.date}
@@ -224,7 +224,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "0.875rem",
-                    color: "#8b6e5c",
+                    color: "hsl(var(--wedding-primary))",
                     fontWeight: 600,
                   }}
                 >
@@ -239,7 +239,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "1rem",
-                backgroundColor: "#f8f9fa",
+                backgroundColor: "hsl(var(--wedding-primary-light))",
                 borderRadius: "0.375rem",
                 marginBottom: "1.5rem",
               }}
@@ -258,7 +258,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "1.5rem",
                       fontWeight: 600,
-                      color: "#1f2937",
+                      color: "hsl(var(--wedding-text-dark))",
                       marginBottom: "0.25rem",
                     }}
                   >
@@ -268,7 +268,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                     style={{
                       fontFamily: cormorant.style.fontFamily,
                       fontSize: "1rem",
-                      color: "#4b5563",
+                      color: "hsl(var(--wedding-text))",
                     }}
                   >
                     {weatherData.condition}
@@ -281,7 +281,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "0.875rem",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                     marginBottom: "0.25rem",
                   }}
                 >
@@ -291,7 +291,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                   style={{
                     fontFamily: cormorant.style.fontFamily,
                     fontSize: "0.875rem",
-                    color: "#4b5563",
+                    color: "hsl(var(--wedding-text))",
                   }}
                 >
                   Wind: {weatherData.windSpeed} km/h
@@ -304,10 +304,10 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.875rem",
-                  color: "#6b7280",
+                  color: "hsl(var(--wedding-text))",
                   textAlign: "center",
                   padding: "0.5rem",
-                  backgroundColor: "#f3f4f6",
+                  backgroundColor: "hsl(var(--wedding-primary-light))",
                   borderRadius: "0.25rem",
                 }}
               >
@@ -318,7 +318,7 @@ const WeatherForecast: React.FC<WeatherForecastProps> = ({ weddingDate, location
                 style={{
                   fontFamily: cormorant.style.fontFamily,
                   fontSize: "0.875rem",
-                  color: "#6b7280",
+                  color: "hsl(var(--wedding-text-light))",
                   textAlign: "center",
                   padding: "0.5rem",
                 }}

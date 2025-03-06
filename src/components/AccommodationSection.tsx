@@ -50,7 +50,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -97,7 +97,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
                 borderRadius: "0.5rem",
                 padding: "1.5rem",
                 boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
@@ -109,8 +109,8 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
                     width: "2.5rem",
                     height: "2.5rem",
                     borderRadius: "9999px",
-                    backgroundColor: "#f8e8d8",
-                    color: "#8b6e5c",
+                    backgroundColor: "hsl(var(--wedding-primary-light))",
+                    color: "hsl(var(--wedding-primary-dark))",
                     marginRight: "0.75rem",
                   }}
                 >
@@ -150,7 +150,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    color: "#8b6e5c",
+                    color: "hsl(var(--wedding-primary-dark))",
                     textDecoration: "none",
                   }}
                   onMouseOver={(e) => (e.currentTarget.style.textDecoration = "underline")}
@@ -192,7 +192,7 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
                 borderRadius: "0.5rem",
                 padding: "1.5rem",
                 boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                border: "1px solid #e0c9b1",
+                border: "1px solid hsl(var(--wedding-secondary))",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", marginBottom: "1rem" }}>
@@ -204,8 +204,8 @@ const AccommodationSection: React.FC<AccommodationSectionProps> = ({ accommodati
                     width: "2.5rem",
                     height: "2.5rem",
                     borderRadius: "9999px",
-                    backgroundColor: "#f8e8d8",
-                    color: "#8b6e5c",
+                    backgroundColor: "hsl(var(--wedding-primary-light))",
+                    color: "hsl(var(--wedding-primary-dark))",
                     marginRight: "0.75rem",
                   }}
                 >

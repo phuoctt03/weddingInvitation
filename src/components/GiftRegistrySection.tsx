@@ -41,7 +41,7 @@ const GiftRegistrySection: React.FC<GiftRegistrySectionProps> = ({ registries })
           style={{
             fontFamily: dancingScript.style.fontFamily,
             fontSize: "2.25rem",
-            color: "#8b6e5c",
+            color: "hsl(var(--wedding-primary-dark))",
             marginBottom: "0.5rem",
           }}
         >
@@ -80,7 +80,7 @@ const GiftRegistrySection: React.FC<GiftRegistrySectionProps> = ({ registries })
               borderRadius: "0.5rem",
               padding: "1.5rem",
               boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
               textAlign: "center",
               textDecoration: "none",
               transition: "box-shadow 0.3s",
@@ -96,8 +96,8 @@ const GiftRegistrySection: React.FC<GiftRegistrySectionProps> = ({ registries })
                 width: "3rem",
                 height: "3rem",
                 borderRadius: "9999px",
-                backgroundColor: "#f8e8d8",
-                color: "#8b6e5c",
+                backgroundColor: "hsl(var(--wedding-primary-light))",
+                color: "hsl(var(--wedding-primary-dark))",
                 marginBottom: "1rem",
               }}
             >

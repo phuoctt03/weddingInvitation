@@ -16,12 +16,11 @@ interface MessageSectionProps {
 const MessageSection: React.FC<MessageSectionProps> = ({ message, setMessage, weddingHashtag, setWeddingHashtag }) => {
   return (
     <section style={{ textAlign: "center", width: "100%", maxWidth: "32rem", margin: "0 auto" }}>
-      <Image src="/message.png" alt="message" width={320} height={200} style={{ margin: "0 auto 1rem auto" }} />
       <h2
         style={{
           fontFamily: dancingScript.style.fontFamily,
           fontSize: "2.25rem",
-          color: "#8b6e5c",
+          color: "hsl(var(--wedding-primary-dark))",
           marginBottom: "1.5rem",
         }}
       >
@@ -33,7 +32,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, setMessage, we
           borderRadius: "0.5rem",
           padding: "2rem",
           boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #e0c9b1",
+          border: "1px solid hsl(var(--wedding-secondary))",
         }}
       >
         <div
@@ -54,9 +53,11 @@ const MessageSection: React.FC<MessageSectionProps> = ({ message, setMessage, we
               multiline={true}
             />
           </div>
-          <div style={{ paddingTop: "1rem", borderTop: "1px solid #e0c9b1" }}>
-            <p style={{ color: "#8b6e5c", fontWeight: 500 }}>Share your moments with us using</p>
-            <p style={{ fontSize: "1.25rem", color: "#8b6e5c", fontWeight: 700 }}>
+          <div style={{ paddingTop: "1rem", borderTop: "1px solid hsl(var(--wedding-secondary))" }}>
+            <p style={{ color: "hsl(var(--wedding-primary-dark))", fontWeight: 500 }}>
+              Share your moments with us using
+            </p>
+            <p style={{ fontSize: "1.25rem", color: "hsl(var(--wedding-primary-dark))", fontWeight: 700 }}>
               <EditableText
                 initialText={weddingHashtag}
                 onSave={setWeddingHashtag}

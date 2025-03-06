@@ -5,10 +5,11 @@ import type React from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
-import { Acme } from "next/font/google"
+import { Acme, Dancing_Script } from "next/font/google"
 import { Edit2, Trash2, Upload, X, ZoomIn, RotateCw, Filter, Sun, Check } from "lucide-react"
 
 const acme = Acme({ subsets: ["latin"], weight: ["400", "400"] })
+const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
 interface GallerySectionProps {
   initialImages: string[]
@@ -132,11 +133,12 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
     <section style={{ margin: "1rem 0" }}>
       <p
         style={{
-          fontSize: "1.5rem",
+          fontSize: "2.25rem",
           fontWeight: 600,
-          marginBottom: "1rem",
+          marginBottom: "1.5rem",
           textAlign: "center",
-          fontFamily: acme.style.fontFamily,
+          color: "hsl(var(--wedding-primary-dark))",
+          fontFamily: dancingScript.style.fontFamily,
         }}
       >
         Album Wedding
@@ -158,7 +160,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
               overflow: "hidden",
               borderRadius: "0.5rem",
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-              border: "1px solid #e0c9b1",
+              border: "1px solid hsl(var(--wedding-secondary))",
             }}
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -244,7 +246,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                       gap: "0.5rem",
                       padding: "0.75rem 1.25rem",
                       backgroundColor: "rgba(255, 255, 255, 0.9)",
-                      color: "#ef4444",
+                      color: "hsl(var(--wedding-error))",
                       border: "none",
                       borderRadius: "0.5rem",
                       fontSize: "0.875rem",
@@ -319,8 +321,8 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "1.25rem",
-                borderBottom: "1px solid #e0c9b1",
-                backgroundColor: "#f8f9fa",
+                borderBottom: "1px solid hsl(var(--wedding-secondary))",
+                backgroundColor: "hsl(var(--wedding-background-alt))",
                 borderRadius: "0.75rem 0.75rem 0 0",
               }}
             >
@@ -329,13 +331,13 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   margin: 0,
                   fontFamily: acme.style.fontFamily,
                   fontSize: "1.5rem",
-                  color: "#8b6e5c",
+                  color: "hsl(var(--wedding-primary-dark))",
                   display: "flex",
                   alignItems: "center",
                   gap: "0.5rem",
                 }}
               >
-                <Edit2 size={20} color="#8b6e5c" />
+                <Edit2 size={20} color="hsl(var(--wedding-primary-dark))" />
                 Edit Wedding Photo
               </h3>
               <button
@@ -344,7 +346,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   background: "none",
                   border: "none",
                   cursor: "pointer",
-                  color: "#6b7280",
+                  color: "hsl(var(--wedding-text-light))",
                   width: "2rem",
                   height: "2rem",
                   borderRadius: "50%",
@@ -354,7 +356,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   transition: "background-color 0.2s",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#f3f4f6"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                 }}
                 onMouseOut={(e) => {
                   e.currentTarget.style.backgroundColor = "transparent"
@@ -381,7 +383,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "1.5rem",
-                  backgroundColor: "#f8f9fa",
+                  backgroundColor: "hsl(var(--wedding-background-alt))",
                   borderRadius: "0.75rem",
                   position: "relative",
                   boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.05)",
@@ -395,7 +397,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     overflow: "hidden",
                     borderRadius: "0.5rem",
                     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
-                    border: "1px solid #e0c9b1",
+                    border: "1px solid hsl(var(--wedding-secondary))",
                   }}
                 >
                   <Image
@@ -426,8 +428,8 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                       justifyContent: "center",
                       gap: "0.5rem",
                       padding: "0.75rem 1.25rem",
-                      backgroundColor: "#f3f4f6",
-                      color: "#4b5563",
+                      backgroundColor: "hsl(var(--wedding-background-alt))",
+                      color: "hsl(var(--wedding-text))",
                       border: "none",
                       borderRadius: "0.5rem",
                       fontSize: "0.875rem",
@@ -437,10 +439,10 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                       transition: "all 0.2s",
                     }}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "#e5e7eb"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                     }}
                     onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "#f3f4f6"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                     }}
                   >
                     <Upload size={16} />
@@ -455,8 +457,8 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                       justifyContent: "center",
                       gap: "0.5rem",
                       padding: "0.75rem 1.25rem",
-                      backgroundColor: "#f3f4f6",
-                      color: "#4b5563",
+                      backgroundColor: "hsl(var(--wedding-background-alt))",
+                      color: "hsl(var(--wedding-text))",
                       border: "none",
                       borderRadius: "0.5rem",
                       fontSize: "0.875rem",
@@ -466,10 +468,10 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                       transition: "all 0.2s",
                     }}
                     onMouseOver={(e) => {
-                      e.currentTarget.style.backgroundColor = "#e5e7eb"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                     }}
                     onMouseOut={(e) => {
-                      e.currentTarget.style.backgroundColor = "#f3f4f6"
+                      e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                     }}
                   >
                     <RotateCw size={16} />
@@ -494,7 +496,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   flexDirection: "column",
                   gap: "1.75rem",
                   padding: "1.5rem",
-                  backgroundColor: "#f8f9fa",
+                  backgroundColor: "hsl(var(--wedding-background-alt))",
                   borderRadius: "0.75rem",
                   boxShadow: "inset 0 2px 4px rgba(0, 0, 0, 0.05)",
                 }}
@@ -504,7 +506,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     margin: "0 0 0.5rem 0",
                     fontFamily: acme.style.fontFamily,
                     fontSize: "1.125rem",
-                    color: "#8b6e5c",
+                    color: "hsl(var(--wedding-primary-dark))",
                   }}
                 >
                   Adjust Photo Settings
@@ -522,22 +524,22 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     <label
                       style={{
                         fontSize: "0.875rem",
-                        color: "#4b5563",
+                        color: "hsl(var(--wedding-text))",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.5rem",
                         fontWeight: "500",
                       }}
                     >
-                      <Sun size={18} color="#8b6e5c" />
+                      <Sun size={18} color="hsl(var(--wedding-primary-dark))" />
                       Brightness
                     </label>
                     <span
                       style={{
                         fontSize: "0.875rem",
-                        color: "#8b6e5c",
+                        color: "hsl(var(--wedding-primary-dark))",
                         fontWeight: "600",
-                        backgroundColor: "#f0e6dd",
+                        backgroundColor: "hsl(var(--wedding-primary-light))",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "0.25rem",
                       }}
@@ -549,7 +551,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     style={{
                       position: "relative",
                       height: "0.5rem",
-                      backgroundColor: "#e5e7eb",
+                      backgroundColor: "hsl(var(--wedding-secondary-light))",
                       borderRadius: "9999px",
                       overflow: "hidden",
                     }}
@@ -561,7 +563,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                         top: 0,
                         height: "100%",
                         width: `${brightness}%`,
-                        backgroundColor: "#d4b396",
+                        backgroundColor: "hsl(var(--wedding-primary))",
                         borderRadius: "9999px",
                         transition: "width 0.2s",
                       }}
@@ -594,22 +596,22 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     <label
                       style={{
                         fontSize: "0.875rem",
-                        color: "#4b5563",
+                        color: "hsl(var(--wedding-text))",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.5rem",
                         fontWeight: "500",
                       }}
                     >
-                      <ZoomIn size={18} color="#8b6e5c" />
+                      <ZoomIn size={18} color="hsl(var(--wedding-primary-dark))" />
                       Contrast
                     </label>
                     <span
                       style={{
                         fontSize: "0.875rem",
-                        color: "#8b6e5c",
+                        color: "hsl(var(--wedding-primary-dark))",
                         fontWeight: "600",
-                        backgroundColor: "#f0e6dd",
+                        backgroundColor: "hsl(var(--wedding-primary-light))",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "0.25rem",
                       }}
@@ -621,7 +623,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     style={{
                       position: "relative",
                       height: "0.5rem",
-                      backgroundColor: "#e5e7eb",
+                      backgroundColor: "hsl(var(--wedding-secondary-light))",
                       borderRadius: "9999px",
                       overflow: "hidden",
                     }}
@@ -633,7 +635,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                         top: 0,
                         height: "100%",
                         width: `${contrast}%`,
-                        backgroundColor: "#d4b396",
+                        backgroundColor: "hsl(var(--wedding-primary))",
                         borderRadius: "9999px",
                         transition: "width 0.2s",
                       }}
@@ -666,22 +668,22 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     <label
                       style={{
                         fontSize: "0.875rem",
-                        color: "#4b5563",
+                        color: "hsl(var(--wedding-text))",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.5rem",
                         fontWeight: "500",
                       }}
                     >
-                      <Filter size={18} color="#8b6e5c" />
+                      <Filter size={18} color="hsl(var(--wedding-primary-dark))" />
                       Saturation
                     </label>
                     <span
                       style={{
                         fontSize: "0.875rem",
-                        color: "#8b6e5c",
+                        color: "hsl(var(--wedding-primary-dark))",
                         fontWeight: "600",
-                        backgroundColor: "#f0e6dd",
+                        backgroundColor: "hsl(var(--wedding-primary-light))",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "0.25rem",
                       }}
@@ -693,7 +695,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     style={{
                       position: "relative",
                       height: "0.5rem",
-                      backgroundColor: "#e5e7eb",
+                      backgroundColor: "hsl(var(--wedding-secondary-light))",
                       borderRadius: "9999px",
                       overflow: "hidden",
                     }}
@@ -705,7 +707,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                         top: 0,
                         height: "100%",
                         width: `${saturation / 2}%`,
-                        backgroundColor: "#d4b396",
+                        backgroundColor: "hsl(var(--wedding-primary))",
                         borderRadius: "9999px",
                         transition: "width 0.2s",
                       }}
@@ -738,22 +740,22 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     <label
                       style={{
                         fontSize: "0.875rem",
-                        color: "#4b5563",
+                        color: "hsl(var(--wedding-text))",
                         display: "flex",
                         alignItems: "center",
                         gap: "0.5rem",
                         fontWeight: "500",
                       }}
                     >
-                      <RotateCw size={18} color="#8b6e5c" />
+                      <RotateCw size={18} color="hsl(var(--wedding-primary-dark))" />
                       Rotation
                     </label>
                     <span
                       style={{
                         fontSize: "0.875rem",
-                        color: "#8b6e5c",
+                        color: "hsl(var(--wedding-primary-dark))",
                         fontWeight: "600",
-                        backgroundColor: "#f0e6dd",
+                        backgroundColor: "hsl(var(--wedding-primary-light))",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "0.25rem",
                       }}
@@ -765,7 +767,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                     style={{
                       position: "relative",
                       height: "0.5rem",
-                      backgroundColor: "#e5e7eb",
+                      backgroundColor: "hsl(var(--wedding-secondary-light))",
                       borderRadius: "9999px",
                       overflow: "hidden",
                     }}
@@ -777,7 +779,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                         top: 0,
                         height: "100%",
                         width: `${rotation / 3.6}%`,
-                        backgroundColor: "#d4b396",
+                        backgroundColor: "hsl(var(--wedding-primary))",
                         borderRadius: "9999px",
                         transition: "width 0.2s",
                       }}
@@ -803,11 +805,11 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
             <div
               style={{
                 padding: "1.25rem",
-                borderTop: "1px solid #e0c9b1",
+                borderTop: "1px solid hsl(var(--wedding-secondary))",
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "0.75rem",
-                backgroundColor: "#f8f9fa",
+                backgroundColor: "hsl(var(--wedding-background-alt))",
                 borderRadius: "0 0 0.75rem 0.75rem",
               }}
             >
@@ -815,8 +817,8 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                 onClick={closeEditor}
                 style={{
                   padding: "0.75rem 1.5rem",
-                  backgroundColor: "#f3f4f6",
-                  color: "#4b5563",
+                  backgroundColor: "hsl(var(--wedding-background-alt))",
+                  color: "hsl(var(--wedding-text))",
                   border: "none",
                   borderRadius: "0.5rem",
                   fontSize: "0.875rem",
@@ -826,10 +828,10 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   transition: "all 0.2s",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#e5e7eb"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "#f3f4f6"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-background-alt))"
                 }}
               >
                 Cancel
@@ -843,7 +845,7 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   justifyContent: "center",
                   gap: "0.5rem",
                   padding: "0.75rem 1.5rem",
-                  backgroundColor: "#d4b396",
+                  backgroundColor: "hsl(var(--wedding-primary))",
                   color: "white",
                   border: "none",
                   borderRadius: "0.5rem",
@@ -854,10 +856,10 @@ export default function GallerySection({ initialImages }: GallerySectionProps) {
                   transition: "all 0.2s",
                 }}
                 onMouseOver={(e) => {
-                  e.currentTarget.style.backgroundColor = "#c4a386"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary-dark))"
                 }}
                 onMouseOut={(e) => {
-                  e.currentTarget.style.backgroundColor = "#d4b396"
+                  e.currentTarget.style.backgroundColor = "hsl(var(--wedding-primary))"
                 }}
               >
                 <Check size={16} />

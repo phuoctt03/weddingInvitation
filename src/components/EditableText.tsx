@@ -146,8 +146,8 @@ const EditableText: React.FC<EditableTextProps> = ({
           style={{
             width: "100%",
             minWidth: "100%", // Added to ensure full width
-            backgroundColor: "rgba(255, 255, 255, 0.1)",
-            border: "1px solid rgba(212, 179, 150, 0.5)",
+            backgroundColor: "hsla(var(--wedding-background), 0.1)",
+            border: "1px solid hsla(var(--wedding-secondary), 0.5)",
             outline: "none",
             resize: "none",
             overflow: "hidden",
@@ -183,7 +183,7 @@ const EditableText: React.FC<EditableTextProps> = ({
           <div
             style={{
               fontSize: "0.75rem",
-              color: charCount >= maxLength ? "#ef4444" : "rgba(139, 110, 92, 0.8)", // Updated color
+              color: charCount >= maxLength ? "hsl(var(--wedding-error))" : "hsla(var(--wedding-primary), 0.8)",
               marginRight: "1rem", // Added spacing
             }}
           >
@@ -200,10 +200,10 @@ const EditableText: React.FC<EditableTextProps> = ({
                 width: "1.75rem",
                 height: "1.75rem",
                 borderRadius: "50%",
-                backgroundColor: "rgba(255, 255, 255, 0.9)",
+                backgroundColor: "hsla(var(--wedding-background), 0.9)",
                 border: "none",
                 cursor: "pointer",
-                color: "#6b7280",
+                color: "hsl(var(--wedding-text))",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
               }}
               title="Cancel"
@@ -220,10 +220,10 @@ const EditableText: React.FC<EditableTextProps> = ({
                 width: "1.75rem",
                 height: "1.75rem",
                 borderRadius: "50%",
-                backgroundColor: "#d4b396",
+                backgroundColor: "hsl(var(--wedding-primary))",
                 border: "none",
                 cursor: "pointer",
-                color: "white",
+                color: "hsl(var(--wedding-primary-foreground))",
                 boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
               }}
               title="Save"
@@ -252,8 +252,8 @@ const EditableText: React.FC<EditableTextProps> = ({
         padding: "2px",
         borderRadius: "2px",
         transition: "background-color 0.2s",
-        backgroundColor: isHovering ? "rgba(212, 179, 150, 0.1)" : "transparent",
-        border: isHovering ? "1px dashed rgba(212, 179, 150, 0.5)" : "1px solid transparent",
+        backgroundColor: isHovering ? "hsla(var(--wedding-primary), 0.1)" : "transparent",
+        border: isHovering ? "1px dashed hsla(var(--wedding-primary), 0.5)" : "1px solid transparent",
         textAlign,
       }}
       title="Click to edit"
@@ -269,7 +269,7 @@ const EditableText: React.FC<EditableTextProps> = ({
             width: "20px",
             height: "20px",
             borderRadius: "50%",
-            backgroundColor: "#d4b396",
+            backgroundColor: "hsl(var(--wedding-primary))",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

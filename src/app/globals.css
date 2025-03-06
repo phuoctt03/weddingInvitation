@@ -46,10 +46,18 @@
   --wedding-primary-light: 25, 30%, 85%;
   --wedding-primary-dark: 25, 30%, 45%;
   --wedding-secondary: 25, 15%, 75%;
+  --wedding-secondary-light: 25, 15%, 90%;
   --wedding-accent: 25, 70%, 75%;
   --wedding-background: 30, 30%, 98%;
-  --wedding-text: 25, 30%, 20%;
+  --wedding-background-alt: 30, 30%, 97%;
+  --wedding-text: 25, 30%, 30%;
   --wedding-text-light: 25, 10%, 40%;
+  --wedding-text-dark: 25, 30%, 20%;
+  --wedding-primary-foreground: 0, 0%, 100%;
+  --wedding-error: 0, 84%, 60%;
+  --wedding-error-light: 0, 84%, 95%;
+  --wedding-success: 142, 76%, 36%;
+  --wedding-success-light: 142, 76%, 95%;
 }
 body {
   color: rgb(var(--foreground-rgb));
@@ -106,3 +114,4 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
