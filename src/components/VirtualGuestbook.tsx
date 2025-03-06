@@ -21,17 +21,15 @@ interface GuestbookEntry {
 
 interface VirtualGuestbookProps {
   adminPassword: string
+  isAdmin: boolean
 }
 
-const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) => {
+const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword, isAdmin }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([])
   const [name, setName] = useState("")
   const [message, setMessage] = useState("")
   const [isDrawing, setIsDrawing] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [adminMode, setAdminMode] = useState(false)
-  const [inputAdminPassword, setInputAdminPassword] = useState("")
-  const [showAdminLogin, setShowAdminLogin] = useState(false)
   const [showSignatureModal, setShowSignatureModal] = useState(false)
   const [signatureColor, setSignatureColor] = useState("#000000")
   const [signatureLineWidth, setSignatureLineWidth] = useState(3)
@@ -179,17 +177,8 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) =>
   }
 
   const handleDelete = (id: string) => {
-    setEntries((prev) => prev.filter((entry) => entry.id !== id))
-  }
-
-  const handleAdminLogin = () => {
-    // Use the adminPassword prop instead of hardcoded value
-    if (inputAdminPassword === adminPassword) {
-      setAdminMode(true)
-      setShowAdminLogin(false)
-      setInputAdminPassword("")
-    } else {
-      alert("Incorrect password")
+    if (window.confirm("Are you sure you want to delete this guestbook entry? This action cannot be undone.")) {
+      setEntries((prev) => prev.filter((entry) => entry.id !== id))
     }
   }
 
@@ -343,7 +332,7 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) =>
         </button>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "1rem" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: "1rem" }}>
         <button
           onClick={downloadGuestbook}
           style={{
@@ -362,40 +351,6 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) =>
           <Download size={14} style={{ marginRight: "0.5rem" }} />
           Download Guestbook
         </button>
-
-        {adminMode ? (
-          <button
-            onClick={() => setAdminMode(false)}
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: "#f3f4f6",
-              color: "#4b5563",
-              borderRadius: "0.375rem",
-              border: "none",
-              fontFamily: cormorant.style.fontFamily,
-              fontSize: "0.875rem",
-              cursor: "pointer",
-            }}
-          >
-            Exit Admin Mode
-          </button>
-        ) : (
-          <button
-            onClick={() => setShowAdminLogin(true)}
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: "#f3f4f6",
-              color: "#4b5563",
-              borderRadius: "0.375rem",
-              border: "none",
-              fontFamily: cormorant.style.fontFamily,
-              fontSize: "0.875rem",
-              cursor: "pointer",
-            }}
-          >
-            Admin
-          </button>
-        )}
       </div>
 
       <div style={{ marginTop: "2rem" }}>
@@ -428,18 +383,26 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) =>
                   position: "relative",
                 }}
               >
-                {adminMode && (
+                {isAdmin && (
                   <button
                     onClick={() => handleDelete(entry.id)}
                     style={{
                       position: "absolute",
                       top: "0.75rem",
                       right: "0.75rem",
-                      background: "none",
+                      background: "#fee2e2",
                       border: "none",
+                      borderRadius: "50%",
+                      padding: "0.5rem",
                       cursor: "pointer",
                       color: "#ef4444",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      zIndex: 10,
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
                     }}
+                    title="Delete entry"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -528,88 +491,6 @@ const VirtualGuestbook: React.FC<VirtualGuestbookProps> = ({ adminPassword }) =>
           </AnimatePresence>
         </div>
       </div>
-
-      {/* Admin Login Modal */}
-      {showAdminLogin && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 100,
-          }}
-        >
-          <div
-            style={{
-              background: "white",
-              padding: "2rem",
-              borderRadius: "0.5rem",
-              width: "90%",
-              maxWidth: "400px",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: cormorant.style.fontFamily,
-                fontSize: "1.5rem",
-                marginBottom: "1rem",
-                color: "#1f2937",
-              }}
-            >
-              Admin Login
-            </h3>
-            <input
-              type="password"
-              value={inputAdminPassword}
-              onChange={(e) => setInputAdminPassword(e.target.value)}
-              placeholder="Enter password"
-              style={{
-                width: "100%",
-                padding: "0.75rem",
-                borderRadius: "0.375rem",
-                border: "1px solid #e0c9b1",
-                marginBottom: "1rem",
-              }}
-            />
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              <button
-                onClick={handleAdminLogin}
-                style={{
-                  flex: 1,
-                  padding: "0.75rem",
-                  backgroundColor: "#d4b396",
-                  color: "white",
-                  borderRadius: "0.375rem",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setShowAdminLogin(false)}
-                style={{
-                  flex: 1,
-                  padding: "0.75rem",
-                  backgroundColor: "#f3f4f6",
-                  color: "#4b5563",
-                  borderRadius: "0.375rem",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Signature Modal */}
       {showSignatureModal && (

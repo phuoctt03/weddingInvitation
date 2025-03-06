@@ -1,7 +1,10 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
+import { ChevronUp, ChevronDown, Plus, Settings, X } from 'lucide-react'
 import HeroSection from "../components/HeroSection"
 import MessageSection from "../components/MessageSection"
 import DateSection from "@/components/DateSection"
@@ -21,6 +24,14 @@ import WeatherForecast from "@/components/WeatherForecast"
 import OurStorySection from "@/components/OurStorySection"
 import VirtualGuestbook from "@/components/VirtualGuestbook"
 import AnimatedEnvelope from "@/components/AnimatedEnvelope"
+
+// Define section types
+type SectionType = {
+  id: string
+  component: React.ReactNode
+  label: string
+  isRemovable: boolean
+}
 
 export default function Home() {
   // Hero Section
@@ -174,12 +185,41 @@ export default function Home() {
     },
   ])
 
+  // Music Player
+  const [music, setMusic] = useState("/music/wedding-music.mp3")
+
   // Admin passwords
   const [adminPassword, setAdminPassword] = useState("wedding2025")
+
+  // Global admin mode
+  const [isGlobalAdmin, setIsGlobalAdmin] = useState(false)
+  const [showGlobalAdminLogin, setShowGlobalAdminLogin] = useState(false)
+  const [globalAdminPassword, setGlobalAdminPassword] = useState("")
 
   // Envelope and animation states
   const [showEnvelope, setShowEnvelope] = useState(true)
   const [contentVisible, setContentVisible] = useState(false)
+
+  // Section management
+  const [showSectionManager, setShowSectionManager] = useState(false)
+  const [availableSections, setAvailableSections] = useState([
+    { id: "message", label: "Message" },
+    { id: "story", label: "Our Story" },
+    { id: "countdown", label: "Countdown" },
+    { id: "details", label: "Details" },
+    { id: "gallery", label: "Gallery" },
+    { id: "weather", label: "Weather" },
+    { id: "rsvp", label: "RSVP" },
+    { id: "wishes", label: "Wishes" },
+    { id: "guestbook", label: "Guestbook" },
+    { id: "gifts", label: "Gifts" },
+    { id: "accommodation", label: "Stay" },
+    { id: "location", label: "Location" },
+    { id: "share", label: "Share" },
+  ])
+
+  // Active sections (excluding header and footer)
+  const [activeSections, setActiveSections] = useState<SectionType[]>([])
 
   // Animation config
   const fadeInUp = {
@@ -206,22 +246,179 @@ export default function Home() {
     }
   }, [showEnvelope])
 
-  const sections = [
-    { id: "home", label: "Home" },
-    { id: "message", label: "Message" },
-    { id: "story", label: "Our Story" },
-    { id: "countdown", label: "Countdown" },
-    { id: "details", label: "Details" },
-    { id: "gallery", label: "Gallery" },
-    { id: "weather", label: "Weather" },
-    { id: "rsvp", label: "RSVP" },
-    { id: "wishes", label: "Wishes" },
-    { id: "guestbook", label: "Guestbook" },
-    { id: "gifts", label: "Gifts" },
-    { id: "accommodation", label: "Stay" },
-    { id: "location", label: "Location" },
-    { id: "share", label: "Share" },
-  ]
+  // Get all section IDs for navigation
+  const getAllSectionIds = () => {
+    return ["home", ...activeSections.map((section) => section.id), "footer"]
+  }
+
+  // Move section up
+  const moveSectionUp = (index: number) => {
+    if (index <= 0) return
+    const newSections = [...activeSections]
+    ;[newSections[index], newSections[index - 1]] = [newSections[index - 1], newSections[index]]
+    setActiveSections(newSections)
+  }
+
+  // Move section down
+  const moveSectionDown = (index: number) => {
+    if (index >= activeSections.length - 1) return
+    const newSections = [...activeSections]
+    ;[newSections[index], newSections[index + 1]] = [newSections[index + 1], newSections[index]]
+    setActiveSections(newSections)
+  }
+
+  // Remove section
+  const removeSection = (index: number) => {
+    const newSections = [...activeSections]
+    const removedSection = newSections.splice(index, 1)[0]
+    setActiveSections(newSections)
+
+    // Add back to available sections
+    setAvailableSections((prev) => [...prev, { id: removedSection.id, label: removedSection.label }])
+  }
+
+  // Add section
+  const addSection = (sectionId: string) => {
+    // Find the section in available sections
+    const sectionToAdd = availableSections.find((section) => section.id === sectionId)
+    if (!sectionToAdd) return
+
+    // Remove from available sections
+    setAvailableSections((prev) => prev.filter((section) => section.id !== sectionId))
+
+    // Create the component based on section ID
+    let newComponent
+    switch (sectionId) {
+      case "message":
+        newComponent = (
+          <MessageSection
+            message={message}
+            setMessage={setMessage}
+            weddingHashtag={weddingHashtag}
+            setWeddingHashtag={setWeddingHashtag}
+          />
+        )
+        break
+      case "story":
+        newComponent = <OurStorySection initialStoryEvents={storyEvents} />
+        break
+      case "countdown":
+        newComponent = <CountdownSection targetDate={weddingDate} />
+        break
+      case "details":
+        newComponent = (
+          <DateSection
+            ceremony={ceremony}
+            setCeremony={setCeremony}
+            ceremonyDate={ceremonyDate}
+            setCeremonyDate={setCeremonyDate}
+            ceremonyLocation={ceremonyLocation}
+            setCeremonyLocation={setCeremonyLocation}
+            ceremonyAddress={ceremonyAddress}
+            setCeremonyAddress={setCeremonyAddress}
+            reception={reception}
+            setReception={setReception}
+            receptionDate={receptionDate}
+            setReceptionDate={setReceptionDate}
+            receptionLocation={receptionLocation}
+            setReceptionLocation={setReceptionLocation}
+            receptionAddress={receptionAddress}
+            setReceptionAddress={setReceptionAddress}
+            dressCode={dressCode}
+            setDressCode={setDressCode}
+          />
+        )
+        break
+      case "gallery":
+        newComponent = <GallerySection initialImages={galleryImages} />
+        break
+      case "weather":
+        newComponent = <WeatherForecast weddingDate={weddingDate} location={weatherLocation} />
+        break
+      case "rsvp":
+        newComponent = <RsvpSection deadline={rsvpDeadline} />
+        break
+      case "wishes":
+        newComponent = <GuestWishes adminPassword={adminPassword} isAdmin={isGlobalAdmin} />
+        break
+      case "guestbook":
+        newComponent = <VirtualGuestbook adminPassword={adminPassword} isAdmin={isGlobalAdmin} />
+        break
+      case "gifts":
+        newComponent = <GiftRegistrySection registries={registries} />
+        break
+      case "accommodation":
+        newComponent = <AccommodationSection accommodations={accommodations} transportation={transportation} />
+        break
+      case "location":
+        newComponent = (
+          <AccessSection
+            access={access}
+            setAccess={setAccess}
+            googleMap={googleMap}
+            locationAddress={locationAddress}
+          />
+        )
+        break
+      case "share":
+        newComponent = (
+          <QrCodeGenerator
+            title="Share Our Invitation"
+            subtitle="Scan the QR code or share the link with your loved ones"
+          />
+        )
+        break
+      default:
+        return
+    }
+
+    // Add to active sections
+    setActiveSections((prev) => [
+      ...prev,
+      {
+        id: sectionId,
+        component: newComponent,
+        label: sectionToAdd.label,
+        isRemovable: true,
+      },
+    ])
+  }
+
+  const handleGlobalAdminLogin = () => {
+    if (globalAdminPassword === adminPassword) {
+      setIsGlobalAdmin(true)
+      setShowGlobalAdminLogin(false)
+      setGlobalAdminPassword("")
+    } else {
+      alert("Incorrect password")
+    }
+  }
+
+  // Add this after the other useEffect hooks:
+  useEffect(() => {
+    // Update any components that depend on admin status when isGlobalAdmin changes
+    setActiveSections(prev =>
+      prev.map(section => {
+        if (section.id === "wishes") {
+          return {
+            ...section,
+            component: <GuestWishes adminPassword={adminPassword} isAdmin={isGlobalAdmin} />,
+            label: section.label,
+            isRemovable: section.isRemovable,
+          };
+        }
+        if (section.id === "guestbook") {
+          return {
+            ...section,
+            component: <VirtualGuestbook adminPassword={adminPassword} isAdmin={isGlobalAdmin} />,
+            label: section.label,
+            isRemovable: section.isRemovable,
+          };
+        }
+        return section;
+      })
+    );
+  }, [isGlobalAdmin, adminPassword]);
 
   return (
     <main style={{ position: "relative", width: "100%", overflow: "hidden", background: "#fffaf5" }}>
@@ -238,10 +435,388 @@ export default function Home() {
       {/* Only show content after envelope animation or skip */}
       {(!showEnvelope || contentVisible) && (
         <>
-          <FloatingNav sections={sections} />
+          <FloatingNav
+            sections={getAllSectionIds().map((id) => ({
+              id,
+              label:
+                id === "home"
+                  ? "Home"
+                  : id === "footer"
+                    ? "Footer"
+                    : activeSections.find((s) => s.id === id)?.label || id,
+            }))}
+            isAdmin={isGlobalAdmin}
+            setShowGlobalAdminLogin={() => {
+              if (isGlobalAdmin) {
+                // If already logged in, log out
+                setIsGlobalAdmin(false)
+              } else {
+                // Otherwise show login modal
+                setShowGlobalAdminLogin(true)
+              }
+            }}
+          />
           <FloatingElements />
-          <MusicPlayer />
+          <MusicPlayer defaultMusic={music} />
 
+          {/* Section Manager Button */}
+          <button
+            onClick={() => setShowSectionManager(true)}
+            style={{
+              position: "fixed",
+              bottom: "2rem",
+              right: "2rem",
+              zIndex: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "3rem",
+              height: "3rem",
+              borderRadius: "50%",
+              backgroundColor: "#d4b396",
+              color: "white",
+              border: "none",
+              boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+              cursor: "pointer",
+            }}
+          >
+            <Settings size={20} />
+          </button>
+
+          {/* Section Manager Modal */}
+          {showSectionManager && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.7)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1000,
+                padding: "1rem",
+              }}
+            >
+              <div
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: "0.75rem",
+                  width: "90%",
+                  maxWidth: "600px",
+                  maxHeight: "90vh",
+                  overflow: "auto",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "1.25rem",
+                    borderBottom: "1px solid #e0c9b1",
+                    backgroundColor: "#f8f9fa",
+                    borderRadius: "0.75rem 0.75rem 0 0",
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: 0,
+                      fontSize: "1.5rem",
+                      color: "#8b6e5c",
+                    }}
+                  >
+                    Manage Sections
+                  </h3>
+                  <button
+                    onClick={() => setShowSectionManager(false)}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      color: "#6b7280",
+                    }}
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                <div style={{ padding: "1.5rem" }}>
+                  <h4 style={{ margin: "0 0 1rem 0", color: "#1f2937" }}>Active Sections</h4>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.75rem",
+                      marginBottom: "2rem",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "0.75rem",
+                        backgroundColor: "#f3f4f6",
+                        borderRadius: "0.5rem",
+                        border: "1px solid #e5e7eb",
+                      }}
+                    >
+                      <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>Header (Fixed)</div>
+                    </div>
+
+                    {activeSections.map((section, index) => (
+                      <div
+                        key={section.id}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          padding: "0.75rem",
+                          backgroundColor: "#f3f4f6",
+                          borderRadius: "0.5rem",
+                          border: "1px solid #e5e7eb",
+                        }}
+                      >
+                        <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>{section.label}</div>
+                        <div style={{ display: "flex", gap: "0.5rem" }}>
+                          <button
+                            onClick={() => moveSectionUp(index)}
+                            disabled={index === 0}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "2rem",
+                              height: "2rem",
+                              borderRadius: "0.25rem",
+                              backgroundColor: index === 0 ? "#e5e7eb" : "#f8e8d8",
+                              color: index === 0 ? "#9ca3af" : "#8b6e5c",
+                              border: "none",
+                              cursor: index === 0 ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            <ChevronUp size={16} />
+                          </button>
+                          <button
+                            onClick={() => moveSectionDown(index)}
+                            disabled={index === activeSections.length - 1}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              width: "2rem",
+                              height: "2rem",
+                              borderRadius: "0.25rem",
+                              backgroundColor: index === activeSections.length - 1 ? "#e5e7eb" : "#f8e8d8",
+                              color: index === activeSections.length - 1 ? "#9ca3af" : "#8b6e5c",
+                              border: "none",
+                              cursor: index === activeSections.length - 1 ? "not-allowed" : "pointer",
+                            }}
+                          >
+                            <ChevronDown size={16} />
+                          </button>
+                          {section.isRemovable && (
+                            <button
+                              onClick={() => removeSection(index)}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "2rem",
+                                height: "2rem",
+                                borderRadius: "0.25rem",
+                                backgroundColor: "#fee2e2",
+                                color: "#ef4444",
+                                border: "none",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <X size={16} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "0.75rem",
+                        backgroundColor: "#f3f4f6",
+                        borderRadius: "0.5rem",
+                        border: "1px solid #e5e7eb",
+                      }}
+                    >
+                      <div style={{ flex: 1, fontWeight: 500, color: "#4b5563" }}>Footer (Fixed)</div>
+                    </div>
+                  </div>
+
+                  {availableSections.length > 0 && (
+                    <>
+                      <h4 style={{ margin: "0 0 1rem 0", color: "#1f2937" }}>Add Sections</h4>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "0.75rem",
+                        }}
+                      >
+                        {availableSections.map((section) => (
+                          <button
+                            key={section.id}
+                            onClick={() => addSection(section.id)}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.5rem",
+                              padding: "0.5rem 1rem",
+                              backgroundColor: "#f8e8d8",
+                              color: "#8b6e5c",
+                              borderRadius: "0.5rem",
+                              border: "none",
+                              cursor: "pointer",
+                              transition: "background-color 0.2s",
+                            }}
+                            onMouseOver={(e) => {
+                              e.currentTarget.style.backgroundColor = "#e0c9b1"
+                            }}
+                            onMouseOut={(e) => {
+                              e.currentTarget.style.backgroundColor = "#f8e8d8"
+                            }}
+                          >
+                            <Plus size={16} />
+                            {section.label}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    padding: "1.25rem",
+                    borderTop: "1px solid #e0c9b1",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    backgroundColor: "#f8f9fa",
+                    borderRadius: "0 0 0.75rem 0.75rem",
+                  }}
+                >
+                  <button
+                    onClick={() => setShowSectionManager(false)}
+                    style={{
+                      padding: "0.75rem 1.5rem",
+                      backgroundColor: "#d4b396",
+                      color: "white",
+                      borderRadius: "0.5rem",
+                      border: "none",
+                      cursor: "pointer",
+                      transition: "background-color 0.2s",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = "#c4a386"
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = "#d4b396"
+                    }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Global Admin Login Modal */}
+          {showGlobalAdminLogin && (
+            <div
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 1100, // Increased z-index to ensure it's above other elements
+              }}
+            >
+              <div
+                style={{
+                  background: "white",
+                  padding: "2rem",
+                  borderRadius: "0.5rem",
+                  width: "90%",
+                  maxWidth: "400px",
+                }}
+              >
+                <h3
+                  style={{
+                    fontFamily: "sans-serif",
+                    fontSize: "1.5rem",
+                    marginBottom: "1rem",
+                    color: "#1f2937",
+                  }}
+                >
+                  Admin Login
+                </h3>
+                <input
+                  type="password"
+                  value={globalAdminPassword}
+                  onChange={(e) => setGlobalAdminPassword(e.target.value)}
+                  placeholder="Enter password"
+                  style={{
+                    width: "100%",
+                    padding: "0.75rem",
+                    borderRadius: "0.375rem",
+                    border: "1px solid #e0c9b1",
+                    marginBottom: "1rem",
+                  }}
+                />
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <button
+                    onClick={handleGlobalAdminLogin}
+                    style={{
+                      flex: 1,
+                      padding: "0.75rem",
+                      backgroundColor: "#d4b396",
+                      color: "white",
+                      borderRadius: "0.375rem",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowGlobalAdminLogin(false)
+                      setGlobalAdminPassword("")
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: "0.75rem",
+                      backgroundColor: "#f3f4f6",
+                      color: "#4b5563",
+                      borderRadius: "0.375rem",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Fixed Header */}
           <motion.div variants={fadeInUp} initial="hidden" animate="visible" id="home">
             <HeroSection
               invitationTitle={invitationTitle}
@@ -257,7 +832,7 @@ export default function Home() {
             />
           </motion.div>
 
-          {/* Additional Sections */}
+          {/* Dynamic Sections */}
           <div
             style={{
               maxWidth: "1200px",
@@ -270,194 +845,24 @@ export default function Home() {
               gap: "8rem",
             }}
           >
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="message"
-            >
-              <MessageSection
-                message={message}
-                setMessage={setMessage}
-                weddingHashtag={weddingHashtag}
-                setWeddingHashtag={setWeddingHashtag}
-              />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0 }}
-              id="story"
-            >
-              <OurStorySection initialStoryEvents={storyEvents} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="countdown"
-            >
-              <CountdownSection targetDate={weddingDate} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="details"
-            >
-              <DateSection
-                ceremony={ceremony}
-                setCeremony={setCeremony}
-                ceremonyDate={ceremonyDate}
-                setCeremonyDate={setCeremonyDate}
-                ceremonyLocation={ceremonyLocation}
-                setCeremonyLocation={setCeremonyLocation}
-                ceremonyAddress={ceremonyAddress}
-                setCeremonyAddress={setCeremonyAddress}
-                reception={reception}
-                setReception={setReception}
-                receptionDate={receptionDate}
-                setReceptionDate={setReceptionDate}
-                receptionLocation={receptionLocation}
-                setReceptionLocation={setReceptionLocation}
-                receptionAddress={receptionAddress}
-                setReceptionAddress={setReceptionAddress}
-                dressCode={dressCode}
-                setDressCode={setDressCode}
-              />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="gallery"
-            >
-              <GallerySection initialImages={galleryImages} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="weather"
-            >
-              <WeatherForecast weddingDate={weddingDate} location={weatherLocation} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="rsvp"
-            >
-              <RsvpSection deadline={rsvpDeadline} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="wishes"
-            >
-              <GuestWishes adminPassword={adminPassword} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="guestbook"
-            >
-              <VirtualGuestbook adminPassword={adminPassword} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="gifts"
-            >
-              <GiftRegistrySection registries={registries} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="accommodation"
-            >
-              <AccommodationSection accommodations={accommodations} transportation={transportation} />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="location"
-            >
-              <AccessSection
-                access={access}
-                setAccess={setAccess}
-                googleMap={googleMap}
-                locationAddress={locationAddress}
-              />
-            </motion.div>
-
-            <Divider />
-
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: false, amount: 0.3 }}
-              id="share"
-            >
-              <QrCodeGenerator
-                title="Share Our Invitation"
-                subtitle="Scan the QR code or share the link with your loved ones"
-              />
-            </motion.div>
+            {activeSections.map((section, index) => (
+              <motion.div
+                key={section.id}
+                variants={fadeInUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.3 }}
+                id={section.id}
+              >
+                {index > 0 && <Divider />}
+                {section.component}
+              </motion.div>
+            ))}
           </div>
 
+          {/* Fixed Footer */}
           <footer
+            id="footer"
             style={{
               background: "#f8e8d8",
               padding: "2rem 0",
@@ -476,4 +881,3 @@ export default function Home() {
     </main>
   )
 }
-

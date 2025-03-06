@@ -49,7 +49,7 @@ export default function ImageUploader({
       onImageChange(imageData)
 
       // Check image dimensions
-      const img = new HTMLImageElement()
+      const img = document.createElement('img')
       img.onload = () => {
         const imgAspectRatio = img.width / img.height
         if (Math.abs(imgAspectRatio - aspectRatio) > 0.2) {

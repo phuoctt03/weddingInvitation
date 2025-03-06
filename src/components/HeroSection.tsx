@@ -161,7 +161,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     <div
       style={{
         position: "relative",
-        height: "100vh",
+        height: "120vh",
         width: "100%",
         overflow: "hidden",
         textAlign: "center",
@@ -198,7 +198,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             ...animationStyles.fadeIn,
           }}
           width={600}
-          height={1000}
+          height={1200}
           priority
           className="object-cover"
           quality={100}

@@ -2,17 +2,16 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Cormorant_Garamond, Dancing_Script } from "next/font/google"
 import { motion } from "framer-motion"
-import { Calendar, Heart, MapPin, Gift, Camera, Home, BellRingIcon as Ring } from "lucide-react"
+import { Calendar, Heart, MapPin, Gift, Camera, Home, BellRingIcon as Ring, Coffee, Upload, Trash2 } from "lucide-react"
 import Image from "next/image"
 
 const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] })
 const dancingScript = Dancing_Script({ subsets: ["latin"], weight: ["400", "700"] })
 
 interface StoryEvent {
-  target?: any
   id: string
   title: string
   date: string
@@ -29,6 +28,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
   const [storyEvents, setStoryEvents] = useState<StoryEvent[]>(initialStoryEvents)
   const [editingEvent, setEditingEvent] = useState<string | null>(null)
   const [newEvent, setNewEvent] = useState<Partial<StoryEvent>>({})
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Function to render the appropriate icon based on the icon name
   const renderIcon = (iconName: string) => {
@@ -63,23 +63,28 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
   }
 
   const handleSaveEvent = () => {
-    if (editingEvent) {
+    if (editingEvent === "new") {
+      if (newEvent.title && newEvent.date && newEvent.description) {
+        // Add new event
+        setStoryEvents((prev) => [
+          ...prev,
+          {
+            ...newEvent,
+            id: Date.now().toString(),
+            icon: newEvent.icon || "Calendar",
+          } as StoryEvent,
+        ])
+      }
+    } else if (editingEvent) {
+      // Update existing event
       setStoryEvents((prev) =>
         prev.map((event) =>
           event.id === editingEvent ? ({ ...event, ...newEvent, id: event.id } as StoryEvent) : event,
         ),
       )
-    } else if (newEvent.title && newEvent.date && newEvent.description) {
-      // Add new event
-      setStoryEvents((prev) => [
-        ...prev,
-        {
-          ...newEvent,
-          id: Date.now().toString(),
-          icon: newEvent.icon || "Calendar",
-        } as StoryEvent,
-      ])
     }
+
+    // Clear editing state
     setEditingEvent(null)
     setNewEvent({})
   }
@@ -90,7 +95,7 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
 
   const handleAddEvent = () => {
     setEditingEvent("new")
-    setNewEvent({})
+    setNewEvent({ icon: "Calendar" }) // Set default icon
   }
 
   const handleImageChange = (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,12 +103,14 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
     if (file) {
       const reader = new FileReader()
       reader.onload = (event) => {
+        const imageResult = event.target?.result as string
         if (id === "new") {
-          setNewEvent((prev) => ({ ...prev, image: event.target?.result as string }))
+          setNewEvent((prev) => ({ ...prev, image: imageResult }))
         } else {
-          setStoryEvents((prev) =>
-            prev.map((event) => (event.id === id ? { ...event, image: event.target?.result as string } : event)),
-          )
+          // Immediately update the storyEvents array with the new image
+          setStoryEvents((prev) => prev.map((event) => (event.id === id ? { ...event, image: imageResult } : event)))
+          // Also update the newEvent state to keep it in sync
+          setNewEvent((prev) => ({ ...prev, image: imageResult }))
         }
       }
       reader.readAsDataURL(file)
@@ -265,13 +272,26 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
               </p>
 
               {event.image && (
-                <div style={{ marginBottom: "1rem", borderRadius: "0.375rem", overflow: "hidden" }}>
+                <div
+                  style={{
+                    marginBottom: "1rem",
+                    borderRadius: "0.375rem",
+                    overflow: "hidden",
+                    border: "1px solid #e0c9b1",
+                    width: "150px",
+                    height: "100px",
+                  }}
+                >
                   <Image
                     src={event.image || "/placeholder.svg"}
                     alt={event.title}
-                    width={300}
-                    height={200}
-                    style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                    width={150}
+                    height={100}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               )}
@@ -465,13 +485,14 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
                       width: "2.5rem",
                       height: "2.5rem",
                       borderRadius: "50%",
-                      backgroundColor: "#f8e8d8",
+                      backgroundColor: newEvent.icon === option.value ? "#d4b396" : "#f8e8d8",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      color: "#8b6e5c",
-                      border: "2px solid #e0c9b1",
+                      color: newEvent.icon === option.value ? "white" : "#8b6e5c",
+                      border: `2px solid ${newEvent.icon === option.value ? "#c4a386" : "#e0c9b1"}`,
                       cursor: "pointer",
+                      transition: "all 0.2s ease",
                     }}
                     title={option.label}
                   >
@@ -493,28 +514,84 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
               >
                 Image
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleImageChange(editingEvent, e)}
-                style={{
-                  width: "100%",
-                  padding: "0.5rem 0",
-                  fontFamily: cormorant.style.fontFamily,
-                  fontSize: "0.875rem",
-                }}
-              />
-              {newEvent.image && (
-                <div style={{ marginTop: "0.5rem", borderRadius: "0.375rem", overflow: "hidden" }}>
-                  <Image
-                    src={newEvent.image || "/placeholder.svg"}
-                    alt="Preview"
-                    width={300}
-                    height={200}
-                    style={{ width: "100%", height: "auto", objectFit: "cover" }}
-                  />
-                </div>
-              )}
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
+                    padding: "0.75rem",
+                    backgroundColor: "#f3f4f6",
+                    color: "#4b5563",
+                    borderRadius: "0.375rem",
+                    border: "none",
+                    fontFamily: cormorant.style.fontFamily,
+                    fontSize: "1rem",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Upload size={16} />
+                  Upload Image
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => handleImageChange(editingEvent, e)}
+                  style={{ display: "none" }}
+                />
+
+                {newEvent.image && (
+                  <div
+                    style={{
+                      marginTop: "0.5rem",
+                      borderRadius: "0.375rem",
+                      overflow: "hidden",
+                      border: "1px solid #e0c9b1",
+                      padding: "0.5rem",
+                      width: "200px",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
+                      <button
+                        onClick={() => setNewEvent({ ...newEvent, image: undefined })}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: "0.25rem",
+                          backgroundColor: "#fee2e2",
+                          color: "#ef4444",
+                          borderRadius: "0.25rem",
+                          border: "none",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                    <div
+                      style={{
+                        width: "180px",
+                        height: "120px",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <Image
+                        src={newEvent.image || "/placeholder.svg"}
+                        alt="Preview"
+                        fill
+                        style={{
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div style={{ display: "flex", gap: "1rem" }}>
@@ -562,28 +639,4 @@ const OurStorySection = ({ initialStoryEvents }: OurStorySectionProps) => {
 }
 
 export default OurStorySection
-
-// Missing Coffee icon component
-function Coffee(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-      <line x1="6" x2="6" y1="2" y2="4" />
-      <line x1="10" x2="10" y1="2" y2="4" />
-      <line x1="14" x2="14" y1="2" y2="4" />
-    </svg>
-  )
-}
 

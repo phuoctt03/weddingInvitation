@@ -40,6 +40,16 @@
   --sidebar-accent-foreground: 240 5.9% 10%;
   --sidebar-border: 220 13% 91%;
   --sidebar-ring: 217.2 91.2% 59.8%;
+
+  /* Wedding theme variables */
+  --wedding-primary: 25, 30%, 60%;
+  --wedding-primary-light: 25, 30%, 85%;
+  --wedding-primary-dark: 25, 30%, 45%;
+  --wedding-secondary: 25, 15%, 75%;
+  --wedding-accent: 25, 70%, 75%;
+  --wedding-background: 30, 30%, 98%;
+  --wedding-text: 25, 30%, 20%;
+  --wedding-text-light: 25, 10%, 40%;
 }
 body {
   color: rgb(var(--foreground-rgb));
@@ -95,4 +105,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-} 
+}
